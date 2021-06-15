@@ -5,6 +5,7 @@ import Header from "../componenets/Header/Header"
 import ModalForm from "../componenets/Modal/ModalForm"
 import LoginForm from "../componenets/LoginForm/LoginForm"
 import RegisterForm from "../componenets/RegisterForm/RegisterForm"
+import RecipeCard from "../componenets/RecipeCard/RecipeCard"
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(true)
@@ -41,6 +42,15 @@ const HomePage = () => {
       >
         {modalContent}
       </ModalForm>
+      <div
+        className={`d-flex flex-column align-items-center justify-content-between p-3 my-3`}
+      >
+        <RecipeCard />
+        <RecipeCard />
+        <RecipeCard />
+        {/* <RecipeCard /> */}
+        {/* <RecipeCard /> */}
+      </div>
     </>
   )
 }

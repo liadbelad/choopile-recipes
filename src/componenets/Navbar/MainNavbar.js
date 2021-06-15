@@ -13,7 +13,12 @@ const MainNavbar = () => {
 
   return (
     <>
-      <Navbar className="fixed-top" variant="light" collapseOnSelect>
+      <Navbar
+        className="fixed-top"
+        style={{ background: "#fff" }}
+        variant="light"
+        collapseOnSelect
+      >
         <i
           className="fas fa-bars btn btn-outline-danger"
           onClick={handleShowSidenav}
