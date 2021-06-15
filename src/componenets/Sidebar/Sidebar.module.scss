@@ -1,0 +1,44 @@
+// .sidebar {
+//   width: 300px;
+//   background: rgb(32, 32, 32);
+//   position: absolute;
+//   height: 100vh;
+//   left: -100%;
+//   padding: 0 30px;
+//   transition: 1s;
+//   z-index: 10;
+
+//   &.active {
+//     transition: 0.5s;
+//     left: calc(100% - 300px);
+//   }
+
+//   & a {
+//     color: #fff;
+//     font-size: 1.2rem;
+//     padding: 10px 15px;
+//     border-radius: 5px;
+
+//     &:hover,
+//     &:active {
+//       background: #ccc;
+//     }
+//   }
+// }
+.nav-menu {
+  background: rgb(32, 32, 32);
+  width: 300px;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 100%;
+  transition: 850ms;
+  z-index: 2000;
+
+  &.active {
+    left: calc(100% - 300px);
+    transition: 350ms;
+  }
+}

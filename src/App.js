@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React, { useState } from "react"
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import { Container } from "react-bootstrap"
+import MainNavbar from "./componenets/Navbar/MainNavbar"
+import HomePage from "./pages/HomePage"
+import ErrorPage from "./pages/ErrorPage"
+import Sidebar from "./componenets/Sidebar/Sidebar"
 function App() {
+  const [showModal, setShowModal] = useState(false)
+
+  const handleOpenModel = () => setShowModal(true)
+  const handleCloseModel = () => setShowModal(false)
+
+  const handleShowModal = () => {
+    setShowModal((prevShowModal) => !prevShowModal)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Router>
+      <MainNavbar />
+      {/* <Sidebar
+        showSidebar={showSidebar}
+        handleShowSidenav={handleShowSidenav}
+      /> */}
+      <main className="py-5">
+        <Switch>
+          <Route path="/" exact component={HomePage} />
+          <Route path="*" component={ErrorPage} />
+        </Switch>
+
+        {/* {showModal && (
+          <ModalForm handleCloseModel={handleCloseModel} showModal={showModal}>
+            {modalContent === "newStudent" ? (
+              <NewStudentForm onNewStudentData={onNewStudentData} />
+            ) : (
+              <StudentDetails student={studentDetailsModal} />
+            )}
+          </ModalForm>
+        )} */}
+      </main>
+    </Router>
+  )
 }
 
-export default App;
+export default App
