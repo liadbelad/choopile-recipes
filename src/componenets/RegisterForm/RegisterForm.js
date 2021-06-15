@@ -1,8 +1,8 @@
 import React from "react"
-import { Form, Button, Row } from "react-bootstrap"
+import { Form, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
-const LoginForm = () => {
+const RegisterForm = () => {
   return (
     <Form className="text-center">
       <Form.Group controlId="formBasicEmail">
@@ -21,11 +21,19 @@ const LoginForm = () => {
         />
       </Form.Group>
 
+      <Form.Group controlId="formBasicPassword">
+        <Form.Control
+          className=" w-75 mx-auto"
+          type="password"
+          placeholder="אימות סיסמא"
+        />
+      </Form.Group>
+
       <Button variant="dark" type="submit" className="w-75">
         התחבר
       </Button>
       <div className="text-center my-3">
-        <span>אין לך עדיין משתמש ?</span>
+        <span>יש לך משתמש ?</span>
 
         <Link> הרשם </Link>
       </div>
@@ -33,4 +41,4 @@ const LoginForm = () => {
   )
 }
 
-export default LoginForm
+export default RegisterForm

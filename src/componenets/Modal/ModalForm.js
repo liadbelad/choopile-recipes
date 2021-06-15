@@ -1,19 +1,18 @@
 import React from "react"
 import Modal from "react-bootstrap/Modal"
+import styles from "./ModalForm.module.scss"
 
-const ModalForm = ({ isModalOpen, handleCloseModel, children }) => {
+const ModalForm = ({ showModal, handleCloseModel, children }) => {
   return (
-    <Modal
-      size="lg"
-      show={isModalOpen}
-      onHide={handleCloseModel}
-      className=" text-center d-flex flex-column justify-content-center"
-    >
-      <Modal.Header className=" mt-2">
-        <Modal.Title className="mx-auto">Student Details</Modal.Title>
+    <Modal show={showModal} onHide={handleCloseModel} className="m-auto">
+      <Modal.Header className={`${styles.header} mt-2 w-100 `}>
+        <Modal.Title as="h2" className="mx-auto">
+          CHOOPILLE
+        </Modal.Title>
         <a
           onClick={handleCloseModel}
-          className="btn btn-outline-danger ml-auto font-weight-bold"
+          style={{ cursor: "pointer" }}
+          className={styles["close-btn"]}
         >
           &times;
         </a>
