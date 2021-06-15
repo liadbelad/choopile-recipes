@@ -4,7 +4,7 @@ import styles from "./RecipeCard.module.scss"
 
 const RecipeCard = () => {
   return (
-    <article className={`${styles["recipe-container"]} my-5`}>
+    <article className={`${styles["recipe-container"]}`}>
       <Link to="/recipe/id">
         <div className={styles.image}></div>
         <section className={`${styles["recipe-content"]} p-3`}>

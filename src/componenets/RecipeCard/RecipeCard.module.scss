@@ -1,6 +1,9 @@
+@import "../../scss/styles.scss";
+
 .recipe-container {
   position: relative;
   width: 100%;
+  margin: 4rem 0;
 }
 
 .image {
@@ -27,4 +30,10 @@
   top: 70%;
   left: 25%;
   z-index: 2;
+}
+
+@media #{$media-tablet} {
+  .recipe-container {
+    margin: 6rem 0;
+  }
 }
