@@ -4,9 +4,9 @@
 }
 
 .image {
-  background-image: url("https://images.unsplash.com/photo-1518779578993-ec3579fee39f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=375&q=80");
-  //   transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
-  //     rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
+  background-image: url("https://images.unsplash.com/photo-1498837167922-ddd27525d352?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1500&q=80");
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg);
   background-position: center;
   background-size: cover;
   object-fit: cover;
@@ -21,7 +21,7 @@
   flex-direction: column;
   width: 50%;
   background: #fff;
-  border: 1px solid;
+  //   border: 1px solid;
   color: #000;
   position: absolute;
   top: 70%;

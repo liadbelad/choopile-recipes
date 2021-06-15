@@ -2,7 +2,7 @@ import React from "react"
 import { Form, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
 
-const RegisterForm = () => {
+const RegisterForm = ({ handleModalContent }) => {
   return (
     <Form className="text-center">
       <Form.Group controlId="formBasicEmail">
@@ -30,12 +30,17 @@ const RegisterForm = () => {
       </Form.Group>
 
       <Button variant="dark" type="submit" className="w-75">
-        התחבר
+        הרשמה
       </Button>
       <div className="text-center my-3">
         <span>יש לך משתמש ?</span>
 
-        <Link> הרשם </Link>
+        <a
+          className="link-info ml-2"
+          onClick={() => handleModalContent("login")}
+        >
+          התחבר
+        </a>
       </div>
     </Form>
   )

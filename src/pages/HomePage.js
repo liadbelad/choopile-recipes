@@ -9,7 +9,7 @@ import RecipeCard from "../componenets/RecipeCard/RecipeCard"
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(true)
-  const [modalContent, setModalContent] = useState(<RegisterForm />)
+  const [modalContent, setModalContent] = useState("register")
 
   const handleOpenModel = () => setShowModal(true)
   const handleCloseModel = () => setShowModal(false)
@@ -17,6 +17,9 @@ const HomePage = () => {
   const handleShowModal = () => {
     setShowModal((prevShowModal) => !prevShowModal)
   }
+
+  const handleModalContent = (newContent) => setModalContent(newContent)
+
   return (
     <>
       {/* {loading ? (
@@ -35,12 +38,12 @@ const HomePage = () => {
       </Row> */}
       <Header />
 
-      <ModalForm
-        showModal={showModal}
-        handleCloseModel={handleCloseModel}
-        title="Login"
-      >
-        {modalContent}
+      <ModalForm showModal={showModal} handleCloseModel={handleCloseModel}>
+        {modalContent === "register" ? (
+          <RegisterForm handleModalContent={handleModalContent} />
+        ) : (
+          <LoginForm handleModalContent={handleModalContent} />
+        )}
       </ModalForm>
       <div
         className={`d-flex flex-column align-items-center justify-content-between p-3 my-3`}
