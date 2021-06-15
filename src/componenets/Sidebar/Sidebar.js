@@ -7,37 +7,47 @@ import styles from "./Sidebar.module.scss"
 
 function Sidebar({ showSidebar, handleShowSidenav }) {
   return (
-    <nav
+    <aside
       className={
         showSidebar
           ? `${styles["nav-menu"]} ${styles.active}`
           : styles["nav-menu"]
       }
     >
-      <ul className="nav-menu-items" onClick={handleShowSidenav}>
-        <li className="navbar-toggle">
-          <Link to="#" className="menu-bars">
-            X
-          </Link>
-        </li>
-
-        <li>
-          <Link to="/">
-            <span> bla </span>
-          </Link>
-        </li>
-        <li>
-          <Link to="/">
-            <span> bla </span>
-          </Link>
-        </li>
-        <li>
-          <Link to="/">
-            <span> bla </span>
-          </Link>
-        </li>
-      </ul>
-    </nav>
+      <Nav
+        className="flex-column align-items-center w-100"
+        onClick={handleShowSidenav}
+      >
+        <Nav.Link className="h3 ml-auto w-100">&times;</Nav.Link>
+        <LinkContainer to="/">
+          <Navbar.Brand className={`${styles.brand} my-4`}>
+            CHOOPIL'E
+          </Navbar.Brand>
+        </LinkContainer>
+        <LinkContainer to="/recipes">
+          <Nav.Link>RECIPES</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to="/categories">
+          <Nav.Link>CATEGORIES</Nav.Link>
+        </LinkContainer>
+        <div className={`${styles["social-links"]} my-3`}>
+          <Nav.Link href="https://www.facebook.com/" target="_blank">
+            <i class="fab fa-facebook"></i>
+          </Nav.Link>
+          <Nav.Link href="https://www.instagram.com/" target="_blank">
+            <i class="fab fa-instagram"></i>
+          </Nav.Link>
+          <Nav.Link href="https://www.twitter.com/" target="_blank">
+            <i class="fab fa-twitter"></i>
+          </Nav.Link>
+        </div>
+        <div className="d-flex">
+          <Nav.Link>התחבר</Nav.Link>
+          <Nav.Link> | </Nav.Link>
+          <Nav.Link>הרשם</Nav.Link>
+        </div>
+      </Nav>
+    </aside>
   )
 }
 
