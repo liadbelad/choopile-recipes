@@ -1,11 +1,10 @@
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
-import { Col, Row } from "react-bootstrap"
 import Header from "../componenets/Header/Header"
 import ModalForm from "../componenets/Modal/ModalForm"
 import LoginForm from "../componenets/LoginForm/LoginForm"
 import RegisterForm from "../componenets/RegisterForm/RegisterForm"
 import RecipeCard from "../componenets/RecipeCard/RecipeCard"
+import Menu from "../componenets/Menu/Menu"
 
 const HomePage = () => {
   const [showModal, setShowModal] = useState(true)
@@ -37,7 +36,15 @@ const HomePage = () => {
         })}
       </Row> */}
       <Header />
+      <Menu />
 
+      <div
+        className={`d-flex flex-column align-items-center justify-content-between p-3 my-2`}
+      >
+        <RecipeCard />
+        <RecipeCard />
+        <RecipeCard />
+      </div>
       <ModalForm showModal={showModal} handleCloseModel={handleCloseModel}>
         {modalContent === "register" ? (
           <RegisterForm handleModalContent={handleModalContent} />
@@ -45,15 +52,6 @@ const HomePage = () => {
           <LoginForm handleModalContent={handleModalContent} />
         )}
       </ModalForm>
-      <div
-        className={`d-flex flex-column align-items-center justify-content-between p-3 my-3`}
-      >
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-        {/* <RecipeCard /> */}
-        {/* <RecipeCard /> */}
-      </div>
     </>
   )
 }

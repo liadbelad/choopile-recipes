@@ -15,15 +15,15 @@ const RegisterForm = ({ handleModalContent }) => {
 
       <Form.Group controlId="formBasicPassword">
         <Form.Control
-          className=" w-75 mx-auto"
+          className="w-75 mx-auto"
           type="password"
           placeholder="סיסמא"
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicPassword">
+      <Form.Group controlId="formBasicConfirmPassword">
         <Form.Control
-          className=" w-75 mx-auto"
+          className="w-75 mx-auto"
           type="password"
           placeholder="אימות סיסמא"
         />
