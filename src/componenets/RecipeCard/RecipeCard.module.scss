@@ -3,7 +3,7 @@
 .recipe-container {
   position: relative;
   width: 100%;
-  margin: 4rem 0;
+  margin: 3rem 0;
 }
 
 .image {
@@ -14,7 +14,7 @@
   background-size: cover;
   object-fit: cover;
   background-repeat: no-repeat;
-  width: 70%;
+  width: 100%;
   margin: 0 auto;
   height: 450px;
 }
@@ -26,31 +26,32 @@
 .recipe-content {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  width: 75%;
   background: #fff;
   color: #000;
   position: absolute;
   top: 70%;
-  left: 25%;
+  left: 15%;
+  font-size: 0.7rem;
   z-index: 2;
 }
 
 @media #{$media-tablet} {
   .recipe-container {
-    margin: 3rem 0;
+    margin: 4rem 0;
 
     & .image {
-      width: 100%;
+      width: 70%;
     }
 
     & .recipe-content {
-      width: 75%;
-      left: 15%;
+      width: 50%;
+      left: 25%;
     }
 
     & .recipe-description,
     & .recipe-header {
-      font-size: 0.7rem;
+      font-size: 1rem;
     }
   }
 }

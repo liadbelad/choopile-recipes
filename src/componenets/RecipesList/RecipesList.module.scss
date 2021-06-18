@@ -1,0 +1,15 @@
+@import "../../scss/styles.scss";
+
+.grid-container {
+  display: grid;
+  gap: 1rem;
+  //   margin: 1rem auto;
+}
+
+@media #{$media-tablet} {
+  .grid-container {
+    // grid-template-columns: repeat(3, 1fr);
+
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}

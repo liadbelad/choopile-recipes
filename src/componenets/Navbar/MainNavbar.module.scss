@@ -6,7 +6,7 @@
 }
 
 .social-links {
-  display: flex;
+  display: none;
 
   & i {
     color: $primary-color;
@@ -21,6 +21,6 @@
 
 @media #{$media-tablet} {
   .social-links {
-    display: none;
+    display: flex;
   }
 }

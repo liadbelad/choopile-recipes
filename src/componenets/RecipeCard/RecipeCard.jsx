@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "react-router-dom"
 import styles from "./RecipeCard.module.scss"
 
-const RecipeCard = () => {
+const RecipeCard = ({}) => {
   return (
     <article className={`${styles["recipe-container"]}`}>
       <Link to="/recipe/id">
