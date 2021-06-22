@@ -12,7 +12,6 @@ const RecipeItem = () => {
       <Card.Body>
         <Card.Title className="p-0 pt-2">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Sed
-          laboriosam expedita fugiat quis possimus ducimus.
         </Card.Title>
       </Card.Body>
     </Card>

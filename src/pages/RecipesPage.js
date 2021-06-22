@@ -1,15 +1,18 @@
 import React from "react"
 import { Container, Row, Col } from "react-bootstrap"
-import RecipesList from "../componenets/RecipesList/RecipesList"
+import SearchBar from "../componenets/SearchBar/SearchBar"
+import CategoriesList from "../componenets/CategoriesList/CategoriesList"
+import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
 
 const RecipesPage = () => {
   return (
-    <Container className="my-5">
+    <Container fluid className="my-5">
       <Row>
-        <Col md={3} className="mb-3">
-          Categories...
+        <Col md={4} className="mb-3">
+          <SearchBar sm={12} />
+          <CategoriesList />
         </Col>
-        <Col md={9}>
+        <Col md={8}>
           <RecipesList />
         </Col>
       </Row>

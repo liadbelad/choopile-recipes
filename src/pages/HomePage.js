@@ -1,9 +1,9 @@
 import React, { useState } from "react"
 import Header from "../componenets/Header/Header"
 import ModalForm from "../componenets/Modal/ModalForm"
-import LoginForm from "../componenets/LoginForm/LoginForm"
-import RegisterForm from "../componenets/RegisterForm/RegisterForm"
-import RecipeCard from "../componenets/RecipeCard/RecipeCard"
+import LoginForm from "../componenets/Auth/LoginForm"
+import RegisterForm from "../componenets/Auth/RegisterForm"
+import RecipeCard from "../componenets/Recipes/RecipeGallery/RecipeCard/RecipeCard"
 import Menu from "../componenets/Menu/Menu"
 
 const HomePage = () => {
@@ -35,8 +35,8 @@ const HomePage = () => {
           )
         })}
       </Row> */}
-      <Header />
       <Menu />
+      <Header />
 
       <div
         className={`d-flex flex-column align-items-center justify-content-between p-3 my-2`}
