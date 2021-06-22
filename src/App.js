@@ -5,6 +5,7 @@ import MainNavbar from "./componenets/Navbar/MainNavbar"
 import HomePage from "./pages/HomePage"
 import RecipesPage from "./pages/RecipesPage"
 import ErrorPage from "./pages/ErrorPage"
+import styles from "./componenets/Header/Header.module.scss"
 
 function App() {
   return (
