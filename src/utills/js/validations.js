@@ -19,8 +19,7 @@ const userValidations = {
   password: {
     required: true,
     pattern: PASSWORD_REGEX,
-    messageOnError:
-      "(יש להזין סיסמה באורך 8 תווים לפחות עם סימן מיוחד ! * & וכ'ו)",
+    messageOnError: "חובה ספרה, אות קטנה ואות גדולה (באנגלית) - לפחות 8 תווים",
   },
   confirmPassword: {
     required: true,
@@ -31,12 +30,10 @@ const userValidations = {
 
 const validateUserData = ({ target: { value, name } }) => {
   const newErrors = []
-  console.log(name, value)
   const validations = userValidations[name]
 
   if (validations.required && !value) {
     newErrors.push(`שדה חובה*`)
-    // return // ?
   } else if (validations.pattern && !validations.pattern.test(value)) {
     newErrors.push(validations.messageOnError)
   }
@@ -44,65 +41,17 @@ const validateUserData = ({ target: { value, name } }) => {
   return newErrors
 }
 
-export { validateUserData }
+const validateDataOnSubmit = (userData) => {
+  console.log(userData)
+  const userInputErrors = {}
+  for (const name in userValidations) {
+    console.log(name)
+    const { value } = userData[name]
+    const newErrors = validateUserData({ target: { value, name } })
+    // if (newErrors.length > 0)
+    userInputErrors[name] = { value, errors: newErrors }
+  }
+  return userInputErrors
+}
 
-// const validateDataOnSubmit = () => {
-//   const userInputErrors = []
-//   for (const name in userValidations) {
-//     const { value } = userData[name]
-//     const newErrors = handleUpdateUserData({ target: { value, name } })
-//     if (newErrors.length > 0) userInputErrors.push(newErrors)
-//   }
-//   return userInputErrors
-// }
-
-// const handleUpdateStudentData = (e) => {
-//   const errors = validateStudentData(e)
-//   console.log(errors)
-
-//   const {
-//     target: { name, value },
-//   } = e
-
-//   setStudentData((prevStudentData) => ({
-//     ...prevStudentData,
-//     [name]: {
-//       value,
-//       errors,
-//     },
-//   }))
-
-//   return errors
-// }
-
-// const validateDataOnSubmit = () => {
-//   const userInputErrors = []
-//   for (const name in studentValidations) {
-//     const { value } = studentData[name]
-//     const newErrors = handleUpdateStudentData({ target: { value, name } })
-//     if (newErrors.length > 0) userInputErrors.push(newErrors)
-//   }
-//   return userInputErrors
-// }
-
-// const handleFormSubmit = (e) => {
-//   e.preventDefault()
-
-//   const userInputErrors = validateDataOnSubmit()
-
-//   if (userInputErrors.length) return
-
-//   const newStudnet = {
-//     name: studentData.username.value,
-//     email: studentData.email.value,
-//     address: studentData.address.value,
-//     gender: studentData.gender.value,
-//     course: studentData.course.value,
-//     average: Math.floor(Math.random() * (100 - 56 + 1) + 56),
-//     image: `https://i.pravatar.cc/150?img=`,
-//   }
-
-//   onNewStudentData(newStudnet)
-
-//   clearState()
-// }
+export { validateUserData, validateDataOnSubmit }

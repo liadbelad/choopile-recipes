@@ -11,15 +11,7 @@ const HomePage = () => {
   const [modalContent, setModalContent] = useState("register")
 
   const handleOpenModel = () => setShowModal(true)
-  const handleCloseModel = () => setShowModal(false)
-
-  const handleShowModal = () => {
-    setShowModal((prevShowModal) => !prevShowModal)
-
-
-
-
-  }
+  const handleCloseModal = () => setShowModal(false)
 
   const handleModalContent = (newContent) => setModalContent(newContent)
 
@@ -49,11 +41,17 @@ const HomePage = () => {
         <RecipeCard />
         <RecipeCard />
       </div>
-      <ModalForm showModal={showModal} handleCloseModel={handleCloseModel}>
+      <ModalForm showModal={showModal} handleCloseModel={handleCloseModal}>
         {modalContent === "register" ? (
-          <RegisterForm handleModalContent={handleModalContent} />
+          <RegisterForm
+            handleCloseModal={handleCloseModal}
+            handleModalContent={handleModalContent}
+          />
         ) : (
-          <LoginForm handleModalContent={handleModalContent} />
+          <LoginForm
+            handleCloseModal={handleCloseModal}
+            handleModalContent={handleModalContent}
+          />
         )}
       </ModalForm>
     </>
@@ -61,7 +59,3 @@ const HomePage = () => {
 }
 
 export default HomePage
-
-
-
-

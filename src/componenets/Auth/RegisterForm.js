@@ -1,10 +1,13 @@
 import React, { useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
-import { validateUserData } from "../../utills/js/validations"
+import {
+  validateUserData,
+  validateDataOnSubmit,
+} from "../../utills/js/validations"
 import FormErrorMessages from "./FormErrorMessages"
 
-const RegisterForm = ({ handleModalContent }) => {
+const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
   const [userData, setUserData] = useState({
     email: {
       value: "",
@@ -35,6 +38,10 @@ const RegisterForm = ({ handleModalContent }) => {
       target: { name, value },
     } = e
 
+    updateState(name, value, errors)
+  }
+
+  const updateState = (name, value, errors) => {
     setUserData((prevUserData) => ({
       ...prevUserData,
       [name]: {
@@ -47,19 +54,23 @@ const RegisterForm = ({ handleModalContent }) => {
   const handleFormSubmit = (e) => {
     e.preventDefault()
 
-    // const { errors, value, name } = validateDataOnSubmit(userData)
+    const userInputErrors = validateDataOnSubmit(userData)
 
-    // console.log(validateDataOnSubmit(userData)[name])
-    // if (errors?.length > 0) {
-    //   setUserData((prevUserData) => ({
-    //     ...prevUserData,
-    //     [name]: {
-    //       value,
-    //       errors,
-    //     },
-    //   }))
-    //   return
-    // }
+    if (Object.keys(userInputErrors).length) {
+      setUserData(userInputErrors)
+      console.log("new data!", userInputErrors)
+      return
+    }
+
+    const newUser = {
+      firstName: userData.firstName.value,
+      lastName: userData.lastName.value,
+      email: userData.email.value,
+      password: userData.password.value,
+    }
+
+    console.log("Welcome!", newUser)
+    handleCloseModal()
   }
 
   return (
