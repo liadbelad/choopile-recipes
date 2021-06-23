@@ -15,6 +15,10 @@ const HomePage = () => {
 
   const handleShowModal = () => {
     setShowModal((prevShowModal) => !prevShowModal)
+
+
+
+
   }
 
   const handleModalContent = (newContent) => setModalContent(newContent)
@@ -57,3 +61,7 @@ const HomePage = () => {
 }
 
 export default HomePage
+
+
+
+

@@ -1,6 +1,5 @@
 import React from "react"
-import { Form, Button, Row } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Form, Button } from "react-bootstrap"
 
 const LoginForm = ({ handleModalContent }) => {
   return (

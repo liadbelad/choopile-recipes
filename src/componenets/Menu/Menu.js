@@ -4,7 +4,7 @@ import styles from "./Menu.module.scss"
 
 const Menu = () => {
   return (
-    <div className={`${styles["menu-container"]} p-3`}>
+    <div className={`${styles["menu-container"]} p-2 mt-2`}>
       <Link to="/recipes/popular" className="ml-2">
         הכי פופולריים
       </Link>
