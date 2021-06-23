@@ -35,6 +35,7 @@ const HomePage = () => {
       <Header />
 
       <div
+        id="newestRecipesGallery"
         className={`d-flex flex-column align-items-center justify-content-between p-3 my-2`}
       >
         <RecipeCard />
