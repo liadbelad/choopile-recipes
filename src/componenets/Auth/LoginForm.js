@@ -47,7 +47,6 @@ const LoginForm = ({ handleModalContent }) => {
 
     if (hasNewErrors) {
       setUserData(userDataAfterErrorCheck)
-      console.log("???")
       return
     }
 
