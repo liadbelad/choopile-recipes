@@ -159,7 +159,7 @@ const DUMMY_USERS = [
     f_name: "Liad",
     l_name: "Beladev",
     email: "liad@gmail.com",
-    password: "secret123",
+    password: "Secret123",
   },
   {
     id: 2,
@@ -204,7 +204,7 @@ const DUMMY_USER_WANTED = [
   { userid: 2, categories: [1, 5] },
 ]
 
-const loginUser = { email: "liad@gmail.com", password: "secret13" }
+const loginUser = { email: "liad@gmail.com", password: "Secret123" }
 const registerUser = {
   f_name: "Moshmosh",
   l_name: "Beladev",
@@ -223,6 +223,7 @@ const registerUser = {
 
 const login = async (loginUser) => {
   try {
+    console.log(loginUser)
     const foundUser = DUMMY_USERS.find(
       (user) =>
         user.email === loginUser.email && user.password === loginUser.password
@@ -234,18 +235,13 @@ const login = async (loginUser) => {
   }
 }
 
-;(async () => {
-  const user = await login(loginUser)
-  console.log("login", user)
-})()
-
 const register = async (newUser) => {
   try {
     const foundUser = DUMMY_USERS.find((user) => user.email === newUser.email)
     if (foundUser) throw new Error("User already exist")
 
     DUMMY_USERS.push(newUser)
-    return `Welcome ${newUser.f_name}`
+    return `Welcome ${newUser.fullName}`
   } catch (error) {
     return error.message
   }
@@ -338,16 +334,16 @@ const getRecipeByID = async (id) => {
 
 const getRecipesByUserCategories = async (userID, categories) => {
   try {
-    fetch
+    // fetch
   } catch (error) {
-    error.message
+    return error.message
   }
 }
 
 const addNewRecipe = async (newRecipe) => {
   try {
     // after frontend validations
-    DUMMY_RECIPE_DETAILS.push(newRecipe)
+    DUMMY_SINGLE_RECIPE.push(newRecipe)
   } catch (error) {
     return error.message
   }
@@ -373,39 +369,4 @@ const editRecipe = async (id, updatedRecipe) => {
   }
 }
 
-// editRecipe(1,)
-
-// title
-// description
-// views
-// createdAt
-// image
-
-// const getCertainRecipeDetails = async (
-//   requestedRecipeDetails = ["id", "title", "image",'views','createdAt']
-// ) => {
-//   // foreach detail => params[detail]
-
-//   try {
-//     const recipeDetails = DUMMY_RECIPE_DETAILS.map((recipe) => {
-//       const key = requestedRecipeDetails[0]
-//       return { [key]: recipe[key] }
-//     })
-//     console.log(recipeDetails)
-//     return DUMMY_RECIPE_DETAILS
-//   } catch (error) {
-//     throw new Error(error.message)
-//   }
-// }
-
-// const getRecipeDetails = async ()
-
-// getCertainRecipeDetails()
-
-// export {
-//   getCertainRecipeDetails,
-//   getAllCategories,
-//   getAllMeasureUnits,
-//   getAllIngredients,
-//   addNewRecipe,
-// }
+export { login, register }

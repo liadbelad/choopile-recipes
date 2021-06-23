@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { Link } from "react-router-dom"
+import { register } from "../../DAL/api"
 import {
   validateUserData,
   validateDataOnSubmit,
@@ -51,14 +52,22 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
     }))
   }
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault()
 
-    const userInputErrors = validateDataOnSubmit(userData)
+    if (userData.password.value !== userData.confirmPassword.value) {
+      updateState("confirmPassword", userData.confirmPassword.value, [
+        "סיסמאות לא תואמות",
+      ])
+      return
+    }
 
-    if (Object.keys(userInputErrors).length) {
-      setUserData(userInputErrors)
-      console.log("new data!", userInputErrors)
+    const { userDataAfterErrorCheck, hasNewErrors } =
+      validateDataOnSubmit(userData)
+
+    if (hasNewErrors) {
+      setUserData(userDataAfterErrorCheck)
+      console.log("new data!", userDataAfterErrorCheck)
       return
     }
 
@@ -69,8 +78,9 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
       password: userData.password.value,
     }
 
-    console.log("Welcome!", newUser)
-    handleCloseModal()
+    const userInfo = await register(newUser)
+    console.log(userInfo)
+    // handleCloseModal()
   }
 
   return (

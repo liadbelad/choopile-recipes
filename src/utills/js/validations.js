@@ -42,16 +42,19 @@ const validateUserData = ({ target: { value, name } }) => {
 }
 
 const validateDataOnSubmit = (userData) => {
-  console.log(userData)
-  const userInputErrors = {}
+  let hasNewErrors = false
+  const userDataAfterErrorCheck = {}
   for (const name in userValidations) {
-    console.log(name)
+    if (!(name in userData)) continue
+
     const { value } = userData[name]
     const newErrors = validateUserData({ target: { value, name } })
-    // if (newErrors.length > 0)
-    userInputErrors[name] = { value, errors: newErrors }
+
+    if (newErrors.length > 0) hasNewErrors = true
+
+    userDataAfterErrorCheck[name] = { value, errors: newErrors }
   }
-  return userInputErrors
+  return { userDataAfterErrorCheck, hasNewErrors }
 }
 
 export { validateUserData, validateDataOnSubmit }
