@@ -241,7 +241,7 @@ const register = async (newUser) => {
     if (foundUser) throw new Error("User already exist")
 
     DUMMY_USERS.push(newUser)
-    return `Welcome ${newUser.fullName}`
+    return `Welcome ${newUser.firstName}`
   } catch (error) {
     return error.message
   }
