@@ -1,12 +1,15 @@
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import Header from "../componenets/Header/Header"
 import ModalForm from "../componenets/Modal/ModalForm"
 import LoginForm from "../componenets/Auth/LoginForm"
 import RegisterForm from "../componenets/Auth/RegisterForm"
+import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
 import RecipeCard from "../componenets/Recipes/RecipeGallery/RecipeCard/RecipeCard"
 import Menu from "../componenets/Menu/Menu"
+import { getAllRecipesHomepage } from "../DAL/api"
 
 const HomePage = () => {
+  const [recipes, setRecipes] = useState([])
   const [showModal, setShowModal] = useState(true)
   const [modalContent, setModalContent] = useState("register")
 
@@ -14,6 +17,15 @@ const HomePage = () => {
   const handleCloseModal = () => setShowModal(false)
 
   const handleModalContent = (newContent) => setModalContent(newContent)
+
+  const fetchRecipesHomepage = async () => {
+    const recipesHomepage = await getAllRecipesHomepage()
+    setRecipes(recipesHomepage)
+  }
+
+  useEffect(() => {
+    fetchRecipesHomepage()
+  }, [])
 
   return (
     <>
@@ -34,14 +46,14 @@ const HomePage = () => {
       <Menu />
       <Header />
 
-      <div
-        id="newestRecipesGallery"
-        className={`d-flex flex-column align-items-center justify-content-between p-3 my-2`}
-      >
-        <RecipeCard />
-        <RecipeCard />
-        <RecipeCard />
-      </div>
+      <span id="newestRecipesGallery">
+        <RecipesList
+          idSmoothScrolling="newestRecipesGallery"
+          className="flex-container"
+          recipes={recipes}
+        />
+      </span>
+
       <ModalForm showModal={showModal} handleCloseModel={handleCloseModal}>
         {modalContent === "register" ? (
           <RegisterForm

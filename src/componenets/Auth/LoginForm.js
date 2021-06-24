@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Form, Button } from "react-bootstrap"
+import React from "react"
+import { Form, Button, Row, Col } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import { login } from "../../DAL/api"
@@ -68,16 +68,18 @@ const LoginForm = ({ handleModalContent, handleCloseModal }) => {
             התחבר
           </Button>
 
-          <div className="text-center my-3">
-            <span>אין לך עדיין משתמש ?</span>
-
-            <a
-              className="link-info ml-2"
-              onClick={() => handleModalContent("register")}
-            >
-              הרשם
-            </a>
-          </div>
+          <Row className="text-center my-3">
+            <Col className="d-flex align-items-center justify-content-center">
+              <Button
+                variant="link"
+                className="p-0"
+                onClick={() => handleModalContent("register")}
+              >
+                הרשם
+              </Button>
+              <span> ? אין לך עדיין משתמש </span>
+            </Col>
+          </Row>
         </Form>
       )}
     </Formik>

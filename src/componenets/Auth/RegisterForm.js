@@ -1,5 +1,5 @@
-import React, { useState } from "react"
-import { Form, Button } from "react-bootstrap"
+import React from "react"
+import { Form, Button, Row, Col } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import { register } from "../../DAL/api"
@@ -36,12 +36,17 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
       validationSchema={Yup.object({
         email: Yup.string()
           .required("חובה*")
+          .email("אימייל לא תקין")
           .matches(EMAIL_REGEX, "אימייל לא תקין"),
         firstName: Yup.string()
           .required("חובה*")
+          .min(2, "מינימום 2 תווים")
+          .max(20, "מקסימום 20 תווים")
           .matches(NAME_REGEX, "אותיות בלבד אנגלית או עברית"),
         lastName: Yup.string()
           .required("חובה*")
+          .min(2, "מינימום 2 תווים")
+          .max(20, "מקסימום 20 תווים")
           .matches(NAME_REGEX, "אותיות בלבד אנגלית או עברית"),
         password: Yup.string()
           .required("חובה*")
@@ -131,16 +136,18 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
           <Button variant="dark" type="submit" className="w-75">
             הרשמה
           </Button>
-          <div className="text-center my-3">
-            <span>יש לך משתמש ?</span>
-
-            <a
-              className="link-info ml-2"
-              onClick={() => handleModalContent("login")}
-            >
-              התחבר
-            </a>
-          </div>
+          <Row className="text-center my-3">
+            <Col className="d-flex align-items-center justify-content-center">
+              <Button
+                variant="link"
+                className="p-0"
+                onClick={() => handleModalContent("login")}
+              >
+                התחבר
+              </Button>
+              <span> ? יש לך משתמש </span>
+            </Col>
+          </Row>
         </Form>
       )}
     </Formik>

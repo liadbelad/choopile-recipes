@@ -2,23 +2,23 @@ import React from "react"
 import { Link } from "react-router-dom"
 import styles from "./RecipeCard.module.scss"
 
-const RecipeCard = ({}) => {
+const RecipeCard = ({ recipe }) => {
+  const { id, title, description, views, createdAt } = recipe
+
+  const date = createdAt.toLocaleString().slice(0, 9).replaceAll(".", "/")
+
   return (
     <article className={`${styles["recipe-container"]}`}>
-      <Link to="/recipe/id">
+      <Link to={`/recipe/${id}`}>
         <div className={styles.image}></div>
         <section className={`${styles["recipe-content"]} p-3`}>
           <div className={styles["recipe-header"]}>
-            <p> 15/06/2021 </p>
-            <p className="mr-3"> 122 צפיות </p>
+            <p> {date} </p>
+            <p className="mr-3"> {views} צפיות </p>
           </div>
           <div className={styles["recipe-description"]}>
-            <h5> עוגת בולונז טבעונית </h5>
-            <p>
-              עוגת בולונז טבעונית? כן כן אתם שומעים נכון! הפסטה האהובה עליי,
-              בגרסא אפויה שיוצרת מעטפת קראנצ'ית מושלמת, וכל זה ללא בשר בכלל!
-              כנסו כנסו
-            </p>
+            <h5> {title} </h5>
+            <p> {description} </p>
           </div>
         </section>
       </Link>

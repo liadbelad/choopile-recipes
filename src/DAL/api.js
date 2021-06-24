@@ -86,7 +86,7 @@ const DUMMY_RECIPE_HOMEPAGE = [
     description: "הפיצה הכי טובה שיש באזור השרון של הגברת צופי ",
     image: "https://source.unsplash.com/80x50/?food",
     views: 120,
-    createdAt: new Date(2020, 10, 12),
+    createdAt: new Date("2020-03-25"),
   },
   {
     id: 2,
@@ -95,7 +95,7 @@ const DUMMY_RECIPE_HOMEPAGE = [
     description: "הפיצה הכי טובה שיש לעצלנים רווקים ושות ",
     image: "https://source.unsplash.com/80x50/?food",
     views: 1,
-    createdAt: new Date(2020, 10, 12),
+    createdAt: new Date("2018-07-25"),
   },
   {
     id: 3,
@@ -104,7 +104,18 @@ const DUMMY_RECIPE_HOMEPAGE = [
     description: "הפיצה הכי מעפנה שיש באזור השרון של הגברת ללה ",
     image: "https://source.unsplash.com/80x50/?food",
     views: 5,
-    createdAt: new Date(2020, 10, 12),
+    createdAt: new Date("2021-03-25"),
+  },
+  {
+    id: 4,
+    userID: 2,
+    title: "עוגת בולונז טבעונית",
+    description: `עוגת בולונז טבעונית? כן כן אתם שומעים נכון! הפסטה האהובה עליי,
+    בגרסא אפויה שיוצרת מעטפת קראנצ'ית מושלמת, וכל זה ללא בשר בכלל!
+    כנסו כנסו `,
+    image: "https://source.unsplash.com/80x50/?food",
+    views: 5,
+    createdAt: new Date("2021-02-25"),
   },
 ]
 
@@ -136,9 +147,9 @@ const DUMMY_RECIPE_GALLERY = [
 ]
 
 const DUMMY_CATEGORIES = [
-  { id: 1, name: "איטלקי" },
-  { id: 2, name: "חלבי" },
-  { id: 3, name: "בשרי" },
+  { value: 1, label: "איטלקי" },
+  { value: 2, label: "חלבי" },
+  { value: 3, label: "בשרי" },
 ]
 
 const DUMMY_MEASURE_UNITS = [
@@ -221,6 +232,8 @@ const registerUser = {
 // USER ACTIONS
 //
 
+// fetch POST ('localhost:3334/login')
+
 const login = async (loginUser) => {
   try {
     console.log(loginUser)
@@ -235,8 +248,10 @@ const login = async (loginUser) => {
   }
 }
 
+// select from users
 const register = async (newUser) => {
   try {
+    // fetch POST ('localhost:3334/register')
     const foundUser = DUMMY_USERS.find((user) => user.email === newUser.email)
     if (foundUser) throw new Error("User already exist")
 
@@ -277,7 +292,9 @@ const getUserRecipes = async (userID = 2) => {
 
 const getAllCategories = async () => {
   try {
-    return DUMMY_CATEGORIES
+    return new Promise((resolve, reject) => {
+      resolve(DUMMY_CATEGORIES)
+    })
   } catch (error) {
     return error.message
   }
@@ -369,4 +386,4 @@ const editRecipe = async (id, updatedRecipe) => {
   }
 }
 
-export { login, register }
+export { login, register, getAllCategories, getAllRecipesHomepage }

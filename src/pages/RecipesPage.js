@@ -8,7 +8,7 @@ const RecipesPage = () => {
   return (
     <Container fluid className="my-5">
       <Row>
-        <Col md={4} className="mb-3">
+        <Col md={4}>
           <SearchBar sm={12} />
           <CategoriesList />
         </Col>
