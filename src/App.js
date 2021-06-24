@@ -3,8 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import MainNavbar from "./componenets/Navbar/MainNavbar"
 import HomePage from "./pages/HomePage"
 import RecipesPage from "./pages/RecipesPage"
-import SingleRecipePage from "./pages/SingleRecipePage"
 import ErrorPage from "./pages/ErrorPage"
+import SingleRecipePage from "./pages/SingleRecipePage/SingleRecipePage"
 
 function App() {
   return (

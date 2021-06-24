@@ -11,17 +11,42 @@ const DUMMY_SINGLE_RECIPE = [
       { id: 1, name: "בשרי" },
       { id: 5, name: "חלבי" },
     ],
-    ingredients: [
-      { id: 1, amount: 1, measureUnit: "כוס", name: "חלב" },
-      { id: 2, amount: 1.5, measureUnit: "כפית", name: "מלח" },
-      { id: 3, amount: 1, measureUnit: "קילו", name: "קמח" },
-      { id: 4, amount: 5, measureUnit: "כפות", name: "סוכר" },
+    ingredientsByTitle: [
+      {
+        title: "לבצק",
+        ingredients: [
+          { id: 1, amount: 1, measureUnit: "כוס", name: "חלב" },
+          {
+            id: 2,
+            amount: 1.5,
+            measureUnit: "כפית",
+            name: "מלח",
+          },
+        ],
+      },
+      {
+        title: "למלית",
+        ingredients: [
+          {
+            id: 3,
+            amount: 1,
+            measureUnit: "קילו",
+            name: "קמח",
+          },
+          {
+            id: 4,
+            amount: 5,
+            measureUnit: "כפות",
+            name: "סוכר",
+          },
+        ],
+      },
     ],
     instructions: [
-      { id: 1, title: "למלית", content: "ערבב סוכר ומלר" },
-      { id: 2, title: "לרוטב", content: "תוסיף מלח אין מספיק מלח" },
-      { id: 3, title: "לבשר", content: "איזה אנטריקוט ינעל העולם" },
-      { id: 4, title: "לקערה", content: "שים פה מלא דברים בסוף ייצא משהו" },
+      { id: 1, content: "ערבב סוכר ומלר" },
+      { id: 2, content: "תוסיף מלח אין מספיק מלח" },
+      { id: 3, content: "איזה אנטריקוט ינעל העולם" },
+      { id: 4, content: "שים פה מלא דברים בסוף ייצא משהו" },
     ],
   },
   {
@@ -140,6 +165,24 @@ const DUMMY_RECIPE_GALLERY = [
   },
   {
     id: 3,
+    userID: 2,
+    title: "פיצה איטלקית לא אמיתית",
+    image: "https://source.unsplash.com/80x50/?food",
+  },
+  {
+    id: 4,
+    userID: 2,
+    title: "פיצה איטלקית לא אמיתית",
+    image: "https://source.unsplash.com/80x50/?food",
+  },
+  {
+    id: 5,
+    userID: 2,
+    title: "פיצה איטלקית לא אמיתית",
+    image: "https://source.unsplash.com/80x50/?food",
+  },
+  {
+    id: 6,
     userID: 2,
     title: "פיצה איטלקית לא אמיתית",
     image: "https://source.unsplash.com/80x50/?food",
@@ -332,9 +375,11 @@ const getAllRecipesHomepage = async () => {
   }
 }
 
-const getRecipeByID = async (id) => {
+const getFullRecipeDetailsByID = async (id) => {
   try {
-    const recipe = DUMMY_SINGLE_RECIPE.find((recipe) => recipe.id === id)
+    const recipe = DUMMY_SINGLE_RECIPE.find((recipe) => {
+      return recipe.id === id
+    })
 
     if (!recipe) throw new Error("recipe not found")
 
@@ -386,4 +431,11 @@ const editRecipe = async (id, updatedRecipe) => {
   }
 }
 
-export { login, register, getAllCategories, getAllRecipesHomepage }
+export {
+  login,
+  register,
+  getAllCategories,
+  getAllRecipesHomepage,
+  getAllRecipesGallery,
+  getFullRecipeDetailsByID,
+}

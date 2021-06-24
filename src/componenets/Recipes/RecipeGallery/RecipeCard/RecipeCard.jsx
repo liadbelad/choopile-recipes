@@ -9,7 +9,7 @@ const RecipeCard = ({ recipe }) => {
 
   return (
     <article className={`${styles["recipe-container"]}`}>
-      <Link to={`/recipe/${id}`}>
+      <Link to={`/recipes/${id}`}>
         <div className={styles.image}></div>
         <section className={`${styles["recipe-content"]} p-3`}>
           <div className={styles["recipe-header"]}>

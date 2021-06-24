@@ -1,10 +1,22 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Container, Row, Col } from "react-bootstrap"
 import SearchBar from "../componenets/SearchBar/SearchBar"
 import CategoriesList from "../componenets/CategoriesList/CategoriesList"
 import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
+import { getAllRecipesGallery } from "../DAL/api"
 
 const RecipesPage = () => {
+  const [recipes, setRecipes] = useState()
+
+  const fetchRecipes = async () => {
+    const recipes = await getAllRecipesGallery()
+    setRecipes(recipes)
+  }
+
+  useEffect(() => {
+    fetchRecipes()
+  }, [])
+
   return (
     <Container fluid className="my-5">
       <Row>
@@ -13,7 +25,7 @@ const RecipesPage = () => {
           <CategoriesList />
         </Col>
         <Col md={8}>
-          <RecipesList />
+          <RecipesList recipes={recipes} />
         </Col>
       </Row>
     </Container>
