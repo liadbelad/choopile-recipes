@@ -34,10 +34,12 @@ const LoginForm = ({ handleModalContent, handleCloseModal }) => {
       }}
     >
       {(formik) => (
-        <Form onSubmit={formik.handleSubmit} className="text-center">
-          <Form.Group>
+        <Form
+          onSubmit={formik.handleSubmit}
+          className="text-center d-flex align-items-center flex-column"
+        >
+          <Form.Group className="w-75">
             <Form.Control
-              className=" w-75 mx-auto"
               id="email"
               type="email"
               name="email"
@@ -49,9 +51,8 @@ const LoginForm = ({ handleModalContent, handleCloseModal }) => {
             )}
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="w-75">
             <Form.Control
-              className=" w-75 mx-auto"
               id="password"
               type="password"
               name="password"

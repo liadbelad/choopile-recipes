@@ -5,7 +5,6 @@ import RecipeItem from "../RecipeItem/RecipeItem"
 import styles from "./RecipesList.module.scss"
 
 const RecipesList = ({ recipes = [], className = "grid-container" }) => {
-  console.log(recipes)
   const recipesToShow =
     className === "grid-container"
       ? recipes.map((recipe, idx) => <RecipeItem key={idx} recipe={recipe} />)

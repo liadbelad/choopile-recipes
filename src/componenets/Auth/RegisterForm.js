@@ -6,7 +6,7 @@ import { register } from "../../DAL/api"
 import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
-  NAME_REGEX,
+  HEBREW_ENGLISH_TEXT_REGEX,
 } from "../../utills/js/constants"
 import FormErrorMessages from "./FormErrorMessages"
 
@@ -42,12 +42,12 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
           .required("חובה*")
           .min(2, "מינימום 2 תווים")
           .max(20, "מקסימום 20 תווים")
-          .matches(NAME_REGEX, "אותיות בלבד אנגלית או עברית"),
+          .matches(HEBREW_ENGLISH_TEXT_REGEX, "אותיות בלבד אנגלית או עברית"),
         lastName: Yup.string()
           .required("חובה*")
           .min(2, "מינימום 2 תווים")
           .max(20, "מקסימום 20 תווים")
-          .matches(NAME_REGEX, "אותיות בלבד אנגלית או עברית"),
+          .matches(HEBREW_ENGLISH_TEXT_REGEX, "אותיות בלבד אנגלית או עברית"),
         password: Yup.string()
           .required("חובה*")
           .matches(
@@ -64,10 +64,13 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
       }}
     >
       {(formik) => (
-        <Form onSubmit={formik.handleSubmit} className="text-center">
-          <Form.Group className="w-100">
+        <Form
+          onSubmit={formik.handleSubmit}
+          className="text-center d-flex align-items-center flex-column"
+        >
+          <Form.Group className="w-75">
             <Form.Control
-              className="w-75 mx-auto"
+              className=""
               id="email"
               name="email"
               type="email"
@@ -78,9 +81,8 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
               <FormErrorMessages error={formik.errors.email} />
             )}
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="w-75">
             <Form.Control
-              className="w-75 mx-auto"
               type="text"
               placeholder="שם פרטי"
               id="firstName"
@@ -91,9 +93,8 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
               <FormErrorMessages error={formik.errors.firstName} />
             )}
           </Form.Group>
-          <Form.Group>
+          <Form.Group className="w-75">
             <Form.Control
-              className="w-75 mx-auto"
               type="text"
               name="lastName"
               id="lastName"
@@ -105,9 +106,8 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
             )}
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="w-75">
             <Form.Control
-              className="w-75 mx-auto"
               type="password"
               placeholder="סיסמא"
               name="password"
@@ -118,9 +118,8 @@ const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
             )}
           </Form.Group>
 
-          <Form.Group>
+          <Form.Group className="w-75">
             <Form.Control
-              className="w-75 mx-auto"
               type="password"
               name="confirmPassword"
               id="confirmPassword"

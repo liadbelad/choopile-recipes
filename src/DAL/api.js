@@ -9,7 +9,7 @@ const DUMMY_SINGLE_RECIPE = [
     createdAt: new Date(2020, 11, 17),
     categories: [
       { id: 1, name: "בשרי" },
-      { id: 5, name: "חלבי" },
+      { id: 5, name: "איטלקי" },
     ],
     ingredientsByTitle: [
       {
@@ -195,6 +195,11 @@ const DUMMY_CATEGORIES = [
   { value: 3, label: "בשרי" },
 ]
 
+const DUMMY_USER_RECIPES_CATEGORIES = [
+  { value: 1, label: "איטלקי" },
+  { value: 2, label: "חלבי" },
+]
+
 const DUMMY_MEASURE_UNITS = [
   { id: 1, name: "כוס" },
   { id: 2, name: "כוסות" },
@@ -331,6 +336,16 @@ const getUserRecipes = async (userID = 2) => {
   }
 }
 
+const getAllCategoriesOfUserRecipes = async (userID) => {
+  try {
+    return new Promise((resolve, reject) => {
+      resolve(DUMMY_USER_RECIPES_CATEGORIES)
+    })
+  } catch (error) {
+    return error.message
+  }
+}
+
 // RECIPES ACTIONS
 
 const getAllCategories = async () => {
@@ -438,4 +453,6 @@ export {
   getAllRecipesHomepage,
   getAllRecipesGallery,
   getFullRecipeDetailsByID,
+  getAllCategoriesOfUserRecipes,
+  getUserRecipes,
 }

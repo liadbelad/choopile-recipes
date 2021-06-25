@@ -12,7 +12,7 @@ const Menu = () => {
       <Link to="/recipes" className="mx-5">
         כל המתכונים
       </Link>
-      <Link to="/my_recipes" className="mr-2">
+      <Link to="/my-recipes" className="mr-2">
         המתכונים שלי
       </Link>
     </div>

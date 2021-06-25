@@ -5,6 +5,7 @@ import HomePage from "./pages/HomePage"
 import RecipesPage from "./pages/RecipesPage"
 import ErrorPage from "./pages/ErrorPage"
 import SingleRecipePage from "./pages/SingleRecipePage/SingleRecipePage"
+import AddNewRecipePage from "./pages/AddNewRecipePage"
 
 function App() {
   return (
@@ -14,6 +15,8 @@ function App() {
       <main className="py-5">
         <Switch>
           <Route path="/recipes" exact component={RecipesPage} />
+          <Route path="/my-recipes" exact component={RecipesPage} />
+          <Route path="/new-recipe" exact component={AddNewRecipePage} />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
           <Route path="/" exact component={HomePage} />
           <Route path="*" component={ErrorPage} />

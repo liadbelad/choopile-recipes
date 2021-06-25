@@ -3,11 +3,11 @@ import { ListGroup } from "react-bootstrap"
 
 const IngredientsByTitleList = ({ title, ingredients }) => {
   return (
-    <ListGroup>
-      {title}
+    <ListGroup className="mb-3">
+      <h6> {title}: </h6>
       {ingredients.map(({ amount, measureUnit, name }) => (
-        <ListGroup.Item>
-          {amount} {measureUnit} {name}
+        <ListGroup.Item style={{ border: "none" }}>
+          <i className="fas fa-utensils"></i> {amount} {measureUnit} {name}
         </ListGroup.Item>
       ))}
     </ListGroup>
@@ -25,7 +25,11 @@ const RecipeIngredients = ({ ingredientsByTitle }) => {
     )
   )
 
-  return <>{ingredientsByTitleElements}</>
+  return (
+    <>
+      <h2> החומרים </h2> {ingredientsByTitleElements}
+    </>
+  )
 }
 
 export default RecipeIngredients
