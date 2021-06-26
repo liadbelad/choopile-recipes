@@ -3,6 +3,7 @@ import Dropdown from "react-bootstrap/Dropdown"
 import { Link } from "react-router-dom"
 import addRecipeImg from "../../../utills/images/add-recipe.png"
 import profileIcon from "../../../utills/images/profile-icon.png"
+import myRecipesIcon from "../../../utills/images/my-recipes-icon.png"
 import logoutIcon from "../../../utills/images/logout-icon.png"
 
 const UserInfoDropDownItem = ({ linkTo, text, image }) => {
@@ -30,6 +31,11 @@ const UserInfoDropdown = () => {
           text="הוסף מתכון"
           linkTo="/new-recipe"
           image={addRecipeImg}
+        />
+        <UserInfoDropDownItem
+          text="המתכונים שלי"
+          linkTo="/my-recipes"
+          image={myRecipesIcon}
         />
         <UserInfoDropDownItem
           text="הפרופיל שלי"

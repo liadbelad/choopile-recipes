@@ -10,17 +10,12 @@ const Menu = () => {
 
   return (
     <div className={`${styles["menu-container"]} p-2 mt-2`}>
-      <a href="#newestRecipesGallery" className="ml-2">
-        הכי חדשים
+      <a href="#newestRecipesGallery" className="ml-2 font-weight-bold">
+        הכי חדשים <i className="fas fa-arrow-down"></i>
       </a>
-      <Link to="/recipes" className="mx-5">
+      <Link to="/recipes" className="mx-5 font-weight-bold">
         כל המתכונים
       </Link>
-      {/* {isLoggedIn && ( */}
-      <Link to="/my-recipes" className="mr-2">
-        המתכונים שלי
-      </Link>
-      {/* )} */}
     </div>
   )
 }
