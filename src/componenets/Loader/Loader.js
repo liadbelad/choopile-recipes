@@ -1,20 +1,19 @@
 import React from "react"
 import { Spinner } from "react-bootstrap"
 
-const Loader = () => {
+const Loader = ({ width = "20px", height = "20px", marginBottom = "1rem" }) => {
   return (
     <Spinner
       animation="border"
       role="status"
       style={{
-        width: "100px",
-        height: "100px",
-        margin: "auto",
-        marginTop: "5rem",
+        width: { width },
+        height: { height },
+        marginBottom: { marginBottom },
         display: "block",
       }}
     >
-      <span className="sr-only">Loading</span>
+      <span className="sr-only">Loading...</span>
     </Spinner>
   )
 }

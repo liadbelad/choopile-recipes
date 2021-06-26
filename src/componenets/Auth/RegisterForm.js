@@ -1,18 +1,26 @@
-import React, { useContext } from "react"
+import React, { useState, useContext } from "react"
+import AuthContext from "../../store/AuthCtx/auth-context"
 import ModalContext from "../../store/ModalCtx/modal-context"
 import { Form, Button, Row, Col } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
-import { register } from "../../DAL/api"
+// import { register } from "../../DAL/api"
 import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
   HEBREW_ENGLISH_TEXT_REGEX,
 } from "../../utills/js/constants"
 import FormErrorMessages from "./FormErrorMessages"
+import Loader from "../Loader/Loader"
 
 const RegisterForm = () => {
+  const [loading, setLoading] = useState(true)
   const { handleModalContent, handleCloseModal } = useContext(ModalContext)
+
+  const { handleRegister } = useContext(AuthContext)
+
+  // const userRegister = useSelector((state) => state.userRegister)
+  // const { loading, error, userInfo } = userRegister
 
   const handleFormSubmit = async ({ email, password, firstName, lastName }) => {
     const newUser = {
@@ -21,8 +29,9 @@ const RegisterForm = () => {
       email,
       password,
     }
-
-    const userInfo = await register(newUser)
+    setLoading(true)
+    const userInfo = await handleRegister(newUser)
+    setLoading(false)
     console.log(userInfo)
     // handleCloseModal()
   }
@@ -71,6 +80,7 @@ const RegisterForm = () => {
           onSubmit={formik.handleSubmit}
           className="text-center d-flex align-items-center flex-column"
         >
+          {loading && <Loader />}
           <Form.Group className="w-75">
             <Form.Control
               className=""

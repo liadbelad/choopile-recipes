@@ -6,6 +6,7 @@ import styles from "./Menu.module.scss"
 
 const Menu = () => {
   const { isLoggedIn } = useContext(AuthContext)
+  console.log("Menu runn")
 
   return (
     <div className={`${styles["menu-container"]} p-2 mt-2`}>

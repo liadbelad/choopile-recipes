@@ -300,13 +300,14 @@ const login = async (loginUser) => {
 const register = async (newUser) => {
   try {
     // fetch POST ('localhost:3334/register')
-    const foundUser = DUMMY_USERS.find((user) => user.email === newUser.email)
-    if (foundUser) throw new Error("User already exist")
-
-    DUMMY_USERS.push(newUser)
-    return `Welcome ${newUser.firstName}`
+    setTimeout(() => {
+      const foundUser = DUMMY_USERS.find((user) => user.email === newUser.email)
+      if (foundUser) throw new Error("המשתמש קיים, התחבר !")
+      DUMMY_USERS.push(newUser)
+      return { loading: false, error: false, newUser }
+    }, 1500)
   } catch (error) {
-    return error.message
+    return { loading: false, error: error.message }
   }
 }
 

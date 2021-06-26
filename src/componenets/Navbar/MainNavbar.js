@@ -12,7 +12,6 @@ const MainNavbar = () => {
   const handleOpenModalWithContent = (e) => {
     handleOpenModal()
     handleModalContent(e.target.name)
-    console.log("???")
   }
 
   const handleShowSidenav = () => {

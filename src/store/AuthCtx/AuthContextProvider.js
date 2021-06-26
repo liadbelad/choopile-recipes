@@ -13,10 +13,10 @@ const AuthContextProvider = ({ children }) => {
     }
   }
 
-  const handleRegister = (newUser) => {
-    if (register(newUser)) {
-      //    ?
-    }
+  const handleRegister = async (newUser) => {
+    const userRegister = await register(newUser)
+    console.log(userRegister)
+    return userRegister
   }
 
   const handleLogout = () => {
