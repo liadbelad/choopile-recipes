@@ -5,9 +5,6 @@ import AuthContext from "../../store/AuthCtx/auth-context"
 import styles from "./Menu.module.scss"
 
 const Menu = () => {
-  const { isLoggedIn } = useContext(AuthContext)
-  console.log("Menu runn")
-
   return (
     <div className={`${styles["menu-container"]} p-2 mt-2`}>
       <a href="#newestRecipesGallery" className="ml-2 font-weight-bold">

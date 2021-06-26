@@ -4,7 +4,6 @@ import ModalContext from "../../store/ModalCtx/modal-context"
 import { Form, Button, Row, Col } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
-// import { register } from "../../DAL/api"
 import {
   EMAIL_REGEX,
   PASSWORD_REGEX,
@@ -12,17 +11,18 @@ import {
 } from "../../utills/js/constants"
 import FormErrorMessages from "./FormErrorMessages"
 import Loader from "../Loader/Loader"
+import Message from "../Message/Message"
 
 const RegisterForm = () => {
-  const [loading, setLoading] = useState(true)
-  const { handleModalContent, handleCloseModal } = useContext(ModalContext)
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState(false)
+  const { handleModalContent } = useContext(ModalContext)
 
   const { handleRegister } = useContext(AuthContext)
 
-  // const userRegister = useSelector((state) => state.userRegister)
-  // const { loading, error, userInfo } = userRegister
+  const handleFormSubmit = ({ email, password, firstName, lastName }) => {
+    setMessage(false)
 
-  const handleFormSubmit = async ({ email, password, firstName, lastName }) => {
     const newUser = {
       firstName,
       lastName,
@@ -30,9 +30,23 @@ const RegisterForm = () => {
       password,
     }
     setLoading(true)
-    const userInfo = await handleRegister(newUser)
-    setLoading(false)
-    // handleCloseModal()
+    setTimeout(async () => {
+      const {
+        newUser: userInfo,
+        error,
+        success,
+      } = await handleRegister(newUser)
+
+      if (error) {
+        setMessage(error)
+      }
+
+      if (success) {
+        setMessage(success)
+      }
+
+      setLoading(false)
+    }, 1500)
   }
 
   return (
@@ -80,6 +94,9 @@ const RegisterForm = () => {
           className="text-center d-flex align-items-center flex-column"
         >
           {loading && <Loader />}
+          {message && (
+            <Message variant={message.variant}> {message.text} </Message>
+          )}
           <Form.Group className="w-75">
             <Form.Control
               className=""

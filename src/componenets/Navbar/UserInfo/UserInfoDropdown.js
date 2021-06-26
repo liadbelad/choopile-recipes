@@ -7,7 +7,6 @@ import myRecipesIcon from "../../../utills/images/my-recipes-icon.png"
 import logoutIcon from "../../../utills/images/logout-icon.png"
 
 const UserInfoDropDownItem = ({ linkTo, text, image }) => {
-  console.log(linkTo, text)
   return (
     <Dropdown.Item as={Link} to={linkTo} className="d-flex mb-2">
       <img src={image} alt="add recipe" width="25px" height="25px" />

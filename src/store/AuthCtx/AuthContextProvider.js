@@ -15,7 +15,7 @@ const AuthContextProvider = ({ children }) => {
 
   const handleRegister = async (newUser) => {
     const userRegister = await register(newUser)
-    console.log(userRegister)
+    // console.log(userRegister)
     return userRegister
   }
 
