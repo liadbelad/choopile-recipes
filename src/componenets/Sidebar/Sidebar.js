@@ -1,9 +1,15 @@
 import React from "react"
 import { Nav, Navbar } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
+import RegisterLoginLinks from "../RegisterLoginLinks/RegisterLoginLinks"
+import SocialLinks from "../SocialLinks/SocialLinks"
 import styles from "./Sidebar.module.scss"
 
-function Sidebar({ showSidebar, handleShowSidenav }) {
+function Sidebar({
+  showSidebar,
+  handleShowSidenav,
+  handleOpenModalWithContent,
+}) {
   return (
     <aside
       className={
@@ -29,21 +35,11 @@ function Sidebar({ showSidebar, handleShowSidenav }) {
           <Nav.Link>CATEGORIES</Nav.Link>
         </LinkContainer>
         <div className={`${styles["social-links"]} my-3`}>
-          <Nav.Link href="https://www.facebook.com/" target="_blank">
-            <i className="fab fa-facebook"></i>
-          </Nav.Link>
-          <Nav.Link href="https://www.instagram.com/" target="_blank">
-            <i className="fab fa-instagram"></i>
-          </Nav.Link>
-          <Nav.Link href="https://www.twitter.com/" target="_blank">
-            <i className="fab fa-twitter"></i>
-          </Nav.Link>
+          <SocialLinks />
         </div>
-        <div className="d-flex">
-          <Nav.Link>התחבר</Nav.Link>
-          <Nav.Link> | </Nav.Link>
-          <Nav.Link>הרשם</Nav.Link>
-        </div>
+        <RegisterLoginLinks
+          handleOpenModalWithContent={handleOpenModalWithContent}
+        />
       </Nav>
     </aside>
   )

@@ -3,7 +3,7 @@ import { login, register } from "../../DAL/api"
 import AuthContext from "./auth-context"
 
 const AuthContextProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(true)
 
   const handleLogin = (userLogin) => {
     const userInfo = login(userLogin)

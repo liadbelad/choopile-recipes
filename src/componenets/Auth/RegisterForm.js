@@ -32,7 +32,6 @@ const RegisterForm = () => {
     setLoading(true)
     const userInfo = await handleRegister(newUser)
     setLoading(false)
-    console.log(userInfo)
     // handleCloseModal()
   }
 
