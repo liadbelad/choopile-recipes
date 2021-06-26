@@ -13,4 +13,4 @@ const RecipesList = ({ recipes = [], className = "grid-container" }) => {
   return <section className={styles[className]}>{recipesToShow}</section>
 }
 
-export default RecipesList
+export default React.memo(RecipesList)
