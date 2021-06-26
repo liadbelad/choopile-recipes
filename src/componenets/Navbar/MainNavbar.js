@@ -49,6 +49,7 @@ const MainNavbar = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
       <Sidebar
         showSidebar={showSidebar}
         handleShowSidenav={handleShowSidenav}

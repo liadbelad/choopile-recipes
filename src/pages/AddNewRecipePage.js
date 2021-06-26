@@ -1,4 +1,5 @@
-import React, { useEffect } from "react"
+import React, { useEffect, useContext } from "react"
+import { useHistory } from "react-router-dom"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Select from "react-select"
@@ -10,13 +11,21 @@ import {
   HEBREW_ENGLISH_TEXT_REGEX,
   SUPPORTED_FILE_FORMATS,
 } from "../utills/js/constants"
+import AuthContext from "../store/AuthCtx/auth-context"
 
 const AddNewRecipePage = () => {
+  const { isLoggedIn } = useContext(AuthContext)
+
+  const history = useHistory()
+
   const handleFormSubmit = async (newRecipe) => {
     console.log(newRecipe)
   }
 
   useEffect(() => {
+    if (!isLoggedIn) {
+      history.push("/")
+    }
     // fetch
   }, [])
 
@@ -32,7 +41,7 @@ const AddNewRecipePage = () => {
         ingredients: [{ amount: "", measureUnit: "", name: "", title: "" }],
         instructions: [{ content: "" }],
       }}
-      validationSchema={Yup.object.shape({
+      validationSchema={Yup.object({
         title: Yup.string()
           .required("*חובה")
           .min(2, "מינימום 2 תווים")
@@ -63,7 +72,7 @@ const AddNewRecipePage = () => {
         //     "תמונות בלבד",
         //     (value) => value && SUPPORTED_FILE_FORMATS.includes(value.type)
         //   ),
-        categories: Yup.string()("*בחר לפחות קטגוריה אחת"),
+        // categories: Yup.string()("*בחר לפחות קטגוריה אחת"),
         // ingredients: Yup.array().min(2, "נא להוסיף לפחות 2 מרכיבים"),
         // instructions: Yup.array().min(1, "נא להוסיף לפחות הוראה אחת"),
       })}
