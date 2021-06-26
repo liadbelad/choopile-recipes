@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from "react"
+import React, { useContext, useEffect, useState } from "react"
+import ModalContextProvider from "../store/ModalCtx/ModalContextProvider"
+import ModalContext from "../store/ModalCtx/modal-context"
 import Header from "../componenets/Header/Header"
 import ModalForm from "../componenets/Modal/ModalForm"
 import LoginForm from "../componenets/Auth/LoginForm"
 import RegisterForm from "../componenets/Auth/RegisterForm"
 import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
-import RecipeCard from "../componenets/Recipes/RecipeGallery/RecipeCard/RecipeCard"
 import Menu from "../componenets/Menu/Menu"
 import { getAllRecipesHomepage } from "../DAL/api"
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([])
-  const [showModal, setShowModal] = useState(true)
-  const [modalContent, setModalContent] = useState("register")
+  // const [showModal, setShowModal] = useState(true)
+  // const [modalContent, setModalContent] = useState("register")
 
-  const handleOpenModel = () => setShowModal(true)
-  const handleCloseModal = () => setShowModal(false)
+  // const handleOpenModel = () => setShowModal(true)
+  // const handleCloseModal = () => setShowModal(false)
 
-  const handleModalContent = (newContent) => setModalContent(newContent)
+  // const handleModalContent = (newContent) => setModalContent(newContent)
 
+  const { modalContent, handleCloseModal, handleModalContent, showModal } =
+    useContext(ModalContext)
+
+  console.log("homepage", modalContent, showModal)
   const fetchRecipesHomepage = async () => {
     const recipesHomepage = await getAllRecipesHomepage()
     setRecipes(recipesHomepage)
@@ -47,14 +52,10 @@ const HomePage = () => {
       <Header />
 
       <span id="newestRecipesGallery">
-        <RecipesList
-          idSmoothScrolling="newestRecipesGallery"
-          className="flex-container"
-          recipes={recipes}
-        />
+        <RecipesList className="flex-container" recipes={recipes} />
       </span>
 
-      <ModalForm showModal={showModal} handleCloseModel={handleCloseModal}>
+      <ModalForm>
         {modalContent === "register" ? (
           <RegisterForm
             handleCloseModal={handleCloseModal}

@@ -1,13 +1,16 @@
-import React from "react"
+import React, { useContext } from "react"
+import ModalContext from "../../store/ModalCtx/modal-context"
 import Modal from "react-bootstrap/Modal"
 import Button from "react-bootstrap/Button"
 import styles from "./ModalForm.module.scss"
 
-const ModalForm = ({ showModal, handleCloseModel, children }) => {
+const ModalForm = ({ children }) => {
+  const { showModal, handleCloseModal } = useContext(ModalContext)
+
   return (
     <Modal
       show={showModal}
-      onHide={handleCloseModel}
+      onHide={handleCloseModal}
       animation={false}
       className="m-auto"
     >
@@ -16,7 +19,7 @@ const ModalForm = ({ showModal, handleCloseModel, children }) => {
           CHOOPILLE
         </Modal.Title>
         <Button
-          onClick={handleCloseModel}
+          onClick={handleCloseModal}
           variant="link"
           style={{ cursor: "pointer" }}
           className={styles["close-btn"]}

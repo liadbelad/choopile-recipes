@@ -1,4 +1,5 @@
-import React from "react"
+import React, { useContext } from "react"
+import ModalContext from "../../store/ModalCtx/modal-context"
 import { Form, Button, Row, Col } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
@@ -10,7 +11,9 @@ import {
 } from "../../utills/js/constants"
 import FormErrorMessages from "./FormErrorMessages"
 
-const RegisterForm = ({ handleModalContent, handleCloseModal }) => {
+const RegisterForm = () => {
+  const { handleModalContent, handleCloseModal } = useContext(ModalContext)
+
   const handleFormSubmit = async ({ email, password, firstName, lastName }) => {
     const newUser = {
       firstName,

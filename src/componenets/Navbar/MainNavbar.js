@@ -1,10 +1,19 @@
-import React, { useState } from "react"
+import React, { useState, useContext } from "react"
 import { LinkContainer } from "react-router-bootstrap"
+import ModalContext from "../../store/ModalCtx/modal-context"
 import { Navbar, Nav, Container } from "react-bootstrap"
 import styles from "./MainNavbar.module.scss"
 import Sidebar from "../Sidebar/Sidebar"
 const MainNavbar = () => {
   const [showSidebar, setShowSidebar] = useState(false)
+
+  const { handleModalContent, handleOpenModal } = useContext(ModalContext)
+
+  const handleOpenModalWithContent = (e) => {
+    handleOpenModal()
+    handleModalContent(e.target.name)
+    console.log("???")
+  }
 
   const handleShowSidenav = () => {
     setShowSidebar((prevShowSidenav) => !prevShowSidenav)
@@ -27,9 +36,13 @@ const MainNavbar = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="justify-content-between w-100">
               <div className="d-flex">
-                <Nav.Link>התחבר</Nav.Link>
+                <Nav.Link name="login" onClick={handleOpenModalWithContent}>
+                  התחבר
+                </Nav.Link>
                 <Nav.Link> | </Nav.Link>
-                <Nav.Link>הרשם</Nav.Link>
+                <Nav.Link name="register" onClick={handleOpenModalWithContent}>
+                  הרשם
+                </Nav.Link>
               </div>
               <LinkContainer to="/">
                 <Navbar.Brand className={styles.brand}>CHOOPIL'E</Navbar.Brand>
