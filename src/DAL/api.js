@@ -215,24 +215,24 @@ const DUMMY_INGREDIENTS = [
 const DUMMY_USERS = [
   {
     id: 1,
-    f_name: "Liad",
-    l_name: "Beladev",
+    firstName: "Liad",
+    lastName: "Beladev",
     email: "liad@gmail.com",
     password: "Secret123",
   },
   {
     id: 2,
-    f_name: "Gal",
-    l_name: "Beladev",
+    firstName: "Gal",
+    lastName: "Beladev",
     email: "gal@gmail.com",
     password: "secret12",
   },
   {
     id: 3,
-    f_name: "Moshmosh",
-    l_name: "Beladev",
+    firstName: "Moshmosh",
+    lastName: "Beladev",
     email: "moshmosh@gmail.com",
-    password: "secret1",
+    password: "Secret123",
   },
 ]
 
@@ -292,7 +292,7 @@ const login = async (loginUser) => {
     if (!userInfo) throw new Error(`אימייל או סיסמא אינם נכונים`)
     return {
       loading: false,
-      success: { text: "התחברת", variant: "success" },
+      success: { text: "מתחבר, אנא המתן", variant: "success" },
       userInfo,
     }
   } catch (error) {
@@ -394,7 +394,12 @@ const getAllRecipesGallery = async () => {
   }
 }
 
-const getAllRecipesHomepage = async () => {
+const getAllRecipesHomepage = async (
+  searchTerm = "",
+  pageNum = "",
+  orderBy = "",
+  orderDirection = "asc"
+) => {
   try {
     return DUMMY_RECIPE_HOMEPAGE
   } catch (error) {

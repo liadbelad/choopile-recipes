@@ -7,7 +7,7 @@ const RegisterLoginLinks = ({ handleOpenModalWithContent }) => {
       <Nav.Link name="login" onClick={handleOpenModalWithContent}>
         התחבר
       </Nav.Link>
-      <Nav.Link> | </Nav.Link>
+      <Nav.Link disabled> | </Nav.Link>
       <Nav.Link name="register" onClick={handleOpenModalWithContent}>
         הרשם
       </Nav.Link>

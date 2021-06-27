@@ -24,6 +24,8 @@ const UserInfoDropDownItem = ({ linkTo, text, image, onClick }) => {
 const UserInfoDropdown = () => {
   const { handleLogout } = useContext(AuthContext)
 
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
+
   return (
     <Dropdown>
       <Dropdown.Toggle variant="light" id="dropdown-userInfo">
@@ -32,7 +34,7 @@ const UserInfoDropdown = () => {
 
       <Dropdown.Menu className="text-right" style={{ width: "200px" }}>
         <Dropdown.Header>
-          <h5>שלום ליעד</h5>
+          <h5>שלום {storedUserInfo && storedUserInfo.firstName}</h5>
         </Dropdown.Header>
         <UserInfoDropDownItem
           text="הוסף מתכון"
