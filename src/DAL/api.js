@@ -285,14 +285,21 @@ const registerUser = {
 const login = async (loginUser) => {
   try {
     console.log(loginUser)
-    const foundUser = DUMMY_USERS.find(
+    const userInfo = DUMMY_USERS.find(
       (user) =>
         user.email === loginUser.email && user.password === loginUser.password
     )
-    if (!foundUser) throw new Error(`invalid credentials`)
-    return foundUser
+    if (!userInfo) throw new Error(`אימייל או סיסמא אינם נכונים`)
+    return {
+      loading: false,
+      success: { text: "התחברת", variant: "success" },
+      userInfo,
+    }
   } catch (error) {
-    return error.message
+    return {
+      loading: false,
+      error: { text: error.message, variant: "danger" },
+    }
   }
 }
 
@@ -306,7 +313,6 @@ const register = async (newUser) => {
     return {
       loading: false,
       success: { text: "נרשמת, התחבר", variant: "success" },
-      newUser,
     }
   } catch (error) {
     return {

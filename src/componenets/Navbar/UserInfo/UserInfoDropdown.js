@@ -1,14 +1,20 @@
-import React from "react"
+import React, { useContext } from "react"
 import Dropdown from "react-bootstrap/Dropdown"
 import { Link } from "react-router-dom"
 import addRecipeImg from "../../../utills/images/add-recipe.png"
 import profileIcon from "../../../utills/images/profile-icon.png"
 import myRecipesIcon from "../../../utills/images/my-recipes-icon.png"
 import logoutIcon from "../../../utills/images/logout-icon.png"
+import AuthContext from "../../../store/AuthCtx/auth-context"
 
-const UserInfoDropDownItem = ({ linkTo, text, image }) => {
+const UserInfoDropDownItem = ({ linkTo, text, image, onClick }) => {
   return (
-    <Dropdown.Item as={Link} to={linkTo} className="d-flex mb-2">
+    <Dropdown.Item
+      as={Link}
+      to={linkTo}
+      className="d-flex mb-2"
+      onClick={onClick}
+    >
       <img src={image} alt="add recipe" width="25px" height="25px" />
       <span className="ml-2"> {text} </span>
     </Dropdown.Item>
@@ -16,6 +22,8 @@ const UserInfoDropDownItem = ({ linkTo, text, image }) => {
 }
 
 const UserInfoDropdown = () => {
+  const { handleLogout } = useContext(AuthContext)
+
   return (
     <Dropdown>
       <Dropdown.Toggle variant="light" id="dropdown-userInfo">
@@ -41,7 +49,12 @@ const UserInfoDropdown = () => {
           linkTo="/profile"
           image={profileIcon}
         />
-        <UserInfoDropDownItem text="התנתק" linkTo="/" image={logoutIcon} />
+        <UserInfoDropDownItem
+          text="התנתק"
+          linkTo="/"
+          onClick={handleLogout}
+          image={logoutIcon}
+        />
       </Dropdown.Menu>
     </Dropdown>
   )

@@ -62,6 +62,15 @@ const AddNewRecipePage = () => {
           .max(1000, "מקסימום 1000 דקות")
           .min(1, "מספר חיובי"),
         imageFiles: Yup.mixed().required("חובה לעלות לפחות תמונה אחת !"),
+        categories: Yup.array()
+          .min(1, "בחר לפחות קטגוריה אחת")
+          .of(
+            Yup.object().shape({
+              label: Yup.string().required(),
+              value: Yup.string().required(),
+            })
+          ),
+
         //   .test(
         //     "fileSize",
         //     "הקובץ גדול מידי - ",
@@ -72,7 +81,7 @@ const AddNewRecipePage = () => {
         //     "תמונות בלבד",
         //     (value) => value && SUPPORTED_FILE_FORMATS.includes(value.type)
         //   ),
-        // categories: Yup.string()("*בחר לפחות קטגוריה אחת"),
+        // categories: Yup.array()("*בחר לפחות קטגוריה אחת"),
         // ingredients: Yup.array().min(2, "נא להוסיף לפחות 2 מרכיבים"),
         // instructions: Yup.array().min(1, "נא להוסיף לפחות הוראה אחת"),
       })}
@@ -119,17 +128,30 @@ const AddNewRecipePage = () => {
                 <Select
                   name="categories"
                   id="categories"
+                  isMulti
                   value={formik.values.categories}
-                  onChange={(option) =>
-                    formik.setFieldValue("categories", option)
-                  }
-                  options={[{ label: "איטלקי", value: 1 }]}
-                  {...formik.getFieldProps("categories")}
+                  onChange={formik.setFieldValue}
+                  onBlur={formik.setFieldTouched}
+                  error={formik.errors.categories}
+                  touched={formik.touched.categories}
+                  // value={formik.values.categories}
+                  // onChange={(option) =>
+                  //   formik.setFieldValue("categories", option)
+                  // }
+                  // onChange={(options) => console.log(options)}
+                  // onBlur={(options) => console.log(options)}
+                  options={[
+                    { label: "איטלקי", value: 1 },
+                    { label: "בשרי", value: 2 },
+                    { label: "אוכל של נריה", value: 3 },
+                    { label: "חלבי", value: 7 },
+                  ]}
+                  // {...formik.getFieldProps("categories")}
                 />
                 {/* <CategoriesList isMulti={true} /> */}
-                {formik.touched.categories && formik.errors.categories && (
+                {/* {formik.touched.categories && formik.errors.categories && (
                   <FormErrorMessages error={formik.errors.categories} />
-                )}
+                )} */}
               </Col>
               <Col md={4}>
                 <Form.Group>

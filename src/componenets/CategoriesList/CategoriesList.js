@@ -13,7 +13,10 @@ const CategoriesList = ({ isLogged = true, userID = 2, isMulti = false }) => {
   const history = useHistory()
 
   const fetchCategories = async () => {
-    if (location.pathname === "/recipes") {
+    if (
+      location.pathname === "/recipes" ||
+      (isLogged && location.pathname === "/new-recipe")
+    ) {
       const categories = await getAllCategories()
       setCategories(categories)
     }
@@ -28,11 +31,6 @@ const CategoriesList = ({ isLogged = true, userID = 2, isMulti = false }) => {
 
     if (isLogged && location.pathname === "/my-recipes") {
       const categories = await getAllCategoriesOfUserRecipes(userID)
-      setCategories(categories)
-    }
-
-    if (isLogged && location.pathname === "/new-recipe") {
-      const categories = await getAllCategories()
       setCategories(categories)
     }
   }

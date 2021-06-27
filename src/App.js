@@ -7,6 +7,7 @@ import RecipesPage from "./pages/RecipesPage"
 import ErrorPage from "./pages/ErrorPage"
 import SingleRecipePage from "./pages/SingleRecipePage/SingleRecipePage"
 import AddNewRecipePage from "./pages/AddNewRecipePage"
+import UserProfilePage from "./pages/UserProfilePage/UserProfilePage"
 
 function App() {
   const authCtx = useContext(AuthContext)
@@ -18,6 +19,7 @@ function App() {
         <Switch>
           <Route path="/recipes" exact component={RecipesPage} />
           <Route path="/my-recipes" exact component={RecipesPage} />
+          <Route path="/profile" exact component={UserProfilePage} />
           {authCtx.isLoggedIn && (
             <Route path="/new-recipe" exact component={AddNewRecipePage} />
           )}

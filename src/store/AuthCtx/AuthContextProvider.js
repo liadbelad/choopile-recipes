@@ -3,23 +3,24 @@ import { login, register } from "../../DAL/api"
 import AuthContext from "./auth-context"
 
 const AuthContextProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
 
-  const handleLogin = (userLogin) => {
-    const userInfo = login(userLogin)
-    if (userInfo) {
-      localStorage.setItem("userInfo", userInfo)
+  const handleLogin = async (userLogin) => {
+    const response = await login(userLogin)
+    if (response.userInfo) {
+      localStorage.setItem("userInfo", JSON.stringify(response.userInfo))
       setIsLoggedIn(true)
     }
+    return response
   }
 
   const handleRegister = async (newUser) => {
     const userRegister = await register(newUser)
-    // console.log(userRegister)
     return userRegister
   }
 
   const handleLogout = () => {
+    console.log("????")
     localStorage.removeItem("userInfo")
     setIsLoggedIn(false)
   }

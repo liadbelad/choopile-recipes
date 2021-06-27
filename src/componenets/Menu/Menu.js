@@ -1,7 +1,5 @@
-import React, { useContext } from "react"
+import React from "react"
 import { Link } from "react-router-dom"
-import AuthContext from "../../store/AuthCtx/auth-context"
-
 import styles from "./Menu.module.scss"
 
 const Menu = () => {

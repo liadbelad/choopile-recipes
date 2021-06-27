@@ -11,18 +11,11 @@ import { getAllRecipesHomepage } from "../DAL/api"
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([])
-  // const [showModal, setShowModal] = useState(true)
-  // const [modalContent, setModalContent] = useState("register")
-
-  // const handleOpenModel = () => setShowModal(true)
-  // const handleCloseModal = () => setShowModal(false)
-
-  // const handleModalContent = (newContent) => setModalContent(newContent)
 
   const { modalContent, handleCloseModal, handleModalContent, showModal } =
     useContext(ModalContext)
 
-  console.log("homepage", modalContent, showModal)
+  console.log("homepage running")
   const fetchRecipesHomepage = async () => {
     const recipesHomepage = await getAllRecipesHomepage()
     setRecipes(recipesHomepage)

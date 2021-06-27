@@ -1,17 +1,43 @@
-import React from "react"
+import React, { useState, useContext } from "react"
 import { Form, Button, Row, Col } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
-import { login } from "../../DAL/api"
+import AuthContext from "../../store/AuthCtx/auth-context"
 import { EMAIL_REGEX, PASSWORD_REGEX } from "../../utills/js/constants"
 import FormErrorMessages from "./FormErrorMessages"
+import Loader from "../Loader/Loader"
+import Message from "../Message/Message"
+import ModalContext from "../../store/ModalCtx/modal-context"
 
-const LoginForm = ({ handleModalContent, handleCloseModal }) => {
+const LoginForm = () => {
+  const [loading, setLoading] = useState(false)
+  const [message, setMessage] = useState(false)
+
+  const { handleLogin } = useContext(AuthContext)
+
+  const { handleModalContent, handleCloseModal } = useContext(ModalContext)
+
   const handleFormSubmit = async (loginUser) => {
-    const userInfo = await login(loginUser)
+    setMessage(false)
+    setLoading(true)
+    setTimeout(async () => {
+      const { userInfo, error, success } = await handleLogin(loginUser)
 
-    console.log("Welcome", userInfo)
-    // handleCloseModal()
+      if (error) {
+        setMessage(error)
+      }
+
+      if (success) {
+        setMessage(success)
+        setTimeout(() => {
+          handleCloseModal()
+        }, 1000)
+      }
+
+      setLoading(false)
+      console.log("Welcome", userInfo)
+    }, 1500)
+    // const userInfo = await login(loginUser)
   }
 
   return (
@@ -38,6 +64,10 @@ const LoginForm = ({ handleModalContent, handleCloseModal }) => {
           onSubmit={formik.handleSubmit}
           className="text-center d-flex align-items-center flex-column"
         >
+          {loading && <Loader />}
+          {message && (
+            <Message variant={message.variant}> {message.text} </Message>
+          )}
           <Form.Group className="w-75">
             <Form.Control
               id="email"
