@@ -1,9 +1,11 @@
 import React from "react"
-import { Link } from "react-router-dom"
+import { Link, useParams } from "react-router-dom"
 import styles from "./RecipeCard.module.scss"
 
 const RecipeCard = ({ recipe }) => {
   const { id, title, description, views, createdAt } = recipe
+
+  // const params = useParams()
 
   const date = createdAt.toLocaleString().slice(0, 9).replaceAll(".", "/")
 

@@ -49,8 +49,8 @@ const UserProfilePage = () => {
     <Formik
       initialValues={{
         email: storedUserInfo.email,
-        firstName: storedUserInfo.f_name,
-        lastName: storedUserInfo.l_name,
+        firstName: storedUserInfo.firstName,
+        lastName: storedUserInfo.lastName,
         password: storedUserInfo.password,
         confirmPassword: "",
       }}

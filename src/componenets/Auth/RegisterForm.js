@@ -30,6 +30,7 @@ const RegisterForm = () => {
       password,
     }
     setLoading(true)
+
     setTimeout(async () => {
       const {
         newUser: userInfo,

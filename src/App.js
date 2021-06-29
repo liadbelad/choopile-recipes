@@ -1,5 +1,6 @@
 import React, { useContext } from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import ScrollToTop from "./componenets/ScrollToTop/ScrollToTop"
 import MainNavbar from "./componenets/Navbar/MainNavbar"
 import AuthContext from "./store/AuthCtx/auth-context"
 import HomePage from "./pages/HomePage"
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <Router>
+      <ScrollToTop />
       <MainNavbar />
       <main className="py-5">
         <Switch>

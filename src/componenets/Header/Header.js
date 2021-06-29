@@ -4,7 +4,6 @@ import SearchBar from "../SearchBar/SearchBar"
 import styles from "./Header.module.scss"
 
 const Header = () => {
-  console.log("Header running ?")
   return (
     <Container fluid className={`${styles.header} mt-2`}>
       <h2 className="mb-3">חפש מתכון</h2>

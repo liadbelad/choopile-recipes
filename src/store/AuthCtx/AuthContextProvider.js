@@ -4,6 +4,7 @@ import AuthContext from "./auth-context"
 
 const AuthContextProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  // const [userInfo,setUserInfo] = useState(null) // after getting token from server
 
   const handleLogin = async (userLogin) => {
     const response = await login(userLogin)
@@ -20,7 +21,6 @@ const AuthContextProvider = ({ children }) => {
   }
 
   const handleLogout = () => {
-    console.log("????")
     localStorage.removeItem("userInfo")
     setIsLoggedIn(false)
   }

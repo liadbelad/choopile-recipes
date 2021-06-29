@@ -284,7 +284,6 @@ const registerUser = {
 
 const login = async (loginUser) => {
   try {
-    console.log(loginUser)
     const userInfo = DUMMY_USERS.find(
       (user) =>
         user.email === loginUser.email && user.password === loginUser.password
@@ -321,11 +320,6 @@ const register = async (newUser) => {
     }
   }
 }
-
-// ;(async () => {
-//   const user = await register(registerUser)
-//   console.log("register", user)
-// })()
 
 const getUserDetails = async (userID = 4) => {
   try {

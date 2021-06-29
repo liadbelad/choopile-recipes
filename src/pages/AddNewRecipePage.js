@@ -1,10 +1,9 @@
-import React, { useEffect, useContext } from "react"
-import { useHistory } from "react-router-dom"
+import React, { useState, useEffect, useContext } from "react"
+import { useHistory, Prompt } from "react-router-dom"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import Select from "react-select"
 import { Container, Form, Row, Col, Button } from "react-bootstrap"
-import CategoriesList from "../componenets/CategoriesList/CategoriesList"
 import FormErrorMessages from "../componenets/Auth/FormErrorMessages"
 import {
   FILE_SIZE,
@@ -14,11 +13,22 @@ import {
 import AuthContext from "../store/AuthCtx/auth-context"
 
 const AddNewRecipePage = () => {
+  const [isEnteringData, setIsEnteringData] = useState(false)
+
   const { isLoggedIn } = useContext(AuthContext)
 
   const history = useHistory()
 
+  const handleFormFocus = () => {
+    setIsEnteringData(true)
+  }
+
+  const handleFinishEntering = () => {
+    setIsEnteringData(false)
+  }
+
   const handleFormSubmit = async (newRecipe) => {
+    handleFinishEntering()
     console.log(newRecipe)
   }
 
@@ -36,12 +46,12 @@ const AddNewRecipePage = () => {
         description: "",
         servings: "",
         prepTimeMins: "",
-        imageURL: {},
-        categories: [],
+        imageFiles: {},
+        categories: "",
         ingredients: [{ amount: "", measureUnit: "", name: "", title: "" }],
         instructions: [{ content: "" }],
       }}
-      validationSchema={Yup.object({
+      validationSchema={Yup.object().shape({
         title: Yup.string()
           .required("*חובה")
           .min(2, "מינימום 2 תווים")
@@ -61,39 +71,36 @@ const AddNewRecipePage = () => {
           .required("*חובה")
           .max(1000, "מקסימום 1000 דקות")
           .min(1, "מספר חיובי"),
-        imageFiles: Yup.mixed().required("חובה לעלות לפחות תמונה אחת !"),
-        categories: Yup.array()
-          .min(1, "בחר לפחות קטגוריה אחת")
-          .of(
-            Yup.object().shape({
-              label: Yup.string().required(),
-              value: Yup.string().required(),
-            })
+        imageFiles: Yup.mixed()
+          // .required("תמונות בלבד - jpeg jpg png !")
+          // .test(
+          //   "fileSize",
+          //   "הקובץ גדול מידי - ",
+          //   (value) => value && value.size <= FILE_SIZE
+          // )
+          .test(
+            "fileFormat",
+            "תמונות בלבד",
+            (value) => value && SUPPORTED_FILE_FORMATS.includes(value.type)
           ),
 
-        //   .test(
-        //     "fileSize",
-        //     "הקובץ גדול מידי - ",
-        //     (value) => value && value.size <= FILE_SIZE
-        //   )
-        //   .test(
-        //     "fileFormat",
-        //     "תמונות בלבד",
-        //     (value) => value && SUPPORTED_FILE_FORMATS.includes(value.type)
-        //   ),
-        // categories: Yup.array()("*בחר לפחות קטגוריה אחת"),
+        categories: Yup.string().required("חובה*"),
+
         // ingredients: Yup.array().min(2, "נא להוסיף לפחות 2 מרכיבים"),
         // instructions: Yup.array().min(1, "נא להוסיף לפחות הוראה אחת"),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        console.log("???")
         handleFormSubmit(values)
         setSubmitting(false)
       }}
     >
       {(formik) => (
         <Container className="my-5">
-          <Form onSubmit={formik.handleSubmit}>
+          <Prompt
+            when={isEnteringData}
+            message={() => "המתכון שלך לא יישמר, האם אתה בטוח ?"}
+          />
+          <Form onFocus={handleFormFocus} onSubmit={formik.handleSubmit}>
             <Row>
               <Col md={8}>
                 <Form.Group>
@@ -128,42 +135,33 @@ const AddNewRecipePage = () => {
                 <Select
                   name="categories"
                   id="categories"
-                  isMulti
-                  value={formik.values.categories}
-                  onChange={formik.setFieldValue}
-                  onBlur={formik.setFieldTouched}
-                  error={formik.errors.categories}
-                  touched={formik.touched.categories}
-                  // value={formik.values.categories}
-                  // onChange={(option) =>
-                  //   formik.setFieldValue("categories", option)
-                  // }
-                  // onChange={(options) => console.log(options)}
-                  // onBlur={(options) => console.log(options)}
+                  onChange={(category) =>
+                    formik.setFieldValue("categories", category.label)
+                  }
                   options={[
                     { label: "איטלקי", value: 1 },
                     { label: "בשרי", value: 2 },
                     { label: "אוכל של נריה", value: 3 },
                     { label: "חלבי", value: 7 },
                   ]}
-                  // {...formik.getFieldProps("categories")}
                 />
-                {/* <CategoriesList isMulti={true} /> */}
-                {/* {formik.touched.categories && formik.errors.categories && (
+
+                {formik.touched.categories && formik.errors.categories && (
                   <FormErrorMessages error={formik.errors.categories} />
-                )} */}
+                )}
               </Col>
               <Col md={4}>
                 <Form.Group>
-                  <Form.Control
-                    type="text"
-                    placeholder="Enter image files url"
-                  />
                   <Form.File
                     id="imageFiles"
                     name="imageFiles"
                     label="Choose File"
-                    {...formik.getFieldProps("imageFiles")}
+                    onChange={(event) =>
+                      formik.setFieldValue(
+                        "imageFiles",
+                        event.currentTarget.files[0]
+                      )
+                    }
                     custom
                   ></Form.File>
                   {formik.touched.imageFiles && formik.errors.imageFiles && (
@@ -199,8 +197,10 @@ const AddNewRecipePage = () => {
                       <FormErrorMessages error={formik.errors.prepTimeMins} />
                     )}
                 </Form.Group>
+                <Button type="submit" variant="dark">
+                  למרכיבי המתכון
+                </Button>
               </Col>
-              <Button type="submit"> Submit </Button>
             </Row>
           </Form>
         </Container>

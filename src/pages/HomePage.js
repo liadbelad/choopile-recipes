@@ -15,7 +15,6 @@ const HomePage = () => {
   const { modalContent, handleCloseModal, handleModalContent, showModal } =
     useContext(ModalContext)
 
-  console.log("homepage running")
   const fetchRecipesHomepage = async () => {
     const recipesHomepage = await getAllRecipesHomepage()
     setRecipes(recipesHomepage)
@@ -65,4 +64,4 @@ const HomePage = () => {
   )
 }
 
-export default React.memo(HomePage)
+export default HomePage

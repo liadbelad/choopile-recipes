@@ -1,8 +1,8 @@
 const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
 const HEBREW_ENGLISH_TEXT_REGEX = /^[a-zA-Z\u0590-\u05fe]+$/i
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
-const FILE_SIZE = 160 * 1024
-const SUPPORTED_FILE_FORMATS = ["jpg", "jpeg", "gif", "png"]
+const FILE_SIZE = 3000000
+const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
 
 // password regex Description
 // ^	The password string will start this way
