@@ -6,8 +6,9 @@ import HomePage from "./pages/HomePage"
 import RecipesPage from "./pages/RecipesPage"
 import ErrorPage from "./pages/ErrorPage"
 import SingleRecipePage from "./pages/SingleRecipePage/SingleRecipePage"
-import NewRecipeDetailsPage from "./pages/NewRecipeDetailsPage"
+import NewRecipeDetailsPage from "./pages/NewRecipePages/NewRecipeDetailsPage"
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage"
+import NewRecipeIngredientsPage from "./pages/NewRecipePages/NewRecipeIngredientsPage"
 
 function App() {
   return (
@@ -23,6 +24,11 @@ function App() {
             path="/recipes/new/details"
             exact
             component={NewRecipeDetailsPage}
+          />
+          <Route
+            path="/recipes/new/ingredients"
+            exact
+            component={NewRecipeIngredientsPage}
           />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
           <Route path="/" exact component={HomePage} />

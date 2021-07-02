@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useHistory, Prompt } from "react-router-dom"
-import AuthContext from "../store/AuthCtx/auth-context"
-import AddRecipeFormInput from "../componenets/Recipes/AddRecipeForm/AddRecipeFormInput"
+import AuthContext from "../../store/AuthCtx/auth-context"
+import AddRecipeFormInput from "../../componenets/Recipes/AddRecipeForm/AddRecipeFormInput"
 import { Formik } from "formik"
 import * as Yup from "yup"
-import CustomSelect from "../componenets/CustomSelect/CustomSelect"
+import CustomSelect from "../../componenets/CustomSelect/CustomSelect"
 import { Container, Form, Row, Col, Button } from "react-bootstrap"
-import FormErrorMessages from "../componenets/Auth/FormErrorMessages"
-import NewRecipeContext from "../store/NewRecipeCtx/new-recipe-context"
-import { getAllCategories } from "../DAL/api"
+import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
+import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
+import { getAllCategories } from "../../DAL/api"
 import {
   FILE_SIZE,
   HEBREW_ENGLISH_SPACE_TEXT_REGEX,
   SUPPORTED_FILE_FORMATS,
-} from "../utills/js/constants"
-import NewRecipeSteps from "../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
+} from "../../utills/js/constants"
+import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
 
 const NewRecipeDetailsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -35,7 +35,6 @@ const NewRecipeDetailsPage = () => {
   }
 
   const handleFormSubmit = (newRecipeDetails) => {
-    console.log(newRecipeDetails.imageFiles)
     handleFinishEntering()
     handleAddRecipeDetails(newRecipeDetails)
     history.push("/recipes/new/ingredients")

@@ -203,15 +203,15 @@ const DUMMY_USER_RECIPES_CATEGORIES = [
 ]
 
 const DUMMY_MEASURE_UNITS = [
-  { id: 1, name: "כוס" },
-  { id: 2, name: "כוסות" },
-  { id: 3, name: "כפית" },
+  { value: 1, label: "כוס" },
+  { value: 2, label: "כוסות" },
+  { value: 3, label: "כפית" },
 ]
 
 const DUMMY_INGREDIENTS = [
-  { id: 1, name: "מלח" },
-  { id: 2, name: "סוכר" },
-  { id: 3, name: "שום" },
+  { value: 1, label: "מלח" },
+  { value: 2, label: "סוכר" },
+  { value: 3, label: "שום" },
 ]
 
 const DUMMY_USERS = [
@@ -491,4 +491,6 @@ export {
   getAllCategoriesOfUserRecipes,
   getUserRecipes,
   getRecipesByCategory,
+  getAllMeasureUnits,
+  getAllIngredients,
 }

@@ -14,7 +14,7 @@ const AddRecipeFormInput = ({
   const inputValue = formik.values[name]
   return (
     <Form.Group>
-      <Form.Label> {title} </Form.Label>
+      {title && <Form.Label> {title} </Form.Label>}
 
       <Form.Control
         as={as}
