@@ -358,7 +358,7 @@ const getAllCategoriesOfUserRecipes = async (userID) => {
 
 const getAllCategories = async () => {
   try {
-    const response = await fetch(`http://localhost:3001/api/categories`)
+    const response = await fetch(`http://localhost:5000/api/categories`)
     const categories = await response.json()
 
     const transformedCategories = categories.map((category) => ({
@@ -389,7 +389,7 @@ const getAllIngredients = async () => {
 
 const getAllRecipesGallery = async () => {
   try {
-    const response = await fetch(`http://localhost:3001/api/recipes/gallery`)
+    const response = await fetch(`http://localhost:5000/api/recipes/gallery`)
     const recipesGallery = await response.json()
     return recipesGallery
   } catch (error) {
@@ -404,7 +404,7 @@ const getAllRecipesHomepage = async (
   orderDirection = "asc"
 ) => {
   try {
-    const response = await fetch(`http://localhost:3001/api/recipes/homepage`)
+    const response = await fetch(`http://localhost:5000/api/recipes/newest`)
     const recipesHomepage = await response.json()
     return recipesHomepage
   } catch (error) {
@@ -426,11 +426,13 @@ const getFullRecipeDetailsByID = async (id) => {
   }
 }
 
-const getRecipesByCategory = async (category) => {
+const getRecipesByCategory = async (categoryID) => {
   try {
-    const response = await axios.get(`/api/recipes/${category}`)
-    const recipesOfCategory = await response.json()
-    console.log(recipesOfCategory)
+    const { data } = await axios.get(
+      `http://localhost:5000/api/recipes/categories/${categoryID}`
+    )
+
+    console.log(data)
     // return recipesOfCategory
   } catch (error) {
     return error.message
@@ -488,4 +490,5 @@ export {
   getFullRecipeDetailsByID,
   getAllCategoriesOfUserRecipes,
   getUserRecipes,
+  getRecipesByCategory,
 }

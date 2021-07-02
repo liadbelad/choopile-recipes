@@ -2,7 +2,11 @@ import React, { useState, useEffect, useContext } from "react"
 import { useHistory, useLocation } from "react-router-dom"
 import AuthContext from "../../store/AuthCtx/auth-context"
 import Select from "react-select"
-import { getAllCategories, getAllCategoriesOfUserRecipes } from "../../DAL/api"
+import {
+  getAllCategories,
+  getAllCategoriesOfUserRecipes,
+  getRecipesByCategory,
+} from "../../DAL/api"
 
 const CategoriesList = ({ userID = 2 }) => {
   const [categories, setCategories] = useState([])
@@ -38,8 +42,10 @@ const CategoriesList = ({ userID = 2 }) => {
     setCategories(categories)
   }
 
-  const handleCategoryChange = (selectedOption) => {
-    console.log(selectedOption)
+  const handleCategoryChange = async (selectedCategory) => {
+    console.log("changing category to", selectedCategory.value)
+    const newRecipes = await getRecipesByCategory(selectedCategory.value)
+    console.log(newRecipes)
   }
 
   useEffect(() => {

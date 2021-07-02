@@ -3,7 +3,6 @@ import { Link } from "react-router-dom"
 import styles from "./Menu.module.scss"
 
 const Menu = () => {
-  console.log("menu running")
   return (
     <div className={`${styles["menu-container"]} p-2 mt-2`}>
       <a href="#newestRecipesGallery" className="ml-2 font-weight-bold">

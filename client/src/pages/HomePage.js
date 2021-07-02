@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react"
-import ModalContextProvider from "../store/ModalCtx/ModalContextProvider"
 import ModalContext from "../store/ModalCtx/modal-context"
 import Header from "../componenets/Header/Header"
 import ModalForm from "../componenets/Modal/ModalForm"
@@ -21,8 +20,10 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    fetchRecipesHomepage()
-  }, [])
+    if (recipes.length === 0) {
+      fetchRecipesHomepage()
+    }
+  }, [recipes])
 
   return (
     <>

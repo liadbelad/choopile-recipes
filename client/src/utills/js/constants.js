@@ -1,5 +1,6 @@
-const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
+const HEBREW_ENGLISH_SPACE_TEXT_REGEX = /^[a-zA-Z\u0590-\u05fe ]+$/i
 const HEBREW_ENGLISH_TEXT_REGEX = /^[a-zA-Z\u0590-\u05fe]+$/i
+const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
 const FILE_SIZE = 3000000
 const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
@@ -16,6 +17,7 @@ const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
 export {
   EMAIL_REGEX,
   HEBREW_ENGLISH_TEXT_REGEX,
+  HEBREW_ENGLISH_SPACE_TEXT_REGEX,
   PASSWORD_REGEX,
   SUPPORTED_FILE_FORMATS,
   FILE_SIZE,

@@ -1,14 +1,15 @@
 import React from "react"
-import { Accordion, Card } from "react-bootstrap"
+import { Accordion, Card, Button } from "react-bootstrap"
+import IngredientsFormSection from "./IngredientsFormSection"
 
-const RecipeDetailsAccordionCard = ({ details, eventKey }) => {
+const AccordionSection = ({ children, eventKey, title }) => {
   return (
     <Card>
-      <Accordion.Toggle as={Card.Header} eventKey="0">
-        Click me!
+      <Accordion.Toggle as={Card.Header} eventKey={eventKey}>
+        <Button> {title} </Button>
       </Accordion.Toggle>
-      <Accordion.Collapse eventKey="0">
-        <Card.Body>Hello! I'm the body</Card.Body>
+      <Accordion.Collapse eventKey={eventKey}>
+        <Card.Body> {children} </Card.Body>
       </Accordion.Collapse>
     </Card>
   )
@@ -17,14 +18,10 @@ const RecipeDetailsAccordionCard = ({ details, eventKey }) => {
 const RecipeDetailsAccordion = () => {
   return (
     <Accordion defaultActiveKey="0">
-      <Card>
-        <Accordion.Toggle as={Card.Header} eventKey="1">
-          Click me!
-        </Accordion.Toggle>
-        <Accordion.Collapse eventKey="1">
-          <Card.Body>Hello! I'm another body</Card.Body>
-        </Accordion.Collapse>
-      </Card>
+      <AccordionSection eventKey="0" title="מצרכים">
+        <IngredientsFormSection />
+      </AccordionSection>
+      <AccordionSection eventKey="1" title="אופן ההכנה"></AccordionSection>
     </Accordion>
   )
 }

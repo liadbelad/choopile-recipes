@@ -5,13 +5,16 @@ import "./index.css"
 import App from "./App"
 import AuthContextProvider from "./store/AuthCtx/AuthContextProvider"
 import ModalContextProvider from "./store/ModalCtx/ModalContextProvider"
+import NewRecipeContextProvider from "./store/NewRecipeCtx/NewRecipeContextProvider"
 
 ReactDOM.render(
   <ModalContextProvider>
     <AuthContextProvider>
-      {/* <React.StrictMode> */}
-      <App />
-      {/* </React.StrictMode> */}
+      <NewRecipeContextProvider>
+        {/* <React.StrictMode> */}
+        <App />
+        {/* </React.StrictMode> */}
+      </NewRecipeContextProvider>
     </AuthContextProvider>
   </ModalContextProvider>,
   document.getElementById("root")

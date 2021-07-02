@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import styles from "./RecipeCard.module.scss"
 
 const RecipeCard = ({ recipe }) => {
@@ -15,7 +15,7 @@ const RecipeCard = ({ recipe }) => {
           <div className={styles["recipe-header"]}>
             <p> {date} </p>
             <p className="mr-3">
-              {views} <i class="fas fa-eye"></i>
+              {views} <i className="fas fa-eye"></i>
             </p>
           </div>
           <div className={styles["recipe-description"]}>

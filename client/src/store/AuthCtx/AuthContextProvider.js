@@ -26,7 +26,7 @@ const AuthContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    const storedUserInfo = localStorage.getItem("userInfo")
+    const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
     if (storedUserInfo) {
       setIsLoggedIn(true)
     }

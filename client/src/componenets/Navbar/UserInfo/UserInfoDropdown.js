@@ -38,7 +38,7 @@ const UserInfoDropdown = () => {
         </Dropdown.Header>
         <UserInfoDropDownItem
           text="הוסף מתכון"
-          linkTo="/new-recipe"
+          linkTo="/recipes/new/details"
           image={addRecipeImg}
         />
         <UserInfoDropDownItem
