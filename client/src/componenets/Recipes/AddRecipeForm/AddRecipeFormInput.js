@@ -10,10 +10,11 @@ const AddRecipeFormInput = ({
   name,
   as,
   placeholder,
+  width,
 }) => {
   const inputValue = formik.values[name]
   return (
-    <Form.Group>
+    <Form.Group className={width && width}>
       {title && <Form.Label> {title} </Form.Label>}
 
       <Form.Control

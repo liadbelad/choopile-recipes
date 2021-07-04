@@ -9,6 +9,7 @@ import SingleRecipePage from "./pages/SingleRecipePage/SingleRecipePage"
 import NewRecipeDetailsPage from "./pages/NewRecipePages/NewRecipeDetailsPage"
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage"
 import NewRecipeIngredientsPage from "./pages/NewRecipePages/NewRecipeIngredientsPage"
+import NewRecipeInstructionsPage from "./pages/NewRecipePages/NewRecipeInstructionsPage"
 
 function App() {
   return (
@@ -29,6 +30,11 @@ function App() {
             path="/recipes/new/ingredients"
             exact
             component={NewRecipeIngredientsPage}
+          />
+          <Route
+            path="/recipes/new/instructions"
+            exact
+            component={NewRecipeInstructionsPage}
           />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
           <Route path="/" exact component={HomePage} />

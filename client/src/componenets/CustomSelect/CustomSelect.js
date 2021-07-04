@@ -3,8 +3,6 @@ import Select from "react-select"
 
 const CustomSelect = ({ onChange, options, value, className, placeholder }) => {
   const defaultValue = useCallback((options, value = "") => {
-    console.log(value)
-    console.log(options ? options.find((option) => option.value === value) : "")
     return options ? options.find((option) => option.value === value) : ""
   }, [])
 

@@ -40,10 +40,17 @@ const NewRecipeIngredientsPage = () => {
     ])
   }
 
-  const handleFormSubmit = (NewRecipeIngredients) => {
-    console.log(NewRecipeIngredients)
-    handleFinishEntering()
-    handleAddRecipeIngredients(NewRecipeIngredients)
+  const handleDeleteNewIngredient = (deleteIdx) => {
+    if (window.confirm(`האם אתה בטוח ?`)) {
+      const filteredNewIngredients = newRecipeIngredients.filter(
+        (ingredient, idx) => idx !== deleteIdx
+      )
+      setNewRecipeIngredients(filteredNewIngredients)
+    }
+  }
+
+  const handleFormSubmit = () => {
+    handleAddRecipeIngredients(newRecipeIngredients)
     history.push("/recipes/new/instructions")
   }
 
@@ -58,10 +65,19 @@ const NewRecipeIngredientsPage = () => {
     if (!isLoggedIn) {
       history.push("/")
     }
+
     if (!ingredients && !measureUnits) {
       fetchData()
     }
-  }, [isLoggedIn, ingredients, measureUnits])
+
+    if (newRecipeIngredients.length === 0) {
+      handleFormFocus()
+    }
+
+    if (newRecipeIngredients.length > 0) {
+      handleFinishEntering()
+    }
+  }, [isLoggedIn, ingredients, measureUnits, newRecipeIngredients])
 
   return (
     <Formik
@@ -155,7 +171,23 @@ const NewRecipeIngredientsPage = () => {
             </Row>
           </Form>
 
-          <NewIngredientsList newRecipeIngredients={newRecipeIngredients} />
+          <NewIngredientsList
+            newRecipeIngredients={newRecipeIngredients}
+            handleDeleteNewIngredient={handleDeleteNewIngredient}
+          />
+
+          <Row>
+            <Col className="text-center my-3">
+              <Button
+                disabled={newRecipeIngredients.length === 0}
+                className="w-25"
+                variant="dark"
+                onClick={handleFormSubmit}
+              >
+                להוראות ההכנה
+              </Button>
+            </Col>
+          </Row>
         </Container>
       )}
     </Formik>

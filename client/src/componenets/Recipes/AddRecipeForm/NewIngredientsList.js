@@ -1,17 +1,41 @@
 import React from "react"
 import { ListGroup } from "react-bootstrap"
 
-const NewIngredientsList = ({ newRecipeIngredients }) => {
+const NewIngredientItem = ({ ingredientData, idx, onClick }) => {
+  return (
+    <ListGroup.Item
+      key={idx}
+      idx={idx}
+      className="d-flex justify-content-around"
+    >
+      <div>
+        <i
+          onClick={onClick}
+          style={{ cursor: "pointer" }}
+          className="fas fa-trash mx-2"
+        ></i>
+      </div>
+      <p> {ingredientData.qty} </p>
+      <p> {ingredientData.measureUnit} </p>
+      <p> {ingredientData.ingredient} </p>
+      <p> {ingredientData.note} </p>
+    </ListGroup.Item>
+  )
+}
+
+const NewIngredientsList = ({
+  newRecipeIngredients,
+  handleDeleteNewIngredient,
+}) => {
   return (
     <ListGroup>
       {newRecipeIngredients.map((ingredientData, idx) => (
-        <ListGroup.Item key={idx} className="d-flex justify-content-around">
-          <i className="fas fa-trash"></i>
-          <p> {ingredientData.qty} </p>
-          <p> {ingredientData.measureUnit} </p>
-          <p> {ingredientData.ingredient} </p>
-          <p> {ingredientData.note} </p>
-        </ListGroup.Item>
+        <NewIngredientItem
+          ingredientData={ingredientData}
+          idx={idx}
+          key={idx}
+          onClick={() => handleDeleteNewIngredient(idx)}
+        />
       ))}
     </ListGroup>
   )
