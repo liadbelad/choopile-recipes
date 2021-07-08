@@ -32,22 +32,20 @@ const RegisterForm = () => {
     setLoading(true)
 
     setTimeout(async () => {
-      const {
-        newUser: userInfo,
-        error,
-        success,
-      } = await handleRegister(newUser)
+      const { error, loading, success, userInfo, message } =
+        await handleRegister(newUser)
+      console.log(error, userInfo, message)
 
       if (error) {
-        setMessage(error)
+        setMessage({ variant: "danger", text: message })
       }
 
       if (success) {
-        setMessage(success)
+        setMessage({ variant: "success", text: message })
       }
 
-      setLoading(false)
-    }, 1500)
+      setLoading(loading)
+    }, 1000)
   }
 
   return (

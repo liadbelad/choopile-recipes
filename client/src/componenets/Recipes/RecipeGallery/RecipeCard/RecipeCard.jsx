@@ -1,5 +1,6 @@
 import React from "react"
 import { Link } from "react-router-dom"
+import { updateRecipeViewsById } from "../../../../DAL/recipesApi"
 import styles from "./RecipeCard.module.scss"
 
 const RecipeCard = ({ recipe }) => {
@@ -7,8 +8,15 @@ const RecipeCard = ({ recipe }) => {
 
   const date = createdAt.toLocaleString().slice(0, 10).replaceAll(".", "/")
 
+  const handleViewsIncrement = () => {
+    updateRecipeViewsById(id)
+  }
+
   return (
-    <article className={`${styles["recipe-container"]}`}>
+    <article
+      onClick={handleViewsIncrement}
+      className={`${styles["recipe-container"]}`}
+    >
       <Link to={`/recipes/${id}`}>
         <div className={styles.image}></div>
         <section className={`${styles["recipe-content"]} p-3`}>

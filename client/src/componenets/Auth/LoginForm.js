@@ -21,22 +21,24 @@ const LoginForm = () => {
     setMessage(false)
     setLoading(true)
     setTimeout(async () => {
-      const { userInfo, error, success } = await handleLogin(loginUser)
+      const { userInfo, error, success, loading, message } = await handleLogin(
+        loginUser
+      )
 
       if (error) {
-        setMessage(error)
+        setMessage({ variant: "danger", text: message })
       }
 
       if (success) {
-        setMessage(success)
+        setMessage({ variant: "success", text: message })
         setTimeout(() => {
           handleCloseModal()
-        }, 1000)
+        }, 500)
       }
 
-      setLoading(false)
+      setLoading(loading)
       console.log("Welcome", userInfo)
-    }, 1500)
+    }, 1000)
     // const userInfo = await login(loginUser)
   }
 

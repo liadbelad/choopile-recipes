@@ -1,61 +1,43 @@
-import React, { useState, useEffect, useContext } from "react"
-import { useHistory, useLocation } from "react-router-dom"
-import AuthContext from "../../store/AuthCtx/auth-context"
+import React, { useEffect, useContext } from "react"
+import { useLocation } from "react-router-dom"
+import useHttp from "../../hooks/use-http"
 import Select from "react-select"
-import {
-  getAllCategories,
-  getAllCategoriesOfUserRecipes,
-  getRecipesByCategory,
-} from "../../DAL/api"
+import { getAllCategories, getAllCategoriesOfUserRecipes } from "../../DAL/api"
+import AuthContext from "../../store/AuthCtx/auth-context"
 
-const CategoriesList = ({ userID = 2 }) => {
-  const [categories, setCategories] = useState([])
+const CategoriesList = ({ onCategoryChange }) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const { isLoggedIn } = useContext(AuthContext)
 
   const location = useLocation()
 
-  const history = useHistory()
+  const { pathname } = location
 
-  const fetchCategories = async () => {
-    // if (
-    //   location.pathname === "/recipes" ||
-    //   (isLoggedIn && location.pathname === "/new-recipe")
-    // ) {
-    //   const categories = await getAllCategories()
-    //   setCategories(categories)
-    // }
+  const requestToSend =
+    pathname === "/my-recipes"
+      ? getAllCategoriesOfUserRecipes
+      : getAllCategories
 
-    // if (
-    //   !isLoggedIn &&
-    //   (location.pathname === "/my-recipes" ||
-    //     location.pathname === "/new-recipe")
-    // ) {
-    //   history.push("/")
-    // }
-
-    // if (isLoggedIn && location.pathname === "/my-recipes") {
-    //   const categories = await getAllCategoriesOfUserRecipes(userID)
-    //   setCategories(categories)
-    // }
-    const categories = await getAllCategories()
-    setCategories(categories)
-  }
+  const { sendRequest, data: loadedCategories } = useHttp(requestToSend)
 
   const handleCategoryChange = async (selectedCategory) => {
-    console.log("changing category to", selectedCategory.value)
-    const newRecipes = await getRecipesByCategory(selectedCategory.value)
-    console.log(newRecipes)
+    const categoryID = selectedCategory.value
+    onCategoryChange(categoryID)
   }
 
   useEffect(() => {
-    fetchCategories()
-  }, [])
+    if (isLoggedIn) {
+      sendRequest(userInfo.id)
+    } else {
+      sendRequest()
+    }
+  }, [sendRequest, isLoggedIn])
 
   return (
     <Select
       placeholder="קטגוריות"
-      options={categories}
+      options={loadedCategories}
       onChange={handleCategoryChange}
       className="my-3"
     />

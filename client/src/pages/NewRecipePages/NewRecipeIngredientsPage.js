@@ -77,20 +77,21 @@ const NewRecipeIngredientsPage = () => {
     if (newRecipeIngredients.length > 0) {
       handleFinishEntering()
     }
-  }, [isLoggedIn, ingredients, measureUnits, newRecipeIngredients])
+  }, [isLoggedIn, ingredients, measureUnits, newRecipeIngredients, history])
 
   return (
     <Formik
       initialValues={{
         qty: "",
-        measureUnit: "",
-        ingredient: "",
+        measureUnit: {},
+        ingredient: {},
+        title: "",
         note: "",
       }}
       validationSchema={Yup.object().shape({
-        qty: Yup.number().required("*חובה").positive("מספר חיובי"),
-        measureUnit: Yup.string().required("*חובה"),
-        ingredient: Yup.string().required("*חובה"),
+        qty: Yup.number("מספרים בלבד").required("*חובה").positive("מספר חיובי"),
+        measureUnit: Yup.object().required("*חובה"),
+        ingredient: Yup.object().required("*חובה"),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         handleAddingNewIngredient(values)
@@ -99,96 +100,103 @@ const NewRecipeIngredientsPage = () => {
       }}
     >
       {(formik) => (
-        <Container className="my-5">
-          <NewRecipeSteps step1 step2 />
-          <Prompt
-            when={isEnteringData}
-            message={() => "המתכון שלך לא יישמר, האם אתה בטוח ?"}
-          />
-          <Form onFocus={handleFormFocus} onSubmit={formik.handleSubmit}>
+        <>
+          <Container className="my-5">
+            <NewRecipeSteps step1 step2 />
+            <Prompt
+              when={isEnteringData}
+              message={() => "המתכון שלך לא יישמר, האם אתה בטוח ?"}
+            />
+            <Form onFocus={handleFormFocus} onSubmit={formik.handleSubmit}>
+              <Row>
+                <Col lg={4}>
+                  <AddRecipeFormInput
+                    formik={formik}
+                    placeholder="*כמות"
+                    name="qty"
+                    id="qty"
+                    type="text"
+                  />
+                </Col>
+                <Col lg={4}>
+                  <Form.Group>
+                    <CustomSelect
+                      options={measureUnits}
+                      placeholder="*יחידות מידה"
+                      value={formik.values.measureUnit}
+                      onChange={(selectedMeasureUnit) =>
+                        formik.setFieldValue("measureUnit", selectedMeasureUnit)
+                      }
+                    />
+                    {formik.touched.measureUnit &&
+                      formik.errors.measureUnit && (
+                        <FormErrorMessages error={formik.errors.measureUnit} />
+                      )}
+                  </Form.Group>
+                </Col>
+                <Col lg={4}>
+                  <Form.Group>
+                    <CustomSelect
+                      placeholder="*רכיבים"
+                      options={ingredients}
+                      value={formik.values.ingredient}
+                      onChange={(selectedIngredient) =>
+                        formik.setFieldValue("ingredient", selectedIngredient)
+                      }
+                    />
+                    {formik.touched.ingredient && formik.errors.ingredient && (
+                      <FormErrorMessages error={formik.errors.ingredient} />
+                    )}
+                  </Form.Group>
+                </Col>
+
+                <Col lg={6}>
+                  <AddRecipeFormInput
+                    formik={formik}
+                    placeholder="כותרת למשל: לבשר, לרוטב וכ'ו"
+                    name="title"
+                    id="title"
+                    type="text"
+                  />
+                </Col>
+                <Col lg={6}>
+                  <AddRecipeFormInput
+                    formik={formik}
+                    placeholder="קצוץ, חתוך לקוביות וכ'ו"
+                    name="note"
+                    id="note"
+                    type="text"
+                  />
+                </Col>
+                <Col lg={1}>
+                  <Form.Group>
+                    <Button type="submit" variant="success">
+                      +
+                    </Button>
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+
+            <NewIngredientsList
+              newRecipeIngredients={newRecipeIngredients}
+              handleDeleteNewIngredient={handleDeleteNewIngredient}
+            />
+
             <Row>
-              <Col lg={2}>
-                <AddRecipeFormInput
-                  formik={formik}
-                  placeholder="*כמות"
-                  name="qty"
-                  id="qty"
-                  type="text"
-                />
-              </Col>
-              <Col lg={2}>
-                <Form.Group>
-                  <CustomSelect
-                    options={measureUnits}
-                    placeholder="יחידות מידה"
-                    value={formik.values.measureUnit}
-                    onChange={(selectedMeasureUnit) =>
-                      formik.setFieldValue(
-                        "measureUnit",
-                        selectedMeasureUnit.label
-                      )
-                    }
-                  />
-                  {formik.touched.measureUnit && formik.errors.measureUnit && (
-                    <FormErrorMessages error={formik.errors.measureUnit} />
-                  )}
-                </Form.Group>
-              </Col>
-              <Col lg={2}>
-                <Form.Group>
-                  <CustomSelect
-                    placeholder="רכיבים"
-                    options={ingredients}
-                    value={formik.values.ingredient}
-                    onChange={(selectedIngredient) =>
-                      formik.setFieldValue(
-                        "ingredient",
-                        selectedIngredient.label
-                      )
-                    }
-                  />
-                  {formik.touched.ingredient && formik.errors.ingredient && (
-                    <FormErrorMessages error={formik.errors.ingredient} />
-                  )}
-                </Form.Group>
-              </Col>
-              <Col lg={4}>
-                <AddRecipeFormInput
-                  formik={formik}
-                  placeholder="קצוץ, חתוך לקוביות וכ'ו"
-                  name="note"
-                  id="note"
-                  type="text"
-                />
-              </Col>
-              <Col lg={2}>
-                <Form.Group>
-                  <Button type="submit" variant="success">
-                    +
-                  </Button>
-                </Form.Group>
+              <Col className="text-center my-3">
+                <Button
+                  disabled={newRecipeIngredients.length === 0}
+                  className="w-25"
+                  variant="dark"
+                  onClick={handleFormSubmit}
+                >
+                  להוראות ההכנה
+                </Button>
               </Col>
             </Row>
-          </Form>
-
-          <NewIngredientsList
-            newRecipeIngredients={newRecipeIngredients}
-            handleDeleteNewIngredient={handleDeleteNewIngredient}
-          />
-
-          <Row>
-            <Col className="text-center my-3">
-              <Button
-                disabled={newRecipeIngredients.length === 0}
-                className="w-25"
-                variant="dark"
-                onClick={handleFormSubmit}
-              >
-                להוראות ההכנה
-              </Button>
-            </Col>
-          </Row>
-        </Container>
+          </Container>
+        </>
       )}
     </Formik>
   )

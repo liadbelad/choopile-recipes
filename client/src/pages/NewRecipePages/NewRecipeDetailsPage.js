@@ -10,7 +10,6 @@ import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
 import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import { getAllCategories } from "../../DAL/api"
 import {
-  FILE_SIZE,
   HEBREW_ENGLISH_SPACE_TEXT_REGEX,
   SUPPORTED_FILE_FORMATS,
 } from "../../utills/js/constants"
@@ -46,13 +45,16 @@ const NewRecipeDetailsPage = () => {
   }
 
   useEffect(() => {
+    let mounted = true
     if (!isLoggedIn) {
       history.push("/")
     }
     if (!categories) {
       fetchCategories()
     }
-  }, [categories])
+
+    return () => (mounted = false)
+  }, [isLoggedIn])
 
   return (
     <Formik
@@ -62,7 +64,7 @@ const NewRecipeDetailsPage = () => {
         servings: +recipeDetails.servings || "",
         prepTimeMins: +recipeDetails.prepTimeMins || "",
         imageFiles: recipeDetails.imageFiles || "",
-        categories: recipeDetails.categories || "",
+        categories: recipeDetails.categories.label || {},
       }}
       validationSchema={Yup.object().shape({
         title: Yup.string()
@@ -91,16 +93,19 @@ const NewRecipeDetailsPage = () => {
           .max(1000, "מקסימום 1000 דקות")
           .min(1, "מספר חיובי"),
         imageFiles: Yup.mixed()
-          .nullable()
           .required("חובה*")
           .test(
             "FILE_FORMAT",
             "תמונות בלבד",
             (value) =>
               !value || (value && SUPPORTED_FILE_FORMATS.includes(value.type))
+          )
+          .test(
+            "FILE_SIZE",
+            "עד 1 מגה בייט",
+            (value) => value && value.size <= 1e6
           ),
-
-        categories: Yup.string().required("חובה*"),
+        categories: Yup.object().required("חובה*"),
       })}
       onSubmit={(values, { setSubmitting }) => {
         handleFormSubmit(values)
@@ -139,9 +144,13 @@ const NewRecipeDetailsPage = () => {
                   <Form.Label> קטגוריה* </Form.Label>
                   <CustomSelect
                     options={categories}
-                    value={recipeDetails && recipeDetails.categories}
+                    value={
+                      recipeDetails
+                        ? recipeDetails.categories.value
+                        : formik.values.categories
+                    }
                     onChange={(selectedCategory) =>
-                      formik.setFieldValue("categories", selectedCategory.value)
+                      formik.setFieldValue("categories", selectedCategory)
                     }
                   />
                   {formik.touched.categories && formik.errors.categories && (
@@ -159,7 +168,7 @@ const NewRecipeDetailsPage = () => {
                       formik.setFieldValue("imageFiles", event.target.files[0])
                     }
                   />
-                  {formik.touched.imageFiles && formik.errors.imageFiles && (
+                  {formik.errors.imageFiles && (
                     <FormErrorMessages error={formik.errors.imageFiles} />
                   )}
                 </Form.Group>

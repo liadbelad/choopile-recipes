@@ -1,5 +1,4 @@
 import React from "react"
-import { useLocation } from "react-router-dom"
 import RecipeCard from "../RecipeGallery/RecipeCard/RecipeCard"
 import RecipeItem from "../RecipeItem/RecipeItem"
 import styles from "./RecipesList.module.scss"

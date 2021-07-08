@@ -1,66 +1,40 @@
-import React, { useContext, useEffect, useState } from "react"
-import ModalContext from "../store/ModalCtx/modal-context"
+import React, { useEffect } from "react"
+import useHttp from "../hooks/use-http"
 import Header from "../componenets/Header/Header"
-import ModalForm from "../componenets/Modal/ModalForm"
-import LoginForm from "../componenets/Auth/LoginForm"
-import RegisterForm from "../componenets/Auth/RegisterForm"
 import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
 import Menu from "../componenets/Menu/Menu"
-import { getAllRecipesHomepage } from "../DAL/api"
+import Loader from "../componenets/Loader/Loader"
+import Message from "../componenets/Message/Message"
+import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
+import { getAllRecipes } from "../DAL/api"
 
 const HomePage = () => {
-  const [recipes, setRecipes] = useState([])
-
-  const { modalContent, handleCloseModal, handleModalContent, showModal } =
-    useContext(ModalContext)
-
-  const fetchRecipesHomepage = async () => {
-    const recipesHomepage = await getAllRecipesHomepage()
-    setRecipes(recipesHomepage)
-  }
+  const {
+    sendRequest,
+    status,
+    data: loadedRecipes,
+    error,
+  } = useHttp(getAllRecipes, true)
 
   useEffect(() => {
-    if (recipes.length === 0) {
-      fetchRecipesHomepage()
-    }
-  }, [recipes])
+    sendRequest()
+  }, [sendRequest])
 
   return (
     <>
-      {/* {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant="danger">{error}</Message>
-      ) : null} */}
-      {/* <Row>
-        {products.map((product) => {
-          return (
-            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-              <Product product={product} />
-            </Col>
-          )
-        })}
-      </Row> */}
       <Menu />
       <Header />
 
-      <span id="newestRecipesGallery">
-        <RecipesList className="flex-container" recipes={recipes} />
-      </span>
+      {status === "pending" && <Loader />}
+      {error && <Message> {error} </Message>}
+      {status === "completed" &&
+        (!loadedRecipes || loadedRecipes.length === 0) && <NoRecipesFound />}
 
-      <ModalForm>
-        {modalContent === "register" ? (
-          <RegisterForm
-            handleCloseModal={handleCloseModal}
-            handleModalContent={handleModalContent}
-          />
-        ) : (
-          <LoginForm
-            handleCloseModal={handleCloseModal}
-            handleModalContent={handleModalContent}
-          />
-        )}
-      </ModalForm>
+      {loadedRecipes && (
+        <span id="newestRecipesGallery">
+          <RecipesList className="flex-container" recipes={loadedRecipes} />
+        </span>
+      )}
     </>
   )
 }

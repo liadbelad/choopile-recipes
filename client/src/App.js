@@ -1,7 +1,11 @@
-import React from "react"
+import React, { useContext } from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import ModalContext from "./store/ModalCtx/modal-context"
 import ScrollToTop from "./componenets/ScrollToTop/ScrollToTop"
 import MainNavbar from "./componenets/Navbar/MainNavbar"
+import ModalForm from "./componenets/Modal/ModalForm"
+import RegisterForm from "./componenets/Auth/RegisterForm"
+import LoginForm from "./componenets/Auth/LoginForm"
 import HomePage from "./pages/HomePage"
 import RecipesPage from "./pages/RecipesPage"
 import ErrorPage from "./pages/ErrorPage"
@@ -10,8 +14,13 @@ import NewRecipeDetailsPage from "./pages/NewRecipePages/NewRecipeDetailsPage"
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage"
 import NewRecipeIngredientsPage from "./pages/NewRecipePages/NewRecipeIngredientsPage"
 import NewRecipeInstructionsPage from "./pages/NewRecipePages/NewRecipeInstructionsPage"
+import ImageUploadTestPage from "./pages/ImageUploadTestPage"
+import MyRecipesPage from "./pages/MyRecipesPage"
 
 function App() {
+  const { modalContent, handleCloseModal, handleModalContent } =
+    useContext(ModalContext)
+
   return (
     <Router>
       <ScrollToTop />
@@ -20,7 +29,7 @@ function App() {
         <Switch>
           <Route path="/recipes" exact component={RecipesPage} />
           <Route path="/profile" exact component={UserProfilePage} />
-          <Route path="/my-recipes" exact component={RecipesPage} />
+          <Route path="/my-recipes" exact component={MyRecipesPage} />
           <Route
             path="/recipes/new/details"
             exact
@@ -37,9 +46,24 @@ function App() {
             component={NewRecipeInstructionsPage}
           />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
+          <Route path="/test" exact component={ImageUploadTestPage} />
           <Route path="/" exact component={HomePage} />
           <Route path="*" component={ErrorPage} />
         </Switch>
+
+        <ModalForm>
+          {modalContent === "register" ? (
+            <RegisterForm
+              handleCloseModal={handleCloseModal}
+              handleModalContent={handleModalContent}
+            />
+          ) : (
+            <LoginForm
+              handleCloseModal={handleCloseModal}
+              handleModalContent={handleModalContent}
+            />
+          )}
+        </ModalForm>
       </main>
     </Router>
   )

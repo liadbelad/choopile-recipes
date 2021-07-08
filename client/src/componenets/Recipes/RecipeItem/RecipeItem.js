@@ -1,11 +1,20 @@
 import React from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import Card from "react-bootstrap/Card"
+import { updateRecipeViewsById } from "../../../DAL/recipesApi"
 
 const RecipeItem = ({ recipe }) => {
+  const handleViewsIncrement = () => {
+    updateRecipeViewsById(recipe.id)
+  }
+
   return (
     <Link to={`/recipes/${recipe.id}`}>
-      <Card style={{ width: "auto" }} border="light">
+      <Card
+        onClick={handleViewsIncrement}
+        style={{ width: "auto" }}
+        border="light"
+      >
         <Card.Img
           variant="top"
           src={"https://source.unsplash.com/80x50/?food"}

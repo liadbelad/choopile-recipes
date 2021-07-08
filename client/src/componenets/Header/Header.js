@@ -7,7 +7,7 @@ const Header = () => {
   return (
     <Container fluid className={`${styles.header} mt-2`}>
       <h2 className="mb-3">חפש מתכון</h2>
-      <SearchBar md={6} lg={6} />
+      <SearchBar md={6} lg={7} />
     </Container>
   )
 }

@@ -8,15 +8,26 @@ const AuthContextProvider = ({ children }) => {
   const [newRecipe, setNewRecipe] = useState([])
 
   const handleAddRecipeDetails = (newRecipeDetails) => {
+    setRecipeDetails(newRecipeDetails)
     localStorage.setItem("recipeDetails", JSON.stringify(newRecipeDetails))
   }
 
   const handleAddRecipeIngredients = (newRecipeIngredients) => {
+    setRecipeIngredients(newRecipeIngredients)
     console.log("recipe Ingredients", newRecipeIngredients)
+    localStorage.setItem(
+      "recipeIngredients",
+      JSON.stringify(newRecipeIngredients)
+    )
   }
 
   const handleAddRecipeInstructions = (newRecipeInstructions) => {
+    setRecipeInstructions(newRecipeInstructions)
     console.log("recipe Instructions", newRecipeInstructions)
+    localStorage.setItem(
+      "recipeInstructions",
+      JSON.stringify(newRecipeInstructions)
+    )
   }
 
   const handleAddNewRecipe = (newRecipe) => {

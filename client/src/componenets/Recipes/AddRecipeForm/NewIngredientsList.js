@@ -16,8 +16,8 @@ const NewIngredientItem = ({ ingredientData, idx, onClick }) => {
         ></i>
       </div>
       <p> {ingredientData.qty} </p>
-      <p> {ingredientData.measureUnit} </p>
-      <p> {ingredientData.ingredient} </p>
+      <p> {ingredientData.measureUnit.label} </p>
+      <p> {ingredientData.ingredient.label} </p>
       <p> {ingredientData.note} </p>
     </ListGroup.Item>
   )

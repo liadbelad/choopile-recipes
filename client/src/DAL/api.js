@@ -146,74 +146,6 @@ const DUMMY_RECIPE_HOMEPAGE = [
   },
 ]
 
-const DUMMY_RECIPE_CATEGORIES = [
-  { categoryID: 1, recipes: [1, 5] },
-  { categoryID: 2, recipes: [2, 5, 8] },
-  { categoryID: 3, recipes: [4, 5, 8] },
-]
-
-const DUMMY_RECIPE_GALLERY = [
-  {
-    id: 1,
-    userID: 2,
-    title: "פיצה איטלקית אמיתית",
-    image: "https://source.unsplash.com/80x50/?food",
-  },
-  {
-    id: 2,
-    userID: 1,
-    title: "פיצה מעדנות (גועל נפש)",
-    image: "https://source.unsplash.com/80x50/?food",
-  },
-  {
-    id: 3,
-    userID: 2,
-    title: "פיצה איטלקית לא אמיתית",
-    image: "https://source.unsplash.com/80x50/?food",
-  },
-  {
-    id: 4,
-    userID: 2,
-    title: "פיצה איטלקית לא אמיתית",
-    image: "https://source.unsplash.com/80x50/?food",
-  },
-  {
-    id: 5,
-    userID: 2,
-    title: "פיצה איטלקית לא אמיתית",
-    image: "https://source.unsplash.com/80x50/?food",
-  },
-  {
-    id: 6,
-    userID: 2,
-    title: "פיצה איטלקית לא אמיתית",
-    image: "https://source.unsplash.com/80x50/?food",
-  },
-]
-
-const DUMMY_CATEGORIES = [
-  { value: 1, label: "איטלקי" },
-  { value: 2, label: "חלבי" },
-  { value: 3, label: "בשרי" },
-]
-
-const DUMMY_USER_RECIPES_CATEGORIES = [
-  { value: 1, label: "איטלקי" },
-  { value: 2, label: "חלבי" },
-]
-
-const DUMMY_MEASURE_UNITS = [
-  { value: 1, label: "כוס" },
-  { value: 2, label: "כוסות" },
-  { value: 3, label: "כפית" },
-]
-
-const DUMMY_INGREDIENTS = [
-  { value: 1, label: "מלח" },
-  { value: 2, label: "סוכר" },
-  { value: 3, label: "שום" },
-]
-
 const DUMMY_USERS = [
   {
     id: 1,
@@ -238,88 +170,75 @@ const DUMMY_USERS = [
   },
 ]
 
-const DUMMY_NEW_RECIPE = {
-  userID: 2,
-  title: "פיצה איטלקית אמיתית",
-  description: "הפיצה הכי טובה שיש באזור השרון של הגברת צופי ",
-  image: "https://source.unsplash.com/80x50/?food",
-  views: 0,
-  createdAt: new Date(2020, 11, 17),
-  categories: [1, 5],
-  ingredients: [
-    { id: 1, amount: 1, measureUnit: "כוס", name: "חלב" },
-    { id: 2, amount: 1.5, measureUnit: "כפית", name: "מלח" },
-    { id: 3, amount: 1, measureUnit: "קילו", name: "קמח" },
-    { id: 4, amount: 5, measureUnit: "כפות", name: "סוכר" },
-  ],
-  instructions: [
-    { id: 1, title: "למלית", content: "ערבב סוכר ומלר" },
-    { id: 2, title: "לרוטב", content: "תוסיף מלח אין מספיק מלח" },
-    { id: 3, title: "לבשר", content: "איזה אנטריקוט ינעל העולם" },
-    { id: 4, title: "לקערה", content: "שים פה מלא דברים בסוף ייצא משהו" },
-  ],
-}
-
-const DUMMY_USER_WANTED = [
-  { userid: 1, categories: [1, 5] },
-  { userid: 2, categories: [1, 5] },
-]
-
-const loginUser = { email: "liad@gmail.com", password: "Secret123" }
-const registerUser = {
-  f_name: "Moshmosh",
-  l_name: "Beladev",
-  email: "moshmosh@gmail.com",
-  password: "secret2",
-}
-
-// fetch
-// GET
-// /api/route/
-
-// example requestedRecipeDetails = [id,userID,title,image]
-
-// USER ACTIONS
-//
-
-// fetch POST ('localhost:3334/login')
+// const DUMMY_NEW_RECIPE = {
+//   userID: 2,
+//   title: "פיצה איטלקית אמיתית",
+//   description: "הפיצה הכי טובה שיש באזור השרון של הגברת צופי ",
+//   image: "https://source.unsplash.com/80x50/?food",
+//   views: 0,
+//   createdAt: new Date(2020, 11, 17),
+//   categories: [1, 5],
+//   ingredients: [
+//     { id: 1, amount: 1, measureUnit: "כוס", name: "חלב" },
+//     { id: 2, amount: 1.5, measureUnit: "כפית", name: "מלח" },
+//     { id: 3, amount: 1, measureUnit: "קילו", name: "קמח" },
+//     { id: 4, amount: 5, measureUnit: "כפות", name: "סוכר" },
+//   ],
+//   instructions: [
+//     { id: 1, title: "למלית", content: "ערבב סוכר ומלר" },
+//     { id: 2, title: "לרוטב", content: "תוסיף מלח אין מספיק מלח" },
+//     { id: 3, title: "לבשר", content: "איזה אנטריקוט ינעל העולם" },
+//     { id: 4, title: "לקערה", content: "שים פה מלא דברים בסוף ייצא משהו" },
+//   ],
+// }
 
 const login = async (loginUser) => {
   try {
-    const userInfo = DUMMY_USERS.find(
-      (user) =>
-        user.email === loginUser.email && user.password === loginUser.password
-    )
-    if (!userInfo) throw new Error(`אימייל או סיסמא אינם נכונים`)
+    const response = await fetch("http://localhost:5000/api/users/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginUser),
+    })
+    const userData = await response.json()
+    if (!response.ok) {
+      throw new Error(userData.message || "שגיאה בהתחברות,נסה שוב")
+    }
+
     return {
       loading: false,
-      success: { text: "מתחבר, אנא המתן", variant: "success" },
-      userInfo,
+      success: true,
+      userInfo: userData,
+      message: "מתחבר...",
     }
   } catch (error) {
-    return {
-      loading: false,
-      error: { text: error.message, variant: "danger" },
-    }
+    return { loading: false, error: true, message: error.message }
   }
 }
 
-// select from users
 const register = async (newUser) => {
   try {
-    // fetch POST ('localhost:3334/register')
-    const foundUser = DUMMY_USERS.find((user) => user.email === newUser.email)
-    if (foundUser) throw new Error("המשתמש קיים, התחבר ")
-    DUMMY_USERS.push(newUser)
+    const response = await fetch("http://localhost:5000/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newUser),
+    })
+    const data = await response.json()
+    if (!response.ok) {
+      throw new Error(data.message || "שגיאה בהרשמה,נסה שוב")
+    }
+
     return {
       loading: false,
-      success: { text: "נרשמת, התחבר", variant: "success" },
+      success: true,
+      userInfo: data,
+      message: "נרשמת בהצלחה!!",
     }
   } catch (error) {
-    return {
-      loading: false,
-      error: { text: error.message, variant: "danger" },
-    }
+    return { loading: false, error: true, message: error.message }
   }
 }
 
@@ -333,11 +252,13 @@ const getUserDetails = async (userID = 4) => {
   }
 }
 
-const getUserRecipes = async (userID = 2) => {
+const getUserRecipes = async (userID) => {
   try {
-    const userRecipes = DUMMY_RECIPE_GALLERY.filter(
-      (recipe) => recipe.userID === userID
+    const response = await fetch(
+      `http://localhost:5000/api/recipes/users/${userID}`
     )
+    const userRecipes = await response.json()
+
     return userRecipes
   } catch (error) {
     return error.message
@@ -346,9 +267,10 @@ const getUserRecipes = async (userID = 2) => {
 
 const getAllCategoriesOfUserRecipes = async (userID) => {
   try {
-    return new Promise((resolve, reject) => {
-      resolve(DUMMY_USER_RECIPES_CATEGORIES)
-    })
+    const { data } = await axios.get(
+      `http://localhost:5000/api/categories/users/${userID}`
+    )
+    return data
   } catch (error) {
     return error.message
   }
@@ -373,7 +295,9 @@ const getAllCategories = async () => {
 
 const getAllMeasureUnits = async () => {
   try {
-    return DUMMY_MEASURE_UNITS
+    const response = await fetch("http://localhost:5000/api/measure_units")
+    const measureUnits = await response.json()
+    return measureUnits
   } catch (error) {
     return error.message
   }
@@ -381,17 +305,19 @@ const getAllMeasureUnits = async () => {
 
 const getAllIngredients = async () => {
   try {
-    return DUMMY_INGREDIENTS
+    const response = await fetch("http://localhost:5000/api/ingredients")
+    const ingredients = await response.json()
+    return ingredients
   } catch (error) {
     return error.message
   }
 }
 
-const getAllRecipesGallery = async () => {
+const getAllRecipes = async () => {
   try {
-    const response = await fetch(`http://localhost:5000/api/recipes/gallery`)
-    const recipesGallery = await response.json()
-    return recipesGallery
+    const response = await fetch(`http://localhost:5000/api/recipes`)
+    const recipes = await response.json()
+    return recipes
   } catch (error) {
     return error.message
   }
@@ -429,11 +355,10 @@ const getFullRecipeDetailsByID = async (id) => {
 const getRecipesByCategory = async (categoryID) => {
   try {
     const { data } = await axios.get(
-      `http://localhost:5000/api/recipes/categories/${categoryID}`
+      `http://localhost:5000/api/recipes/categories/?category=${categoryID}`
     )
 
-    console.log(data)
-    // return recipesOfCategory
+    return data
   } catch (error) {
     return error.message
   }
@@ -444,9 +369,13 @@ const getRecipesByCategory = async (categoryID) => {
 // categoriesID's = [ 1,4 ]
 // fetch ('/localhost:5000/recipes/:id')
 
-const getRecipesByUserCategories = async (userID, categories) => {
+const getUserRecipesByCategory = async ({ userID, categoryID }) => {
+  console.log(userID, categoryID)
   try {
-    // fetch
+    const { data } = await axios.get(
+      `http://localhost:5000/api/recipes/categories/?category=${categoryID}&user=${userID}`
+    )
+    return data
   } catch (error) {
     return error.message
   }
@@ -485,10 +414,10 @@ export {
   login,
   register,
   getAllCategories,
-  getAllRecipesHomepage,
-  getAllRecipesGallery,
+  getAllRecipes,
   getFullRecipeDetailsByID,
   getAllCategoriesOfUserRecipes,
+  getUserRecipesByCategory,
   getUserRecipes,
   getRecipesByCategory,
   getAllMeasureUnits,

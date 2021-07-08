@@ -1,5 +1,5 @@
-import React, { useState, useContext } from "react"
-import { Form, Button, Row, Col } from "react-bootstrap"
+import React, { useState } from "react"
+import { Form, Button } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
 import {
@@ -10,39 +10,16 @@ import {
 import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
 import Loader from "../../componenets/Loader/Loader"
 import Message from "../../componenets/Message/Message"
-import styles from "./UserProfilePage.module.scss"
 
 const UserProfilePage = () => {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState(false)
 
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
-  console.log(storedUserInfo.email)
   //   const { handleRegister } = useContext(AuthContext)
 
-  const handleFormSubmit = ({ email, password, firstName, lastName }) => {
-    // setMessage(false)
-    // const newUser = {
-    //   firstName,
-    //   lastName,
-    //   email,
-    //   password,
-    // }
-    // setLoading(true)
-    // setTimeout(async () => {
-    //   const {
-    //     newUser: userInfo,
-    //     error,
-    //     success,
-    //   } = await handleRegister(newUser)
-    //   if (error) {
-    //     setMessage(error)
-    //   }
-    //   if (success) {
-    //     setMessage(success)
-    //   }
-    //   setLoading(false)
-    // }, 1500)
+  const handleFormSubmit = () => {
+    // { email, password, firstName, lastName }
   }
 
   return (
