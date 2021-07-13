@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import useHttp from "../hooks/use-http"
 import { Container, Row, Col } from "react-bootstrap"
-import { useHistory } from "react-router-dom"
+import { Redirect, useHistory } from "react-router-dom"
 import AuthContext from "../store/AuthCtx/auth-context"
 import SearchBar from "../componenets/SearchBar/SearchBar"
 import CategoriesList from "../componenets/CategoriesList/CategoriesList"
@@ -41,7 +41,10 @@ const MyRecipesPage = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      history.push("/")
+      history.push({
+        pathname: "/",
+        state: { isRedirect: true },
+      })
     } else {
       const { id: userID } = userInfo
       sendUserRecipesRequest(userID, true)
@@ -56,37 +59,39 @@ const MyRecipesPage = () => {
   }
 
   return (
-    <Container fluid className="my-5">
-      <Row>
-        <Col md={4}>
-          <SearchBar sm={12} />
-          <CategoriesList
-            onCategoryChange={handleGetUserRecipesBySelectedCategory}
-          />
-        </Col>
-        <Col md={8}>
-          {userRecipesStatus === "pending" && <Loader />}
-          {userRecipesByCategoryStatus === "pending" && <Loader />}
+    <>
+      <Container fluid className="my-5">
+        <Row>
+          <Col md={4}>
+            <SearchBar sm={12} />
+            <CategoriesList
+              onCategoryChange={handleGetUserRecipesBySelectedCategory}
+            />
+          </Col>
+          <Col md={8}>
+            {userRecipesStatus === "pending" && <Loader />}
+            {userRecipesByCategoryStatus === "pending" && <Loader />}
 
-          {userRecipesError && <Message> {userRecipesError} </Message>}
-          {userRecipesByCategoryError && (
-            <Message> {userRecipesError} </Message>
-          )}
+            {userRecipesError && <Message> {userRecipesError} </Message>}
+            {userRecipesByCategoryError && (
+              <Message> {userRecipesError} </Message>
+            )}
 
-          {!userRecipesByCategory && showRecipes && userRecipes && (
-            <RecipesList recipes={userRecipes} />
-          )}
+            {!userRecipesByCategory && showRecipes && userRecipes && (
+              <RecipesList recipes={userRecipes} />
+            )}
 
-          {userRecipesByCategory && userRecipesByCategory.length === 0 && (
-            <NoRecipesFound />
-          )}
+            {userRecipesByCategory && userRecipesByCategory.length === 0 && (
+              <NoRecipesFound />
+            )}
 
-          {userRecipesByCategory && (
-            <RecipesList recipes={userRecipesByCategory} />
-          )}
-        </Col>
-      </Row>
-    </Container>
+            {userRecipesByCategory && (
+              <RecipesList recipes={userRecipesByCategory} />
+            )}
+          </Col>
+        </Row>
+      </Container>
+    </>
   )
 }
 

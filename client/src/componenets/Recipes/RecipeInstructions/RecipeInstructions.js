@@ -14,8 +14,8 @@ const RecipeInstructions = ({ instructions }) => {
     <>
       <h2> אופן ההכנה </h2>
       <ListGroup>
-        {instructions.map(({ id, content }, idx) => (
-          <Instruction key={id} instruction={content} idx={idx + 1} />
+        {instructions.map(({ id, instruction }, idx) => (
+          <Instruction key={id} instruction={instruction} idx={idx + 1} />
         ))}
       </ListGroup>
     </>

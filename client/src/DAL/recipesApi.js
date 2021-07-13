@@ -11,6 +11,18 @@ const getRecipesBySearchTerm = async (keyword = "", pageNumber = "") => {
   }
 }
 
+const addNewRecipe = async (newRecipe) => {
+  // console.log(newRecipe)
+  // axios.post("http://localhost:5000/api/recipes/add", {
+  //   data: newRecipe,
+  //   headers: { "Content-Type": "multipart/form-data" },
+  // })
+  const response = await fetch("http://localhost:5000/api/recipes/add", {
+    method: "POST",
+    body: newRecipe,
+  })
+}
+
 const updateRecipeViewsById = async (recipeID) => {
   try {
     const { data } = await axios.put(
@@ -22,4 +34,4 @@ const updateRecipeViewsById = async (recipeID) => {
   }
 }
 
-export { getRecipesBySearchTerm, updateRecipeViewsById }
+export { getRecipesBySearchTerm, updateRecipeViewsById, addNewRecipe }

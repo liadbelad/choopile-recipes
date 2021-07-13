@@ -1,5 +1,20 @@
 import axios from "axios"
 
+// FORM DATA !
+const DUMMY_SINGLE_RECIPE_SERVER = {
+  userID: 2,
+  title: "bla blas",
+  description: "asdasf asfasf asfasfika asjfbasjf",
+  image: "url.jpg",
+  categoryID: 5,
+  ingredients: [
+    { amount: 1, measureUnitId: 1, ingredientID: 1, note: "קצוץ לקוביות" },
+    { amount: 0.5, measureUnitId: 2, ingredientID: 3 },
+    { amount: 0.2, measureUnitId: 4, ingredientID: 2 },
+  ],
+  instructions: ["ערבב סוכר", "הוסף מלח", "חרטט משהו להוראה"],
+}
+
 const DUMMY_SINGLE_RECIPE = [
   {
     id: 1,
@@ -340,12 +355,9 @@ const getAllRecipesHomepage = async (
 
 const getFullRecipeDetailsByID = async (id) => {
   try {
-    const recipe = DUMMY_SINGLE_RECIPE.find((recipe) => {
-      return recipe.id === id
-    })
-
+    const response = await fetch(`http://localhost:5000/api/recipes/${id}`)
+    const recipe = await response.json()
     if (!recipe) throw new Error("recipe not found")
-
     return recipe
   } catch (error) {
     return error.message

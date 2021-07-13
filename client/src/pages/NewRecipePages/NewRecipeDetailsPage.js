@@ -34,6 +34,7 @@ const NewRecipeDetailsPage = () => {
   }
 
   const handleFormSubmit = (newRecipeDetails) => {
+    console.log(newRecipeDetails)
     handleFinishEntering()
     handleAddRecipeDetails(newRecipeDetails)
     history.push("/recipes/new/ingredients")
@@ -47,7 +48,10 @@ const NewRecipeDetailsPage = () => {
   useEffect(() => {
     let mounted = true
     if (!isLoggedIn) {
-      history.push("/")
+      history.push({
+        pathname: "/",
+        state: { isRedirect: true },
+      })
     }
     if (!categories) {
       fetchCategories()
@@ -64,7 +68,7 @@ const NewRecipeDetailsPage = () => {
         servings: +recipeDetails.servings || "",
         prepTimeMins: +recipeDetails.prepTimeMins || "",
         imageFiles: recipeDetails.imageFiles || "",
-        categories: recipeDetails.categories.label || {},
+        categories: { value: null, label: null },
       }}
       validationSchema={Yup.object().shape({
         title: Yup.string()
@@ -105,15 +109,24 @@ const NewRecipeDetailsPage = () => {
             "עד 1 מגה בייט",
             (value) => value && value.size <= 1e6
           ),
-        categories: Yup.object().required("חובה*"),
+        categories: Yup.object()
+          .required("חובה")
+          .test(
+            "OBJECT_KEYS",
+            "חובה*",
+            (selectedCategory) =>
+              selectedCategory.label && selectedCategory.value
+          ),
       })}
       onSubmit={(values, { setSubmitting }) => {
+        console.log(values)
         handleFormSubmit(values)
         setSubmitting(false)
       }}
     >
       {(formik) => (
         <Container className="my-5">
+          {formik.errors.imageFiles}
           <NewRecipeSteps step1 />
           <Prompt
             when={isEnteringData}
@@ -144,14 +157,11 @@ const NewRecipeDetailsPage = () => {
                   <Form.Label> קטגוריה* </Form.Label>
                   <CustomSelect
                     options={categories}
-                    value={
-                      recipeDetails
-                        ? recipeDetails.categories.value
-                        : formik.values.categories
-                    }
-                    onChange={(selectedCategory) =>
+                    value={formik.values.categories}
+                    onChange={(selectedCategory) => {
                       formik.setFieldValue("categories", selectedCategory)
-                    }
+                    }}
+                    name="categories"
                   />
                   {formik.touched.categories && formik.errors.categories && (
                     <FormErrorMessages error={formik.errors.categories} />
@@ -164,11 +174,12 @@ const NewRecipeDetailsPage = () => {
                     type="file"
                     name="imageFiles"
                     id="imageFiles"
+                    accept="image/x-png,image/gif,image/jpeg"
                     onChange={(event) =>
                       formik.setFieldValue("imageFiles", event.target.files[0])
                     }
                   />
-                  {formik.errors.imageFiles && (
+                  {formik.touched.imageFiles && formik.errors.imageFiles && (
                     <FormErrorMessages error={formik.errors.imageFiles} />
                   )}
                 </Form.Group>

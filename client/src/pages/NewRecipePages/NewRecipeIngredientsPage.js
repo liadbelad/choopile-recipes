@@ -63,7 +63,10 @@ const NewRecipeIngredientsPage = () => {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      history.push("/")
+      history.push({
+        pathname: "/",
+        state: { isRedirect: true },
+      })
     }
 
     if (!ingredients && !measureUnits) {
@@ -90,8 +93,22 @@ const NewRecipeIngredientsPage = () => {
       }}
       validationSchema={Yup.object().shape({
         qty: Yup.number("מספרים בלבד").required("*חובה").positive("מספר חיובי"),
-        measureUnit: Yup.object().required("*חובה"),
-        ingredient: Yup.object().required("*חובה"),
+        measureUnit: Yup.object()
+          .required("*חובה")
+          .test(
+            "OBJECT_KEYS",
+            "חובה*",
+            (selectedMeasureUnit) =>
+              selectedMeasureUnit.value && selectedMeasureUnit.label
+          ),
+        ingredient: Yup.object()
+          .required("*חובה")
+          .test(
+            "OBJECT_KEYS",
+            "חובה*",
+            (selectedIngredient) =>
+              selectedIngredient.value && selectedIngredient.label
+          ),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
         handleAddingNewIngredient(values)
