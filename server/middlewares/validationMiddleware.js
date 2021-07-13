@@ -1,10 +1,9 @@
 const validation = (schema) => async (req, res, next) => {
-  const { ingredients, instructions } = req.body
-  if (ingredients && instructions) {
-    newRecipeValidation(ingredients, instructions)
-  }
-  const body = req.body
   try {
+    if (req.body.ingredients) {
+      convertStringNumbersToNumbers(req.body)
+    }
+    const body = req.body
     await schema.validate(body)
     next()
   } catch (error) {
@@ -14,8 +13,12 @@ const validation = (schema) => async (req, res, next) => {
   }
 }
 
-const newRecipeValidation = (ingredients, instructions) => {
-  console.log(ingredients, instructions)
+const convertStringNumbersToNumbers = (recipe) => {
+  const { servings, prepTimeMins, category, userId } = recipe
+  recipe.servings = +servings
+  recipe.prepTimeMins = +prepTimeMins
+  recipe.category = +category
+  recipe.userId = +userId
 }
 
 module.exports = validation

@@ -1,7 +1,4 @@
-const {
-  HEBREW_ENGLISH_SPACE_TEXT_REGEX,
-  SUPPORTED_FILE_FORMATS,
-} = require("../utills/constants")
+const { HEBREW_ENGLISH_SPACE_TEXT_REGEX } = require("../utills/constants")
 const Yup = require("yup")
 
 const recipeDetailsSchema = Yup.object().shape({
@@ -24,8 +21,14 @@ const recipeDetailsSchema = Yup.object().shape({
     .required("*חובה")
     .max(1000, "מקסימום 1000 דקות")
     .min(1, "מספר חיובי"),
+  category: Yup.number().required("*חובה").min(1, "מספר חיובי"),
+  ingredients: Yup.array()
+    .required("חובה*")
+    .test("CHECK_LENGTH", "לפחות 2 מרכיבים", (arr) => arr.length < 2),
 
-  // category: Yup.number().test("חובה*"),
+  instructions: Yup.array()
+    .required("חובה*")
+    .test("CHECK_LENGTH", "לפחות 2 הוראות הכנה", (arr) => arr.length < 2),
 })
 
 module.exports = { recipeDetailsSchema }

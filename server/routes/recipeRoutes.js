@@ -31,7 +31,7 @@ router.get("/newest", getNewestRecipes)
 router.post(
   "/add",
   fileUpload.single("imageFiles"),
-  // validation(recipeDetailsSchema),
+  validation(recipeDetailsSchema),
   addSingleRecipe
 )
 

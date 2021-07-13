@@ -117,7 +117,7 @@ const addSingleRecipe = async (req, res) => {
     await addNewRecipe(newRecipe)
     res.status(200).send("מתכון התקבל")
   } catch (error) {
-    console.log(error)
+    console.log("controller", error)
     res.status(404).json(error.message)
   }
 }
