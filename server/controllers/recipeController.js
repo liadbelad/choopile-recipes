@@ -1,19 +1,26 @@
 const {
-  getRecipesQuery,
   getRecipesOfCategoryQuery,
   getRecipesOfUserQuery,
   getPopularRecipesQuery,
   getNewestRecipesQuery,
   getSingleRecipeByIdQuery,
   getUserRecipesOfCategoryQuery,
-  getRecipeBySearchTermQuery,
   updateSingleRecipeViewsByIdQuery,
+  getRecipesQuery,
+  getRecipeBySearchTermQuery,
 } = require("../DAL/api")
+const { addNewRecipe } = require("../DAL/recipesApi")
+// const {
+//   addNewRecipe,
+//   getRecipesQuery,
+//   getRecipeBySearchTermQuery,
+// } = require("../DAL/recipesApi")
 
 // @desc    Fetch all recipes
 // @route   GET /api/recipes
 // @access  Public
 const getRecipes = async (req, res) => {
+  console.log("yo")
   try {
     const { keyword } = req.query
     if (!keyword) {
@@ -21,6 +28,7 @@ const getRecipes = async (req, res) => {
       return res.json(recipes)
     }
     const recipesBySearchTerm = await getRecipeBySearchTermQuery(keyword)
+    // const recipesBySearchTerm = await getRecipeBySearchTermQuery(0, 5, keyword)
     res.json(recipesBySearchTerm)
   } catch (error) {
     res.status(404).json(error.message)
@@ -98,6 +106,22 @@ const getSingleRecipeById = async (req, res) => {
   }
 }
 
+// @desc    add single recipe
+// @route   POST /api/recipes/add
+// @access  Public
+const addSingleRecipe = async (req, res) => {
+  try {
+    const { ...newRecipe } = req.body
+    newRecipe.imageURL = req.file?.filename
+
+    await addNewRecipe(newRecipe)
+    res.status(200).send("מתכון התקבל")
+  } catch (error) {
+    console.log(error)
+    res.status(404).json(error.message)
+  }
+}
+
 // @desc    Update single recipe views
 // @route   PUT /api/recipes/:recipeId
 // @access  Public
@@ -119,4 +143,5 @@ module.exports = {
   getNewestRecipes,
   getSingleRecipeById,
   updateSingleRecipeViewsById,
+  addSingleRecipe,
 }

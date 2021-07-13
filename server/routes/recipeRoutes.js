@@ -8,7 +8,11 @@ const {
   getNewestRecipes,
   getSingleRecipeById,
   updateSingleRecipeViewsById,
+  addSingleRecipe,
 } = require("../controllers/recipeController")
+const fileUpload = require("../middlewares/fileUploadMiddleware")
+const validation = require("../middlewares/validationMiddleware")
+const { recipeDetailsSchema } = require("../validations/recipeValidation")
 
 // `/api/recipes?popular='false'&keyword=${keyword}&pageNumber=${pageNumber}&recipeCount={recipeCount}`
 
@@ -23,6 +27,13 @@ router.get("/users/:userId", getUserRecipes)
 router.get("/popular", getPopularRecipes)
 
 router.get("/newest", getNewestRecipes)
+
+router.post(
+  "/add",
+  fileUpload.single("imageFiles"),
+  // validation(recipeDetailsSchema),
+  addSingleRecipe
+)
 
 router.put("/views/:recipeId", updateSingleRecipeViewsById)
 

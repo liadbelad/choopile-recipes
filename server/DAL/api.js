@@ -1,4 +1,5 @@
 const connection = require("../config/db")
+const { arrangeRecipeData } = require("../utills/functions")
 
 // USERS API
 
@@ -9,34 +10,35 @@ const userExistQuery = async (email) => {
   return userExist
 }
 
-const registerUserQuery = async (newUser) => {
-  try {
-    const insertNewUserQuery = `INSERT INTO users (first_name,last_name,password,email) VALUES(?,?,?,?)`
+const registerUserQuery = async (
+  firstName,
+  lastName,
+  hashedPassword,
+  email
+) => {
+  const insertNewUserQuery = `INSERT INTO users (first_name,last_name,password,email) VALUES(?,?,?,?)`
 
-    const connector = await connection
-    await connector.execute(insertNewUserQuery, [
-      newUser.firstName,
-      newUser.lastName,
-      newUser.password,
-      newUser.email,
-    ])
+  const connector = await connection
+  await connector.execute(insertNewUserQuery, [
+    firstName,
+    lastName,
+    hashedPassword,
+    email,
+  ])
 
-    const [userData] = await connector.execute(
-      "SELECT * FROM users WHERE email = ?",
-      [newUser.email]
-    )
+  const [userData] = await connector.execute(
+    "SELECT * FROM users WHERE email = ?",
+    [email]
+  )
 
-    return userData
-  } catch (error) {
-    return error
-  }
+  return userData
 }
 
-const loginUserQuery = async (email, password) => {
+const loginUserQuery = async (email) => {
   try {
-    const loginQuery = `SELECT id,first_name as 'firstName',last_name as 'lastName',email,password FROM users WHERE email = ? AND password = ?`
+    const loginQuery = `SELECT id,first_name as 'firstName',last_name as 'lastName',email,password FROM users WHERE email = ?`
     const connector = await connection
-    const [userExist] = await connector.execute(loginQuery, [email, password])
+    const [userExist] = await connector.execute(loginQuery, [email])
     return userExist[0]
   } catch (error) {
     return error
@@ -65,7 +67,10 @@ const getRecipesQuery = async () => {
   try {
     const connector = await connection
     const [recipes] = await connector.execute(
-      "SELECT id,userId,title,description,createdAt,views FROM `recipes`"
+      `SELECT recipes.*, recipe_images.url 
+      FROM recipes
+      JOIN recipe_images
+      ON recipes.id = recipe_images.recipeId`
     )
     return recipes
   } catch (error) {
@@ -113,13 +118,20 @@ const getUserRecipesOfCategoryQuery = async (userID, categoryID) => {
   }
 }
 
-const getRecipesOfUserQuery = async (userId) => {
+const getRecipesOfUserQuery = async (userId, limit = 5, pageNumber = 0) => {
   try {
     const query = `SELECT recipes.id, recipes.title 
     FROM recipes
-    WHERE recipes.userId = ?;`
+    WHERE recipes.userId = ?
+    LIMIT ?
+    OFFSET ?
+    ;`
     const connector = await connection
-    const [userRecipes] = await connector.execute(query, [userId])
+    const [userRecipes] = await connector.execute(query, [
+      userId,
+      limit,
+      pageNumber * limit,
+    ])
 
     return userRecipes
   } catch (error) {
@@ -160,17 +172,29 @@ const getSingleRecipeByIdQuery = async (recipeId) => {
     const recipeDetailsQuery = `SELECT * 
       FROM recipes 
       WHERE recipes.id = ?;`
-    const recipeInstructionsQuery = `SELECT * FROM recipes_instructions
-    WHERE recipes_instructions.recipeId = ?;`
+
+    const recipeInstructionsQuery = `SELECT * FROM recipe_instructions
+    WHERE recipe_instructions.recipeId = ?;`
 
     const recipeIngredientsQuery = `SELECT 
-    ingredients.name,measuring_units.name,
-    recipe_ingredients.qty,recipe_ingredients.note
+    ingredients.name 'name',measuring_units.name 'measureUnit',
+    recipe_ingredients.qty 'amount',recipe_ingredients.note,
+    recipe_ingredients.title
     FROM recipes
     JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipeId
     JOIN ingredients on ingredients.id = recipe_ingredients.ingredientId
     JOIN measuring_units on measuring_units.id = recipe_ingredients.measureUnitId
     WHERE recipes.id = ?;`
+
+    const recipeImagesQuery = `SELECT url FROM recipe_images where recipeId = ?`
+
+    const recipeCategoryQuery = `SELECT categories.label 
+    FROM categories
+    where id = (
+    SELECT categoryId
+    FROM recipe_categories
+    WHERE recipeId = ?
+    ); `
 
     const connector = await connection
 
@@ -186,7 +210,22 @@ const getSingleRecipeByIdQuery = async (recipeId) => {
       [recipeId]
     )
 
-    console.log("recipe details:", recipeDetails)
+    const [recipeImages] = await connector.execute(recipeImagesQuery, [
+      recipeId,
+    ])
+
+    const [recipeCategory] = await connector.execute(recipeCategoryQuery, [
+      recipeId,
+    ])
+
+    const recipeData = arrangeRecipeData({
+      recipeDetails,
+      recipeInstructions,
+      recipeIngredients,
+      recipeImages,
+      recipeCategory,
+    })
+    return recipeData
   } catch (error) {
     return error.message
   }

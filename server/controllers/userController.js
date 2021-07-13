@@ -1,8 +1,9 @@
 const {
+  loginUserQuery,
   registerUserQuery,
   userExistQuery,
-  loginUserQuery,
 } = require("../DAL/api")
+const bcrypt = require("bcryptjs")
 
 // @desc    register new user
 // @route   POST /api/users
@@ -10,20 +11,29 @@ const {
 const register = async (req, res) => {
   const { firstName, email, password, lastName } = req.body
 
-  const newUser = { firstName, lastName, email, password }
   try {
     const userExist = await userExistQuery(email)
+
     if (userExist[0]) {
       throw new Error("משתמש קיים,התחבר")
     }
 
-    const createdUser = await registerUserQuery(newUser)
+    const hashedPassword = await bcrypt.hash(password, 10)
 
-    if (createdUser.length === 0) {
+    const createdUser = await registerUserQuery(
+      firstName,
+      lastName,
+      hashedPassword,
+      email
+    )
+
+    console.log(createdUser)
+
+    if (!createdUser) {
       throw new Error("שגיאה ביצירת משתמש,נסה שוב מאוחר יותר")
     }
 
-    res.status(201).json(createdUser[0])
+    res.status(201).json(createdUser)
   } catch (error) {
     res.status(400).json({ error: true, message: error.message })
   }
@@ -35,8 +45,10 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body
-    const user = await loginUserQuery(email, password)
-    if (!user) {
+    const user = await loginUserQuery(email)
+    const isSamePassword = await bcrypt.compare(password, user.password)
+
+    if (!user || !isSamePassword) {
       throw new Error("אימייל או סיסמא לא נכונים")
     }
     res.status(200).json(user)

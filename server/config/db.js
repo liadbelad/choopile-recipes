@@ -1,31 +1,12 @@
-// const mysql = require("mysql2")
-
-// const db = mysql.createConnection({
-//   user: "root",
-//   host: "localhost",
-//   password: "nov13pazam!",
-//   database: "choopile-recipes-test",
-// })
-
-// db.connect((err) => {
-//   if (err) {
-//     console.error(`Error: ${err.message}`.red.underline.bold)
-//     process.exit(1)
-//   }
-//   console.log(`MySql database is connected`.cyan.underline)
-// })
-
-// module.exports = db
+require("dotenv").config()
 
 async function connectDB() {
-  // get the client
   const mysql = require("mysql2/promise")
-  // create the connection
   const connection = await mysql.createConnection({
-    user: "root",
-    host: "localhost",
-    password: "nov13pazam!",
-    database: "choopile-recipes-test",
+    user: process.env.MYSQL_USER,
+    host: process.env.MYSQL_HOST,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DB_NAME,
   })
 
   console.log(`MySql database is connected`.cyan.underline)
