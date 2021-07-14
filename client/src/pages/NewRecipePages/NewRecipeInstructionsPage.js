@@ -15,6 +15,8 @@ const NewRecipeInstructionsPage = () => {
 
   const { isLoggedIn } = useContext(AuthContext)
 
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
+
   const { handleAddRecipeInstructions, recipeInstructions } =
     useContext(NewRecipeContext)
 
@@ -45,15 +47,13 @@ const NewRecipeInstructionsPage = () => {
   }
 
   const handleFormSubmit = () => {
-    const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
-
     handleAddRecipeInstructions(newRecipeInstructions, storedUserInfo.id)
 
     history.push("/recipes/new/success")
   }
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!storedUserInfo) {
       history.push({
         pathname: "/",
         state: { isRedirect: true },

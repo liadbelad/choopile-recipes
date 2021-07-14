@@ -1,18 +1,20 @@
 import React from "react"
 import { ListGroup } from "react-bootstrap"
+import styles from "./NewIngredientsList.module.scss"
 
 const NewIngredientItem = ({ ingredientData, idx, onClick }) => {
   return (
-    <ListGroup.Item
-      key={idx}
-      idx={idx}
-      className="d-flex justify-content-around"
-    >
+    <ListGroup.Item key={idx} idx={idx} className={styles["listgroup-item"]}>
       <div>
         <i
           onClick={onClick}
           style={{ cursor: "pointer" }}
           className="fas fa-trash mx-2"
+        ></i>
+        <i
+          onClick={onClick}
+          style={{ cursor: "pointer" }}
+          className="fas fa-edit mx-2"
         ></i>
       </div>
       <p> {ingredientData.qty} </p>

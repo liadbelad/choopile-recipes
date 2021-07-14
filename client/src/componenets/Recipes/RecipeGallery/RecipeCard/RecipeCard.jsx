@@ -4,7 +4,7 @@ import { updateRecipeViewsById } from "../../../../DAL/recipesApi"
 import styles from "./RecipeCard.module.scss"
 
 const RecipeCard = ({ recipe }) => {
-  const { id, title, description, views, createdAt } = recipe
+  const { id, title, description, views, createdAt, mainImageUrl } = recipe
 
   const date = createdAt.toLocaleString().slice(0, 10).replaceAll(".", "/")
 
@@ -18,7 +18,12 @@ const RecipeCard = ({ recipe }) => {
       className={`${styles["recipe-container"]}`}
     >
       <Link to={`/recipes/${id}`}>
-        <div className={styles.image}></div>
+        <div
+          style={{
+            backgroundImage: `url(http://localhost:5000/images/${mainImageUrl})`,
+          }}
+          className={styles.image}
+        ></div>
         <section className={`${styles["recipe-content"]} p-3`}>
           <div className={styles["recipe-header"]}>
             <p> {date} </p>

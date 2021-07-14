@@ -19,22 +19,23 @@ const SearchBar = ({ md, lg }) => {
   return (
     <>
       <Form inline as={Row} className="w-100">
-        <InputGroup as={Col} md={md} lg={lg} className="mx-auto">
-          <FormControl
-            id="search-recipe"
-            placeholder="מילות החיפוש שלך..."
-            className="py-4"
-            onChange={handleChangeSearchInput}
-          />
-          <InputGroup.Prepend>
-            <Button variant="light" type="submit">
-              <i className="fas fa-search"></i>
-            </Button>
-          </InputGroup.Prepend>
-        </InputGroup>
+        <Col md={md} lg={lg} className="mx-auto">
+          <InputGroup className="mx-auto">
+            <FormControl
+              id="search-recipe"
+              placeholder="מילות החיפוש שלך..."
+              className="py-4"
+              onChange={handleChangeSearchInput}
+            />
+            <InputGroup.Prepend>
+              <Button variant="light" type="submit">
+                <i className="fas fa-search"></i>
+              </Button>
+            </InputGroup.Prepend>
+          </InputGroup>
+          <SearchResults md={md} lg={lg} enteredKeyword={enteredKeyword} />
+        </Col>
       </Form>
-
-      <SearchResults md={md} lg={lg} enteredKeyword={enteredKeyword} />
     </>
   )
 }

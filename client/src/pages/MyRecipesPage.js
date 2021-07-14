@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react"
 import useHttp from "../hooks/use-http"
 import { Container, Row, Col } from "react-bootstrap"
-import { Redirect, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import AuthContext from "../store/AuthCtx/auth-context"
 import SearchBar from "../componenets/SearchBar/SearchBar"
 import CategoriesList from "../componenets/CategoriesList/CategoriesList"
@@ -40,16 +40,17 @@ const MyRecipesPage = () => {
   }
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!userInfo) {
       history.push({
         pathname: "/",
         state: { isRedirect: true },
       })
+      return
     } else {
       const { id: userID } = userInfo
       sendUserRecipesRequest(userID, true)
     }
-  }, [isLoggedIn, sendUserRecipesRequest])
+  }, [sendUserRecipesRequest])
 
   if (
     userRecipesStatus === "completed" &&

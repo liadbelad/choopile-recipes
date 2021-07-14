@@ -16,6 +16,7 @@ import NewRecipeIngredientsPage from "./pages/NewRecipePages/NewRecipeIngredient
 import NewRecipeInstructionsPage from "./pages/NewRecipePages/NewRecipeInstructionsPage"
 import ImageUploadTestPage from "./pages/ImageUploadTestPage"
 import MyRecipesPage from "./pages/MyRecipesPage"
+import EditRecipeDetailsPage from "./pages/EditRecipePages/EditRecipeDetailsPage"
 
 function App() {
   const { modalContent, handleCloseModal, handleModalContent } =
@@ -44,6 +45,11 @@ function App() {
             path="/recipes/new/instructions"
             exact
             component={NewRecipeInstructionsPage}
+          />
+          <Route
+            path="/recipes/edit/details"
+            exact
+            component={EditRecipeDetailsPage}
           />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
           <Route path="/test" exact component={ImageUploadTestPage} />

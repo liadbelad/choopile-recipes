@@ -18,6 +18,8 @@ const NewRecipeIngredientsPage = () => {
   const [measureUnits, setMeasureUnits] = useState(null)
   const [newRecipeIngredients, setNewRecipeIngredients] = useState([])
 
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
+
   const { isLoggedIn } = useContext(AuthContext)
 
   const { handleAddRecipeIngredients, recipeIngredients } =
@@ -62,7 +64,7 @@ const NewRecipeIngredientsPage = () => {
   }
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!storedUserInfo) {
       history.push({
         pathname: "/",
         state: { isRedirect: true },
@@ -80,7 +82,7 @@ const NewRecipeIngredientsPage = () => {
     if (newRecipeIngredients.length > 0) {
       handleFinishEntering()
     }
-  }, [isLoggedIn, ingredients, measureUnits, newRecipeIngredients, history])
+  }, [ingredients, measureUnits, newRecipeIngredients, history])
 
   return (
     <Formik

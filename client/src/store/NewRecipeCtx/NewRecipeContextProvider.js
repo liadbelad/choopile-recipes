@@ -10,7 +10,7 @@ const AuthContextProvider = ({ children }) => {
   const [recipeDetails, setRecipeDetails] = useState({})
   const [recipeIngredients, setRecipeIngredients] = useState({})
   const [recipeInstructions, setRecipeInstructions] = useState({})
-  const [newRecipe, setNewRecipe] = useState(new FormData())
+  const [fullRecipeData, setFullRecipeData] = useState(new FormData())
 
   const handleAddRecipeDetails = (newRecipeDetails) => {
     setRecipeDetails(newRecipeDetails)
@@ -22,8 +22,8 @@ const AuthContextProvider = ({ children }) => {
 
     restRecipeDetails.category = categoryID
 
-    const formData = appendDataToFormData(newRecipe, restRecipeDetails)
-    setNewRecipe(formData)
+    const formData = appendDataToFormData(fullRecipeData, restRecipeDetails)
+    setFullRecipeData(formData)
     localStorage.setItem("recipeDetails", JSON.stringify(newRecipeDetails))
   }
 
@@ -43,7 +43,7 @@ const AuthContextProvider = ({ children }) => {
     )
 
     addNewArrayDataToFormData(
-      newRecipe,
+      fullRecipeData,
       "ingredients",
       transformedRecipeIngredients
     )
@@ -61,15 +61,15 @@ const AuthContextProvider = ({ children }) => {
     )
 
     addNewArrayDataToFormData(
-      newRecipe,
+      fullRecipeData,
       "instructions",
       transformedRecipeInstructions
     )
-    if (newRecipe.has("userId")) {
-      newRecipe.delete("userId")
-      newRecipe.append("userId", userID)
+    if (fullRecipeData.has("userId")) {
+      fullRecipeData.delete("userId")
+      fullRecipeData.append("userId", userID)
     } else {
-      newRecipe.append("userId", userID)
+      fullRecipeData.append("userId", userID)
     }
 
     localStorage.setItem(
@@ -80,7 +80,11 @@ const AuthContextProvider = ({ children }) => {
   }
 
   const handleAddNewRecipe = () => {
-    addNewRecipe(newRecipe)
+    addNewRecipe(fullRecipeData)
+  }
+
+  const handleUpdateRecipe = () => {
+    // updateRecipe(fullRecipeData)
   }
 
   useEffect(() => {
@@ -100,7 +104,7 @@ const AuthContextProvider = ({ children }) => {
         recipeDetails,
         recipeIngredients,
         recipeInstructions,
-        newRecipe,
+        newRecipe: fullRecipeData,
         handleAddRecipeDetails,
         handleAddRecipeIngredients,
         handleAddRecipeInstructions,

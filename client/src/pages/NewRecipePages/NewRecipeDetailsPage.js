@@ -20,6 +20,7 @@ const NewRecipeDetailsPage = () => {
   const [categories, setCategories] = useState(null)
 
   const { isLoggedIn } = useContext(AuthContext)
+  const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const { handleAddRecipeDetails, recipeDetails } = useContext(NewRecipeContext)
 
@@ -47,7 +48,7 @@ const NewRecipeDetailsPage = () => {
 
   useEffect(() => {
     let mounted = true
-    if (!isLoggedIn) {
+    if (!storedUserInfo) {
       history.push({
         pathname: "/",
         state: { isRedirect: true },
@@ -58,7 +59,7 @@ const NewRecipeDetailsPage = () => {
     }
 
     return () => (mounted = false)
-  }, [isLoggedIn])
+  }, [])
 
   return (
     <Formik
@@ -74,20 +75,11 @@ const NewRecipeDetailsPage = () => {
         title: Yup.string()
           .required("*חובה")
           .min(2, "מינימום 2 תווים")
-          .max(30, "מקסימום 30 תווים")
-          .matches(
-            HEBREW_ENGLISH_SPACE_TEXT_REGEX,
-            "אותיות בלבד אנגלית או עברית"
-          ),
+          .max(60, "מקסימום 60 תווים"),
 
         description: Yup.string()
           .required("*חובה")
-          .max(255, "מקסימום 255 תווים")
-          .matches(
-            HEBREW_ENGLISH_SPACE_TEXT_REGEX,
-            "אותיות בלבד אנגלית או עברית"
-          ),
-
+          .max(255, "מקסימום 255 תווים"),
         servings: Yup.number()
           .required("*חובה")
           .max(100, "מקסימום 100 מנות")
