@@ -2,8 +2,6 @@ import { useReducer, useCallback } from "react"
 
 function httpReducer(state, action) {
   if (action.type === "SEND") {
-    console.log("loading", action)
-
     return {
       data: null,
       error: null,
@@ -12,8 +10,6 @@ function httpReducer(state, action) {
   }
 
   if (action.type === "SUCCESS") {
-    console.log("success", action)
-
     return {
       data: action.responseData,
       error: null,
@@ -22,7 +18,6 @@ function httpReducer(state, action) {
   }
 
   if (action.type === "ERROR") {
-    console.log("error", action)
     return {
       data: null,
       error: action.errorMessage,

@@ -27,8 +27,6 @@ const register = async (req, res) => {
       email
     )
 
-    console.log(createdUser)
-
     if (!createdUser) {
       throw new Error("שגיאה ביצירת משתמש,נסה שוב מאוחר יותר")
     }
@@ -45,16 +43,39 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body
-    const user = await loginUserQuery(email)
-    const isSamePassword = await bcrypt.compare(password, user.password)
 
-    if (!user || !isSamePassword) {
+    const user = await loginUserQuery(email)
+    if (!user) {
       throw new Error("אימייל או סיסמא לא נכונים")
     }
+    const isSamePassword = await bcrypt.compare(password, user.password)
+
+    if (!isSamePassword) {
+      throw new Error("אימייל או סיסמא לא נכונים")
+    }
+    res.cookie("user", JSON.stringify(user))
+    // req.session.user = user
+
     res.status(200).json(user)
   } catch (error) {
     return res.status(401).json({ error: true, message: error.message })
   }
 }
 
-module.exports = { login, register }
+// @desc    get user session
+// @route   GET /api/users/login
+// @access  Public
+const getUserSession = async (req, res) => {
+  try {
+    if (req.session.user) {
+      res.status(200).send({ isLoggedIn: true, user: req.session.user })
+    } else {
+      res.status(401).send({ isLoggedIn: false })
+    }
+  } catch (error) {
+    error
+    return res.status(401).json({ error: true, message: error.message })
+  }
+}
+
+module.exports = { login, register, getUserSession }

@@ -1,4 +1,4 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect } from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import ModalContext from "./store/ModalCtx/modal-context"
 import ScrollToTop from "./componenets/ScrollToTop/ScrollToTop"
@@ -17,10 +17,20 @@ import NewRecipeInstructionsPage from "./pages/NewRecipePages/NewRecipeInstructi
 import ImageUploadTestPage from "./pages/ImageUploadTestPage"
 import MyRecipesPage from "./pages/MyRecipesPage"
 import EditRecipeDetailsPage from "./pages/EditRecipePages/EditRecipeDetailsPage"
-
+import EditRecipeIngredientsPage from "./pages/EditRecipePages/EditRecipeIngredientsPage"
+import EditRecipeInstructionsPage from "./pages/EditRecipePages/EditRecipeInstructionsPage"
+import { getSessionFromServer } from "./DAL/api"
 function App() {
   const { modalContent, handleCloseModal, handleModalContent } =
     useContext(ModalContext)
+
+  const getSession = async () => {
+    const userSession = await getSessionFromServer()
+  }
+
+  useEffect(() => {
+    getSession()
+  }, [])
 
   return (
     <Router>
@@ -50,6 +60,16 @@ function App() {
             path="/recipes/edit/details"
             exact
             component={EditRecipeDetailsPage}
+          />
+          <Route
+            path="/recipes/edit/ingredients"
+            exact
+            component={EditRecipeIngredientsPage}
+          />
+          <Route
+            path="/recipes/edit/instructions"
+            exact
+            component={EditRecipeInstructionsPage}
           />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
           <Route path="/test" exact component={ImageUploadTestPage} />

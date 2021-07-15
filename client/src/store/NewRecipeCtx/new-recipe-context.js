@@ -10,6 +10,7 @@ const newRecipeContext = React.createContext({
   handleAddRecipeIngredients: (newRecipeIngredients) => {},
   handleAddRecipeInstructions: (newRecipeInstructions) => {},
   handleAddNewRecipe: (newRecipe) => {},
+  handleUpdateRecipe: (updatedRecipe) => {},
 })
 
 export default newRecipeContext

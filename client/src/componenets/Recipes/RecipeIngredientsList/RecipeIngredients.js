@@ -5,9 +5,10 @@ const IngredientsByTitleList = ({ title, ingredients }) => {
   return (
     <ListGroup className="mb-3">
       {title && <h6> {title}: </h6>}
-      {ingredients.map(({ amount, measureUnit, name }, idx) => (
+      {ingredients.map(({ amount, measureUnit, ingredient }, idx) => (
         <ListGroup.Item key={idx} style={{ border: "none" }}>
-          <i className="fas fa-utensils"></i> {amount} {measureUnit} {name}
+          <i className="fas fa-utensils"></i> {amount} {measureUnit.label + " "}
+          {ingredient.label}
         </ListGroup.Item>
       ))}
     </ListGroup>

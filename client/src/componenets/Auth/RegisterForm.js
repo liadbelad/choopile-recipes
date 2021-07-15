@@ -34,7 +34,6 @@ const RegisterForm = () => {
     setTimeout(async () => {
       const { error, loading, success, userInfo, message } =
         await handleRegister(newUser)
-      console.log(error, userInfo, message)
 
       if (error) {
         setMessage({ variant: "danger", text: message })

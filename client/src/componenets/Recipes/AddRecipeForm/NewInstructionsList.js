@@ -3,7 +3,6 @@ import { ListGroup } from "react-bootstrap"
 import styles from "./NewInstructionsList.module.scss"
 
 const NewInstructionItem = ({ instructionData, idx, onClick }) => {
-  console.log(instructionData)
   return (
     <ListGroup.Item key={idx} idx={idx} className={styles["listgroup-item"]}>
       <div>

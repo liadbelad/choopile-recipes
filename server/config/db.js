@@ -8,7 +8,6 @@ async function connectDB() {
     password: process.env.MYSQL_PASSWORD,
     database: process.env.MYSQL_DB_NAME,
   })
-
   console.log(`MySql database is connected`.cyan.underline)
 
   return connection

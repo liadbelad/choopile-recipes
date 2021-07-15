@@ -11,6 +11,10 @@ import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
 import NewIngredientsList from "../../componenets/Recipes/AddRecipeForm/NewIngredientsList"
 import { getAllIngredients, getAllMeasureUnits } from "../../DAL/api"
+import {
+  filterChoosenIngredient,
+  findIngredientDeletedByUser,
+} from "../../utills/js/functions"
 
 const NewRecipeIngredientsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -19,8 +23,6 @@ const NewRecipeIngredientsPage = () => {
   const [newRecipeIngredients, setNewRecipeIngredients] = useState([])
 
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
-
-  const { isLoggedIn } = useContext(AuthContext)
 
   const { handleAddRecipeIngredients, recipeIngredients } =
     useContext(NewRecipeContext)
@@ -40,14 +42,24 @@ const NewRecipeIngredientsPage = () => {
       ...prevNewRecipeIngredients,
       newIngredient,
     ])
+
+    const { value } = newIngredient.ingredient
+    const filteredIngredients = filterChoosenIngredient(ingredients, value)
+    setIngredients(filteredIngredients)
   }
 
   const handleDeleteNewIngredient = (deleteIdx) => {
     if (window.confirm(`האם אתה בטוח ?`)) {
+      const { ingredient } = findIngredientDeletedByUser(
+        newRecipeIngredients,
+        deleteIdx
+      )
+
       const filteredNewIngredients = newRecipeIngredients.filter(
         (ingredient, idx) => idx !== deleteIdx
       )
       setNewRecipeIngredients(filteredNewIngredients)
+      setIngredients((prevIngredients) => [...prevIngredients, ingredient])
     }
   }
 
@@ -64,15 +76,15 @@ const NewRecipeIngredientsPage = () => {
   }
 
   useEffect(() => {
+    fetchData()
+  }, [])
+
+  useEffect(() => {
     if (!storedUserInfo) {
       history.push({
         pathname: "/",
         state: { isRedirect: true },
       })
-    }
-
-    if (!ingredients && !measureUnits) {
-      fetchData()
     }
 
     if (newRecipeIngredients.length === 0) {
@@ -82,7 +94,7 @@ const NewRecipeIngredientsPage = () => {
     if (newRecipeIngredients.length > 0) {
       handleFinishEntering()
     }
-  }, [ingredients, measureUnits, newRecipeIngredients, history])
+  }, [newRecipeIngredients, history])
 
   return (
     <Formik

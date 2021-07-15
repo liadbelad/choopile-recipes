@@ -16,7 +16,7 @@ const registerUserQuery = async (
   hashedPassword,
   email
 ) => {
-  const insertNewUserQuery = `INSERT INTO users (first_name,last_name,password,email) VALUES(?,?,?,?)`
+  const insertNewUserQuery = `INSERT INTO users (firstName,lastName,password,email) VALUES(?,?,?,?)`
 
   const connector = await connection
   await connector.execute(insertNewUserQuery, [
@@ -36,7 +36,7 @@ const registerUserQuery = async (
 
 const loginUserQuery = async (email) => {
   try {
-    const loginQuery = `SELECT id,first_name as 'firstName',last_name as 'lastName',email,password FROM users WHERE email = ?`
+    const loginQuery = `SELECT id,firstName ,lastName,email,password FROM users WHERE email = ?`
     const connector = await connection
     const [userExist] = await connector.execute(loginQuery, [email])
     return userExist[0]
@@ -119,20 +119,17 @@ const getUserRecipesOfCategoryQuery = async (userID, categoryID) => {
 }
 
 const getRecipesOfUserQuery = async (userId, limit = 5, pageNumber = 0) => {
+  const offset = pageNumber * limit
   try {
-    const query = `SELECT recipes.id, recipes.title 
+    const query = `SELECT recipes.id, recipes.title,recipes.userId,recipes.mainImageUrl
     FROM recipes
     WHERE recipes.userId = ?
-    LIMIT ?
-    OFFSET ?
+    LIMIT ${limit}
+    OFFSET ${offset}
+    
     ;`
     const connector = await connection
-    const [userRecipes] = await connector.execute(query, [
-      userId,
-      limit,
-      pageNumber * limit,
-    ])
-
+    const [userRecipes] = await connector.execute(query, [userId])
     return userRecipes
   } catch (error) {
     return error.message
@@ -177,9 +174,10 @@ const getSingleRecipeByIdQuery = async (recipeId) => {
     WHERE recipe_instructions.recipeId = ?;`
 
     const recipeIngredientsQuery = `SELECT 
-    ingredients.name 'name',measuring_units.name 'measureUnit',
+    ingredients.name 'name',ingredients.id 'ingredientId',
+    measuring_units.name 'measureUnit',measuring_units.id 'measureUnitId',
     recipe_ingredients.qty 'amount',recipe_ingredients.note,
-    recipe_ingredients.title
+    recipe_ingredients.title,recipe_ingredients.id 'recipeIngredientId'
     FROM recipes
     JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipeId
     JOIN ingredients on ingredients.id = recipe_ingredients.ingredientId
@@ -188,7 +186,7 @@ const getSingleRecipeByIdQuery = async (recipeId) => {
 
     const recipeImagesQuery = `SELECT url FROM recipe_images where recipeId = ?`
 
-    const recipeCategoryQuery = `SELECT categories.label 
+    const recipeCategoryQuery = `SELECT id 'value',label
     FROM categories
     where id = (
     SELECT categoryId
@@ -283,12 +281,10 @@ const getAllCategoriesOfUserRecipesQuery = async (userID) => {
 // Measure Units API
 
 const getAllMeasureUnitsQuery = async () => {
-  const noTitleId = 1
   try {
     const connector = await connection
     const [rows] = await connector.execute(
-      "SELECT id 'value',name 'label' FROM `measuring_units` WHERE id != ?",
-      [noTitleId]
+      "SELECT id 'value',name 'label' FROM `measuring_units`"
     )
     return rows
   } catch (error) {
@@ -306,7 +302,6 @@ const getAllIngredientsQuery = async () => {
     )
     return rows
   } catch (error) {
-    console.log("error".red, error.message)
     return error.message
   }
 }

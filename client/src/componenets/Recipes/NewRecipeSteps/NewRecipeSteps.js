@@ -1,24 +1,14 @@
 import React from "react"
-import { NavLink } from "react-router-dom"
 import { LinkContainer } from "react-router-bootstrap"
 import { Nav } from "react-bootstrap"
+import { useLocation } from "react-router-dom"
 
-const NewRecipeSteps = ({ step1, step2, step3, step4 }) => {
+const NewRecipeSteps = ({ step1, step2, step3, path = "new" }) => {
   return (
     <Nav className="justify-content-center mb-4">
-      {/* <Nav.Item>
-        {step1 ? (
-          <LinkContainer to="/login">
-            <Nav.Link>התחברות</Nav.Link>
-          </LinkContainer>
-        ) : (
-          <Nav.Link disabled>התחברות</Nav.Link>
-        )}
-      </Nav.Item> */}
-
       <Nav.Item>
         {step1 ? (
-          <LinkContainer to="/recipes/new/details">
+          <LinkContainer to={`/recipes/${path}/details`}>
             <Nav.Link>פרטי מתכון</Nav.Link>
           </LinkContainer>
         ) : (
@@ -28,7 +18,7 @@ const NewRecipeSteps = ({ step1, step2, step3, step4 }) => {
 
       <Nav.Item>
         {step2 ? (
-          <LinkContainer to="/recipes/new/ingredients">
+          <LinkContainer to={`/recipes/${path}/ingredients`}>
             <Nav.Link>מרכיבים</Nav.Link>
           </LinkContainer>
         ) : (
@@ -38,7 +28,7 @@ const NewRecipeSteps = ({ step1, step2, step3, step4 }) => {
 
       <Nav.Item>
         {step3 ? (
-          <LinkContainer to="/recipes/new/instructions">
+          <LinkContainer to={`/recipes/${path}/instructions`}>
             <Nav.Link>הוראות הכנה</Nav.Link>
           </LinkContainer>
         ) : (

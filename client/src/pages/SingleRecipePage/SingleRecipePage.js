@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useEffect } from "react"
 import { useParams } from "react-router-dom"
 import { Container, Card, Row, Col } from "react-bootstrap"
 import styles from "./SingleRecipePage.module.scss"
@@ -20,7 +20,7 @@ const SingleRecipePage = () => {
 
   useEffect(() => {
     sendRequest(+id)
-  }, [sendRequest])
+  }, [id, sendRequest])
 
   return (
     <>
@@ -34,7 +34,7 @@ const SingleRecipePage = () => {
             <Card.Img
               className={styles["img-responsive"]}
               variant="bottom"
-              src={`http://localhost:5000/images/${recipe.images[0].url}`}
+              src={`http://localhost:5000/images/${recipe.mainImageUrl}`}
             />
             <Row className="my-5 w-100">
               <Col md={4}>

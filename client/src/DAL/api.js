@@ -1,6 +1,13 @@
 import axios from "axios"
+axios.defaults.credentials = true
 
-// FORM DATA !
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+}
+
 const DUMMY_SINGLE_RECIPE_SERVER = {
   userID: 2,
   title: "bla blas",
@@ -197,7 +204,7 @@ const DUMMY_USERS = [
 //     { id: 1, amount: 1, measureUnit: "כוס", name: "חלב" },
 //     { id: 2, amount: 1.5, measureUnit: "כפית", name: "מלח" },
 //     { id: 3, amount: 1, measureUnit: "קילו", name: "קמח" },
-//     { id: 4, amount: 5, measureUnit: "כפות", name: "סוכר" },
+//     { id: 4, amount: 5, measureU\nit: "כפות", name: "סוכר" },
 //   ],
 //   instructions: [
 //     { id: 1, title: "למלית", content: "ערבב סוכר ומלר" },
@@ -207,24 +214,29 @@ const DUMMY_USERS = [
 //   ],
 // }
 
+const getSessionFromServer = async () => {
+  try {
+    const { data } = await axios.get("http://localhost:5000/api/users/login")(
+      data
+    )
+    return data
+  } catch (error) {
+    return error.message
+  }
+}
+
 const login = async (loginUser) => {
   try {
-    const response = await fetch("http://localhost:5000/api/users/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(loginUser),
-    })
-    const userData = await response.json()
-    if (!response.ok) {
-      throw new Error(userData.message || "שגיאה בהתחברות,נסה שוב")
-    }
+    const { data: userInfo } = await axios.post(
+      "http://localhost:5000/api/users/login",
+      loginUser,
+      config
+    )
 
     return {
       loading: false,
       success: true,
-      userInfo: userData,
+      userInfo,
       message: "מתחבר...",
     }
   } catch (error) {
@@ -263,16 +275,16 @@ const getUserDetails = async (userID = 4) => {
     if (!user) throw new Error("who are you?")
     return user
   } catch (error) {
-    console.log(error.message)
+    return error.message
   }
 }
 
 const getUserRecipes = async (userID) => {
   try {
-    const response = await fetch(
-      `http://localhost:5000/api/recipes/users/${userID}`
+    const { data: userRecipes } = await axios(
+      `http://localhost:5000/api/recipes/users/${userID}`,
+      config
     )
-    const userRecipes = await response.json()
 
     return userRecipes
   } catch (error) {
@@ -376,47 +388,12 @@ const getRecipesByCategory = async (categoryID) => {
   }
 }
 
-// ?
-// userID = 1
-// categoriesID's = [ 1,4 ]
-// fetch ('/localhost:5000/recipes/:id')
-
 const getUserRecipesByCategory = async ({ userID, categoryID }) => {
-  console.log(userID, categoryID)
   try {
     const { data } = await axios.get(
       `http://localhost:5000/api/recipes/categories/?category=${categoryID}&user=${userID}`
     )
     return data
-  } catch (error) {
-    return error.message
-  }
-}
-
-const addNewRecipe = async (newRecipe) => {
-  try {
-    // after frontend validations
-    DUMMY_SINGLE_RECIPE.push(newRecipe)
-  } catch (error) {
-    return error.message
-  }
-}
-
-const editRecipe = async (id, updatedRecipe) => {
-  // checkIfUpdateNeeded ??
-  const { newTitle, newDescription, newImage, newCategories } = updatedRecipe
-
-  try {
-    const recipeToUpdate = DUMMY_SINGLE_RECIPE.find(
-      (recipe) => recipe.id === id
-    )
-
-    if (!recipeToUpdate) throw new Error("recipe doesnot exist")
-
-    recipeToUpdate.title = newTitle
-    recipeToUpdate.description = newDescription
-    recipeToUpdate.image = newImage
-    recipeToUpdate.categories = newCategories
   } catch (error) {
     return error.message
   }
@@ -434,4 +411,5 @@ export {
   getRecipesByCategory,
   getAllMeasureUnits,
   getAllIngredients,
+  getSessionFromServer,
 }

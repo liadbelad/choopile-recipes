@@ -25,8 +25,6 @@ const EditRecipeDetailsPage = () => {
     error,
   } = useHttp(getFullRecipeDetailsByID)
 
-  console.log(recipe)
-
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const { handleAddRecipeDetails, recipeDetails } = useContext(NewRecipeContext)
@@ -34,7 +32,7 @@ const EditRecipeDetailsPage = () => {
   const history = useHistory()
 
   const location = useLocation()
-  const recipeId = location.state.recipeId
+  const recipeId = location?.state?.recipeId
 
   const handleFormFocus = () => {
     setIsEnteringData(true)
@@ -47,13 +45,22 @@ const EditRecipeDetailsPage = () => {
   const handleFormSubmit = (updatedRecipeDetails) => {
     handleFinishEntering()
     handleAddRecipeDetails(updatedRecipeDetails)
-    history.push("/recipes/edit/ingredients")
+    history.push({
+      pathname: "/recipes/edit/ingredients",
+      state: { recipe },
+    })
   }
 
   const fetchCategories = async () => {
     const categories = await getAllCategories()
     setCategories(categories)
   }
+
+  useEffect(() => {
+    if (!location.state) {
+      history.push("/")
+    }
+  }, [])
 
   useEffect(() => {
     let mounted = true
@@ -127,7 +134,7 @@ const EditRecipeDetailsPage = () => {
               .test(
                 "FILE_SIZE",
                 "עד 1 מגה בייט",
-                (value) => value && value.size <= 1e6
+                (value) => value && value.size <= 2e6
               ),
             categories: Yup.object()
               .required("חובה")
@@ -139,7 +146,6 @@ const EditRecipeDetailsPage = () => {
               ),
           })}
           onSubmit={(values, { setSubmitting }) => {
-            console.log(values)
             handleFormSubmit(values)
             setSubmitting(false)
           }}
@@ -147,7 +153,7 @@ const EditRecipeDetailsPage = () => {
           {(formik) => (
             <Container className="my-5">
               {formik.errors.imageFiles}
-              <NewRecipeSteps step1 />
+              <NewRecipeSteps step1 path="edit" />
               <Prompt
                 when={isEnteringData}
                 message={() => "המתכון שלך לא יישמר, האם אתה בטוח ?"}

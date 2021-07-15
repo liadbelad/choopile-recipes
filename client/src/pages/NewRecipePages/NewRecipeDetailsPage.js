@@ -35,7 +35,6 @@ const NewRecipeDetailsPage = () => {
   }
 
   const handleFormSubmit = (newRecipeDetails) => {
-    console.log(newRecipeDetails)
     handleFinishEntering()
     handleAddRecipeDetails(newRecipeDetails)
     history.push("/recipes/new/ingredients")
@@ -99,7 +98,7 @@ const NewRecipeDetailsPage = () => {
           .test(
             "FILE_SIZE",
             "עד 1 מגה בייט",
-            (value) => value && value.size <= 1e6
+            (value) => value && value.size <= 2e6
           ),
         categories: Yup.object()
           .required("חובה")
@@ -111,7 +110,6 @@ const NewRecipeDetailsPage = () => {
           ),
       })}
       onSubmit={(values, { setSubmitting }) => {
-        console.log(values)
         handleFormSubmit(values)
         setSubmitting(false)
       }}

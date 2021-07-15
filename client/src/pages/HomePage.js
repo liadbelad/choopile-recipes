@@ -12,7 +12,6 @@ import ModalContext from "../store/ModalCtx/modal-context"
 
 const HomePage = () => {
   const location = useLocation()
-  console.log(location.state)
   const { handleOpenModal } = useContext(ModalContext)
 
   const {

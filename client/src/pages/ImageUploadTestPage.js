@@ -16,7 +16,6 @@ const ImageUploadTestPage = () => {
     for (let i = 0; i < files.length; i++) {
       formData.append("image", files[i])
     }
-    console.log(formData)
     fetch("http://localhost:5000/upload_files", {
       method: "POST",
       body: formData,

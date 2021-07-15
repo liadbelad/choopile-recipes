@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React from "react"
 import { Form, Button } from "react-bootstrap"
 import { Formik } from "formik"
 import * as Yup from "yup"
@@ -8,15 +8,9 @@ import {
   HEBREW_ENGLISH_TEXT_REGEX,
 } from "../../utills/js/constants"
 import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
-import Loader from "../../componenets/Loader/Loader"
-import Message from "../../componenets/Message/Message"
 
 const UserProfilePage = () => {
-  const [loading, setLoading] = useState(false)
-  const [message, setMessage] = useState(false)
-
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
-  //   const { handleRegister } = useContext(AuthContext)
 
   const handleFormSubmit = () => {
     // { email, password, firstName, lastName }
@@ -68,10 +62,7 @@ const UserProfilePage = () => {
         >
           <h2> אזור אישי - עדכון פרטים </h2>
           <hr />
-          {loading && <Loader />}
-          {message && (
-            <Message variant={message.variant}> {message.text} </Message>
-          )}
+
           <Form.Group className="w-75">
             <Form.Label className="font-weight-bold"> אימייל: </Form.Label>
             <Form.Control

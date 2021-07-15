@@ -3,7 +3,6 @@
 .grid-container {
   display: grid;
   gap: 1rem;
-  //   margin: 1rem auto;
 }
 
 .flex-container {
@@ -17,8 +16,10 @@
 
 @media #{$media-tablet} {
   .grid-container {
-    // grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(205px, 1fr));
 
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    & img {
+      height: 140px;
+    }
   }
 }

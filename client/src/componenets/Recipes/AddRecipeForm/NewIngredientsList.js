@@ -2,18 +2,23 @@ import React from "react"
 import { ListGroup } from "react-bootstrap"
 import styles from "./NewIngredientsList.module.scss"
 
-const NewIngredientItem = ({ ingredientData, idx, onClick }) => {
+const NewIngredientItem = ({
+  ingredientData,
+  idx,
+  handleDeleteNewIngredient,
+  handleEditIngredient,
+}) => {
   return (
     <ListGroup.Item key={idx} idx={idx} className={styles["listgroup-item"]}>
       <div>
         <i
-          onClick={onClick}
-          style={{ cursor: "pointer" }}
+          onClick={handleDeleteNewIngredient}
+          style={{ cursor: "pointer", color: "red" }}
           className="fas fa-trash mx-2"
         ></i>
         <i
-          onClick={onClick}
-          style={{ cursor: "pointer" }}
+          onClick={handleEditIngredient}
+          style={{ cursor: "pointer", color: "#ffb605" }}
           className="fas fa-edit mx-2"
         ></i>
       </div>
@@ -36,7 +41,7 @@ const NewIngredientsList = ({
           ingredientData={ingredientData}
           idx={idx}
           key={idx}
-          onClick={() => handleDeleteNewIngredient(idx)}
+          handleDeleteNewIngredient={() => handleDeleteNewIngredient(idx)}
         />
       ))}
     </ListGroup>

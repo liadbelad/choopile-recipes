@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react"
-import { addNewRecipe } from "../../DAL/recipesApi"
+import { addNewRecipe, updateRecipe } from "../../DAL/recipesApi"
 import {
   addNewArrayDataToFormData,
   appendDataToFormData,
@@ -33,11 +33,13 @@ const AuthContextProvider = ({ children }) => {
     const transformedRecipeIngredients = newRecipeIngredients.map(
       (ingredientData) => {
         return {
+          action: ingredientData.action || null,
           amount: ingredientData.qty,
           measureUnitId: ingredientData.measureUnit.value,
           ingredientId: ingredientData.ingredient.value,
           title: ingredientData.title || "",
           note: ingredientData.note || "",
+          recipeIngredientId: ingredientData.recipeIngredientId || null,
         }
       }
     )
@@ -56,35 +58,26 @@ const AuthContextProvider = ({ children }) => {
   const handleAddRecipeInstructions = (newRecipeInstructions, userID) => {
     setRecipeInstructions(newRecipeInstructions)
 
-    const transformedRecipeInstructions = newRecipeInstructions.map(
-      ({ instruction }) => instruction
-    )
-
     addNewArrayDataToFormData(
       fullRecipeData,
       "instructions",
-      transformedRecipeInstructions
+      newRecipeInstructions
     )
-    if (fullRecipeData.has("userId")) {
-      fullRecipeData.delete("userId")
-      fullRecipeData.append("userId", userID)
-    } else {
-      fullRecipeData.append("userId", userID)
-    }
+
+    fullRecipeData.set("userId", userID)
 
     localStorage.setItem(
       "recipeInstructions",
       JSON.stringify(newRecipeInstructions)
     )
-    handleAddNewRecipe()
   }
 
   const handleAddNewRecipe = () => {
     addNewRecipe(fullRecipeData)
   }
 
-  const handleUpdateRecipe = () => {
-    // updateRecipe(fullRecipeData)
+  const handleUpdateRecipe = (recipeId) => {
+    updateRecipe(fullRecipeData, recipeId)
   }
 
   useEffect(() => {
@@ -94,8 +87,6 @@ const AuthContextProvider = ({ children }) => {
     if (storedRecipeDetails) {
       setRecipeDetails(storedRecipeDetails)
     }
-
-    console.log(storedRecipeDetails)
   }, [])
 
   return (
@@ -109,6 +100,7 @@ const AuthContextProvider = ({ children }) => {
         handleAddRecipeIngredients,
         handleAddRecipeInstructions,
         handleAddNewRecipe,
+        handleUpdateRecipe,
       }}
     >
       {children}

@@ -9,9 +9,11 @@ const {
   getSingleRecipeById,
   updateSingleRecipeViewsById,
   addSingleRecipe,
+  updateSingleRecipe,
 } = require("../controllers/recipeController")
 const fileUpload = require("../middlewares/fileUploadMiddleware")
 const validation = require("../middlewares/validationMiddleware")
+const validateCookie = require("../middlewares/validateCookieMiddleware")
 const { recipeDetailsSchema } = require("../validations/recipeValidation")
 
 // `/api/recipes?popular='false'&keyword=${keyword}&pageNumber=${pageNumber}&recipeCount={recipeCount}`
@@ -22,7 +24,7 @@ router.get("/", getRecipes)
 
 router.get("/categories", getRecipesOfCategory)
 
-router.get("/users/:userId", getUserRecipes)
+router.get("/users/:userId", validateCookie, getUserRecipes)
 
 router.get("/popular", getPopularRecipes)
 
@@ -37,48 +39,13 @@ router.post(
 
 router.put("/views/:recipeId", updateSingleRecipeViewsById)
 
-router.route("/:recipeId").get(getSingleRecipeById)
-
-// // @desc    Fetch single product
-// // @route   GET /api/recipes/:recipeId
-// // @access  Public
-// router.get("/:recipeId", (req, res) => {
-
-//   const recipeDetails = db.query(
-//     `SELECT *
-//   FROM recipes
-//   WHERE recipes.id = ${recipeId};`,
-//     (err, result) => {
-//       if (err) throw err
-//       console.log(`recipeDetails ${result}`.green.bold)
-//     }
-//   )
-
-//   const recipeIngredients = db.query(
-//     `SELECT
-//   ingredients.name,measuring_units.name,
-//   recipe_ingredients.qty,recipe_ingredients.note
-//   FROM recipes
-//   JOIN recipe_ingredients ON recipes.id = recipe_ingredients.recipeId
-//   JOIN ingredients on ingredients.id = recipe_ingredients.ingredientId
-//   JOIN measuring_units on measuring_units.id = recipe_ingredients.measureUnitId
-//   WHERE recipes.id = ${recipeId};`,
-//     (err, result) => {
-//       if (err) throw err
-//       console.log(`recipeIngredients ${result}`.yellow.bold)
-//     }
-//   )
-
-//   const recipeInstructions = db.query(
-//     `SELECT * FROM recipes_instructions
-//     WHERE recipes_instructions.recipeId = ${recipeId};`,
-//     (err, result) => {
-//       if (err) throw err
-//       console.log(`recipeInstructions ${result}`.red.bold)
-//     }
-//   )
-
-//   res.json(recipeDetails)
-// })
+router
+  .route("/:recipeId")
+  .get(getSingleRecipeById)
+  .put(
+    fileUpload.single("imageFiles"),
+    validation(recipeDetailsSchema),
+    updateSingleRecipe
+  )
 
 module.exports = router

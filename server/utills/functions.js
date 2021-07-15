@@ -1,9 +1,17 @@
+function isInt(num) {
+  return Number(num) === num && num % 1 === 0
+}
+
+function isFloat(num) {
+  return Number(num) === num && num % 1 !== 0
+}
+
 const arrangeRecipeData = ({
   recipeDetails,
   recipeInstructions,
   recipeIngredients,
   recipeImages,
-  recipeCategories,
+  recipeCategory,
 }) => {
   const arrangedRecipeData = { ...recipeDetails[0] }
   arrangedRecipeData.images = [...recipeImages]
@@ -11,6 +19,8 @@ const arrangeRecipeData = ({
   arrangeRecipeInstructions(arrangedRecipeData, recipeInstructions)
 
   arrangeRecipeIngredients(arrangedRecipeData, recipeIngredients)
+
+  arrangedRecipeData.categories = { ...recipeCategory[0] }
 
   return arrangedRecipeData
 }
@@ -36,9 +46,14 @@ const arrangeRecipeIngredients = (arrangedRecipeData, recipeIngredients) => {
     name,
     amount: decimalAmount,
     measureUnit,
+    measureUnitId,
+    ingredientId,
     note,
+    recipeIngredientId,
   } of recipeIngredients) {
-    const amount = decimalAmount.replace(/(\.0+|0+)$/, "")
+    const amount = isFloat(decimalAmount)
+      ? decimalAmount.replace(/(\.0+|0+)$/, "")
+      : decimalAmount
 
     if (title in ingredientTitles) {
       const { ingredientsByTitle } = arrangedRecipeData
@@ -50,7 +65,13 @@ const arrangeRecipeIngredients = (arrangedRecipeData, recipeIngredients) => {
 
       const { ingredients } = ingredientsTitleCurrent
 
-      ingredients.push({ name, amount, measureUnit, note })
+      ingredients.push({
+        recipeIngredientId,
+        ingredient: { label: name, value: ingredientId },
+        amount,
+        measureUnit: { value: measureUnitId, label: measureUnit },
+        note,
+      })
 
       continue
     }
@@ -58,7 +79,15 @@ const arrangeRecipeIngredients = (arrangedRecipeData, recipeIngredients) => {
     ingredientTitles[title] = title
     arrangedRecipeData.ingredientsByTitle.push({
       title,
-      ingredients: [{ name, measureUnit, amount, note }],
+      ingredients: [
+        {
+          recipeIngredientId,
+          ingredient: { label: name, value: ingredientId },
+          measureUnit: { value: measureUnitId, label: measureUnit },
+          amount,
+          note,
+        },
+      ],
     })
   }
 }

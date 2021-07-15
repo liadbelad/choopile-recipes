@@ -23,12 +23,14 @@ const RecipeItem = ({ recipe }) => {
   return (
     <Card
       onClick={handleViewsIncrement}
-      style={{ width: "auto", position: "relative" }}
+      style={{ width: "100%", height: "100%", position: "relative" }}
       border="light"
     >
       <Link to={`/recipes/${recipe.id}`}>
         <Card.Img
           variant="top"
+          className="w-100"
+          style={{ objectFit: "cover", display: "block" }}
           src={`http://localhost:5000/images/${recipe.mainImageUrl}`}
         />
       </Link>
@@ -39,8 +41,12 @@ const RecipeItem = ({ recipe }) => {
         </span>
       )}
 
-      <Card.Body>
-        <Card.Title as={Link} to={`/recipes/${recipe.id}`} className="">
+      <Card.Body className="p-0 mt-2">
+        <Card.Title
+          className="text-dark font-weight-bold"
+          as={Link}
+          to={`/recipes/${recipe.id}`}
+        >
           {recipe.title}
         </Card.Title>
       </Card.Body>

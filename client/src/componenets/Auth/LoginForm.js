@@ -37,7 +37,6 @@ const LoginForm = () => {
       }
 
       setLoading(loading)
-      console.log("Welcome", userInfo)
     }, 1000)
     // const userInfo = await login(loginUser)
   }

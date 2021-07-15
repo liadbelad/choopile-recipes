@@ -10,7 +10,6 @@ const CustomSelect = ({
   placeholder,
 }) => {
   const defaultValue = useCallback((options, selectedOption) => {
-    // console.log(selectedOption)
     if (!selectedOption.value) {
       return ""
     }

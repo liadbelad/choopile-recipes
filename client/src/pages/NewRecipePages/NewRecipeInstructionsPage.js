@@ -17,7 +17,7 @@ const NewRecipeInstructionsPage = () => {
 
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
-  const { handleAddRecipeInstructions, recipeInstructions } =
+  const { handleAddRecipeInstructions, handleAddNewRecipe } =
     useContext(NewRecipeContext)
 
   const history = useHistory()
@@ -48,6 +48,7 @@ const NewRecipeInstructionsPage = () => {
 
   const handleFormSubmit = () => {
     handleAddRecipeInstructions(newRecipeInstructions, storedUserInfo.id)
+    handleAddNewRecipe()
 
     history.push("/recipes/new/success")
   }

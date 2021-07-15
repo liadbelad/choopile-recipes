@@ -9,7 +9,7 @@ const {
   getRecipesQuery,
   getRecipeBySearchTermQuery,
 } = require("../DAL/api")
-const { addNewRecipe } = require("../DAL/recipesApi")
+const { addNewRecipe, updateRecipe } = require("../DAL/recipesApi")
 // const {
 //   addNewRecipe,
 //   getRecipesQuery,
@@ -20,7 +20,6 @@ const { addNewRecipe } = require("../DAL/recipesApi")
 // @route   GET /api/recipes
 // @access  Public
 const getRecipes = async (req, res) => {
-  console.log("yo")
   try {
     const { keyword } = req.query
     if (!keyword) {
@@ -117,7 +116,21 @@ const addSingleRecipe = async (req, res) => {
     await addNewRecipe(newRecipe)
     res.status(200).send("מתכון התקבל")
   } catch (error) {
-    console.log("controller", error)
+    res.status(404).json(error.message)
+  }
+}
+
+// @desc    update single recipe
+// @route   PUT /api/recipes/update
+// @access  Public
+const updateSingleRecipe = async (req, res) => {
+  try {
+    const { ...updatedRecipe } = req.body
+    updatedRecipe.imageURL = req.file?.filename
+    const { recipeId } = req.params
+    await updateRecipe(updatedRecipe, recipeId)
+    res.status(200).send("המתכון עודכן בהצלחה")
+  } catch (error) {
     res.status(404).json(error.message)
   }
 }
@@ -144,4 +157,5 @@ module.exports = {
   getSingleRecipeById,
   updateSingleRecipeViewsById,
   addSingleRecipe,
+  updateSingleRecipe,
 }
