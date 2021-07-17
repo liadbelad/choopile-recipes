@@ -1,0 +1,16 @@
+@import "../../scss/styles.scss";
+
+.pagination-container {
+  position: static;
+  margin-top: 7rem;
+  display: flex;
+  justify-content: center;
+}
+
+@media #{$media-tablet} {
+  .pagination-container {
+    position: absolute;
+    bottom: 10px;
+    left: 45%;
+  }
+}

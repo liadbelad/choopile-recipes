@@ -115,14 +115,13 @@ const updateRecipe = async (updatedRecipe, recipeId) => {
     prepTimeMins,
     imageURL,
     recipeId,
-  ])(ingredients)(instructions)
+  ])
   const ingredientsArr = JSON.parse(ingredients)
   ingredientsArr.forEach((ingredient) => {
     if (ingredient.action === "INSERT") {
       addNewRecipeIngredient(ingredient, recipeId)
     }
     if (ingredient.action === "DELETE") {
-      ;("delete")
       deleteRecipeIngredient(ingredient.recipeIngredientId)
     }
     if (ingredient.action === "UPDATE") {
@@ -207,4 +206,54 @@ const updateRecipeInstrucion = async (id, instruction, recipeId) => {
   await connector.execute(updateInstructionQuery, [instruction, id, recipeId])
 }
 
-module.exports = { addNewRecipe, updateRecipe }
+const addRecipeCommentForUser = async (recipeId, userId, content) => {
+  const insertCommentQuery = `INSERT INTO recipes_comments(recipeId,userId,content)
+  VALUES(?,?,?)`
+
+  const connector = await connection
+
+  await connector.execute(insertCommentQuery, [recipeId, userId, content])
+
+  const getCommentsOfRecipeQuery = `SELECT recipes_comments.id,content,createdAt,users.firstName,users.lastName  
+  FROM recipes_comments
+  JOIN users
+  on users.id = recipes_comments.userId
+  WHERE recipeId = ?;`
+
+  const [recipeComments] = await connector.execute(getCommentsOfRecipeQuery, [
+    recipeId,
+  ])
+
+  return recipeComments
+}
+
+const checkIfUserCommentedToRecipe = async (recipeId, userId) => {
+  const getCommentsOfRecipeQuery = `SELECT * FROM recipes_comments WHERE recipeId = ? AND userId = ?`
+
+  const connector = await connection
+  const [comment] = await connector.execute(getCommentsOfRecipeQuery, [
+    recipeId,
+    userId,
+  ])
+
+  return comment
+}
+
+const getNumberOfPagesQuery = async (limit) => {
+  const countRecipesQuery = `SELECT COUNT(id) AS NumberOfRecipes FROM recipes;`
+  const connector = await connection
+  const [recipesCount] = await connector.execute(countRecipesQuery)
+  const { NumberOfRecipes } = recipesCount[0]
+
+  const pagesCount = Math.ceil(NumberOfRecipes / limit)
+
+  return { pagesCount }
+}
+
+module.exports = {
+  addNewRecipe,
+  updateRecipe,
+  addRecipeCommentForUser,
+  checkIfUserCommentedToRecipe,
+  getNumberOfPagesQuery,
+}

@@ -1,6 +1,6 @@
 function validateCookie(req, res, next) {
   const { cookies } = req
-  if (!cookies.user) {
+  if (!cookies.userId) {
     res.status(401).json("משתמש לא מאושר")
   }
 

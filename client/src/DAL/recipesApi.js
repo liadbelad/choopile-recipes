@@ -1,9 +1,41 @@
 import axios from "axios"
 
-const getRecipesBySearchTerm = async (keyword = "", pageNumber = "") => {
+const config = {
+  headers: {
+    "Content-Type": "application/json",
+  },
+  withCredentials: true,
+}
+
+const getNewestRecipes = async () => {
+  try {
+    const response = await fetch(`http://localhost:5000/api/recipes/newest`)
+    const recipesHomepage = await response.json()
+    return recipesHomepage
+  } catch (error) {
+    return error.message
+  }
+}
+
+const getNumberOfPages = async (userRecipes = "") => {
+  try {
+    const { data } = await axios(
+      `http://localhost:5000/api/recipes/pages?user=${userRecipes}`
+    )
+    return data
+  } catch (error) {
+    return error.message
+  }
+}
+
+const getRecipesBySearchTerm = async (
+  keyword = "",
+  pageNumber = "",
+  category = ""
+) => {
   try {
     const { data: recipes } = await axios(
-      `http://localhost:5000/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}`
+      `http://localhost:5000/api/recipes?keyword=${keyword}&pageNumber=${pageNumber}&category=${category}`
     )
     return recipes
   } catch (error) {
@@ -49,9 +81,27 @@ const updateRecipeViewsById = async (recipeID) => {
   }
 }
 
+const addRecipeCommentById = async ({ recipeID, content }) => {
+  try {
+    const { data } = await axios.post(
+      `http://localhost:5000/api/recipes/comments/${recipeID}`,
+      content,
+      config
+    )
+
+    return data
+  } catch (error) {
+    console.log(error)
+    return error.message
+  }
+}
+
 export {
+  getNewestRecipes,
   getRecipesBySearchTerm,
   updateRecipeViewsById,
+  addRecipeCommentById,
   addNewRecipe,
   updateRecipe,
+  getNumberOfPages,
 }

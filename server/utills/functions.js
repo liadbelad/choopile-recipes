@@ -12,9 +12,11 @@ const arrangeRecipeData = ({
   recipeIngredients,
   recipeImages,
   recipeCategory,
+  recipeComments,
 }) => {
   const arrangedRecipeData = { ...recipeDetails[0] }
   arrangedRecipeData.images = [...recipeImages]
+  arrangedRecipeData.comments = [...recipeComments]
 
   arrangeRecipeInstructions(arrangedRecipeData, recipeInstructions)
 

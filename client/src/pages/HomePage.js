@@ -7,8 +7,8 @@ import Menu from "../componenets/Menu/Menu"
 import Loader from "../componenets/Loader/Loader"
 import Message from "../componenets/Message/Message"
 import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
-import { getAllRecipes } from "../DAL/api"
 import ModalContext from "../store/ModalCtx/modal-context"
+import { getNewestRecipes } from "../DAL/recipesApi"
 
 const HomePage = () => {
   const location = useLocation()
@@ -19,7 +19,7 @@ const HomePage = () => {
     status,
     data: loadedRecipes,
     error,
-  } = useHttp(getAllRecipes, true)
+  } = useHttp(getNewestRecipes, true)
 
   useEffect(() => {
     if (location?.state?.isRedirect) {

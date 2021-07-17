@@ -8,9 +8,19 @@ import Loader from "../componenets/Loader/Loader"
 import Message from "../componenets/Message/Message"
 import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
 import { getAllRecipes, getRecipesByCategory } from "../DAL/api"
+import Paginate from "../componenets/Pagination/Paginate"
+import { getNumberOfPages } from "../DAL/recipesApi"
 
 const RecipesPage = () => {
   const [showRecipes, setShowRecipes] = useState(true)
+  const [activePageNumber, setActivePageNumber] = useState(1)
+
+  const {
+    sendRequest: getNumberOfPagesRequest,
+    status: numberOfPagesStatus,
+    data: NumberOfPages,
+    error: getNumberOfPagesError,
+  } = useHttp(getNumberOfPages, true)
 
   const {
     sendRequest: sendAllRecipesRequest,
@@ -30,6 +40,15 @@ const RecipesPage = () => {
     setShowRecipes(false)
     sendRecipesByCategoryRequest(categoryID)
   }
+
+  const handleShowRecipesByPageNumber = (pageNumber) => {
+    console.log(pageNumber)
+    setActivePageNumber(pageNumber)
+  }
+
+  useEffect(() => {
+    getNumberOfPagesRequest()
+  }, [getNumberOfPagesRequest])
 
   useEffect(() => {
     sendAllRecipesRequest()
@@ -71,6 +90,15 @@ const RecipesPage = () => {
           {recipesByCategory && <RecipesList recipes={recipesByCategory} />}
         </Col>
       </Row>
+      {numberOfPagesStatus === "pending" && <Loader />}
+
+      {NumberOfPages && NumberOfPages.pagesCount && (
+        <Paginate
+          onClick={handleShowRecipesByPageNumber}
+          pagesCount={NumberOfPages.pagesCount}
+          activePageNumber={activePageNumber}
+        />
+      )}
     </Container>
   )
 }

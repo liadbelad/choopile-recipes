@@ -47,7 +47,7 @@ const loginUserQuery = async (email) => {
 
 // RECIPES API
 
-const getRecipeBySearchTermQuery = async (keyword, limit = 2) => {
+const getRecipeBySearchTermQuery = async (keyword, limit = 10) => {
   try {
     const query = `SELECT id,userId,title 
     FROM recipes 
@@ -63,14 +63,12 @@ const getRecipeBySearchTermQuery = async (keyword, limit = 2) => {
   }
 }
 
-const getRecipesQuery = async () => {
+const getRecipesQuery = async (limit = 2, pageNumber = 0) => {
+  const offset = (pageNumber - 1) * limit
   try {
     const connector = await connection
     const [recipes] = await connector.execute(
-      `SELECT recipes.*, recipe_images.url 
-      FROM recipes
-      JOIN recipe_images
-      ON recipes.id = recipe_images.recipeId`
+      `SELECT *  FROM recipes LIMIT ${limit} OFFSET ${offset}`
     )
     return recipes
   } catch (error) {
@@ -80,7 +78,7 @@ const getRecipesQuery = async () => {
 
 const getRecipesOfCategoryQuery = async (categoryId) => {
   try {
-    const query = `SELECT recipes.id,recipes.title,recipes.userId 
+    const query = `SELECT recipes.id,recipes.title,recipes.userId,mainImageUrl
     FROM recipes
     WHERE recipes.id IN
     (
@@ -98,7 +96,7 @@ const getRecipesOfCategoryQuery = async (categoryId) => {
 
 const getUserRecipesOfCategoryQuery = async (userID, categoryID) => {
   try {
-    const query = `SELECT recipes.id,recipes.title,recipes.userId 
+    const query = `SELECT recipes.id,recipes.title,recipes.userId,mainImageUrl
     FROM recipes
     WHERE recipes.userId = ? 
     AND recipes.id IN
@@ -150,11 +148,12 @@ const getPopularRecipesQuery = async () => {
   }
 }
 
-const getNewestRecipesQuery = async () => {
+const getNewestRecipesQuery = async (limit = 5) => {
   try {
-    const query = `SELECT id,userId,title,description,views,createdAt,isPrivate
+    const query = `SELECT id,userId,title,description,views,createdAt,mainImageUrl
     FROM recipes
-    ORDER BY recipes.createdAt DESC;`
+    ORDER BY recipes.createdAt DESC
+    LIMIT ${limit};`
     const connector = await connection
     const [rows] = await connector.execute(query)
 
@@ -194,6 +193,12 @@ const getSingleRecipeByIdQuery = async (recipeId) => {
     WHERE recipeId = ?
     ); `
 
+    const recipeCommentsQuery = `SELECT recipes_comments.id,content,createdAt,users.firstName,users.lastName  
+    FROM recipes_comments
+    JOIN users
+    on users.id = recipes_comments.userId
+    WHERE recipeId = ?;`
+
     const connector = await connection
 
     const [recipeDetails] = await connector.execute(recipeDetailsQuery, [
@@ -216,12 +221,17 @@ const getSingleRecipeByIdQuery = async (recipeId) => {
       recipeId,
     ])
 
+    const [recipeComments] = await connector.execute(recipeCommentsQuery, [
+      recipeId,
+    ])
+
     const recipeData = arrangeRecipeData({
       recipeDetails,
       recipeInstructions,
       recipeIngredients,
       recipeImages,
       recipeCategory,
+      recipeComments,
     })
     return recipeData
   } catch (error) {

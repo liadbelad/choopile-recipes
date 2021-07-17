@@ -14,7 +14,7 @@ const {
 router.post("/", validation(userRegisterSchema), register)
 router
   .route("/login")
-  .post(validation(userLoginSchema), login)
   .get(getUserSession)
+  .post(validation(userLoginSchema), login)
 
 module.exports = router

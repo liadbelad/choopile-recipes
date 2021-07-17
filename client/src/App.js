@@ -26,6 +26,7 @@ function App() {
 
   const getSession = async () => {
     const userSession = await getSessionFromServer()
+    console.log(userSession)
   }
 
   useEffect(() => {

@@ -4,7 +4,8 @@ const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
 const FILE_SIZE = 3000000
 const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
-const COOKIE_TIME_24_HOURS = 60 * 60 * 24
+const COOKIE_TIME_24_HOURS = 8.64e7
+const PAGES_LIMIT = 2
 // password regex Description
 // ^	The password string will start this way
 // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
@@ -22,4 +23,5 @@ module.exports = {
   SUPPORTED_FILE_FORMATS,
   FILE_SIZE,
   COOKIE_TIME_24_HOURS,
+  PAGES_LIMIT,
 }

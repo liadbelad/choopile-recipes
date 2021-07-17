@@ -8,6 +8,7 @@ import { getFullRecipeDetailsByID } from "../../DAL/api"
 import useHttp from "../../hooks/use-http"
 import Loader from "../../componenets/Loader/Loader"
 import Message from "../../componenets/Message/Message"
+import CommentSection from "../../componenets/Recipes/RecipeComments/CommentSection"
 
 const SingleRecipePage = () => {
   const {
@@ -51,6 +52,7 @@ const SingleRecipePage = () => {
               </Col>
             </Row>
           </section>
+          <CommentSection comments={recipe.comments} />
         </Container>
       )}
     </>

@@ -9,26 +9,46 @@ const {
   getRecipesQuery,
   getRecipeBySearchTermQuery,
 } = require("../DAL/api")
-const { addNewRecipe, updateRecipe } = require("../DAL/recipesApi")
-// const {
-//   addNewRecipe,
-//   getRecipesQuery,
-//   getRecipeBySearchTermQuery,
-// } = require("../DAL/recipesApi")
+const {
+  addNewRecipe,
+  updateRecipe,
+  addRecipeCommentForUser,
+  getNumberOfPagesQuery,
+} = require("../DAL/recipesApi")
+const { PAGES_LIMIT } = require("../utills/constants")
 
 // @desc    Fetch all recipes
 // @route   GET /api/recipes
 // @access  Public
 const getRecipes = async (req, res) => {
   try {
+    const pageSize = PAGES_LIMIT
+    const pageNumber = Number(req.query.pageNumber) || 1
     const { keyword } = req.query
     if (!keyword) {
-      const recipes = await getRecipesQuery()
+      const recipes = await getRecipesQuery(pageSize, pageNumber)
       return res.json(recipes)
     }
     const recipesBySearchTerm = await getRecipeBySearchTermQuery(keyword)
-    // const recipesBySearchTerm = await getRecipeBySearchTermQuery(0, 5, keyword)
     res.json(recipesBySearchTerm)
+  } catch (error) {
+    res.status(404).json(error.message)
+  }
+}
+
+// @desc    get number of pages for pagination by recipes amount
+// @route   GET /api/recipes/pages
+// @access  Public
+const getNumberOfPages = async (req, res) => {
+  try {
+    const limit = PAGES_LIMIT
+    const { user } = req.query
+    if (!user) {
+      const pages = await getNumberOfPagesQuery(limit)
+      return res.json(pages)
+    }
+    // const recipesBySearchTerm = await getRecipeBySearchTermQuery(keyword)
+    // res.json(recipesBySearchTerm)
   } catch (error) {
     res.status(404).json(error.message)
   }
@@ -120,6 +140,28 @@ const addSingleRecipe = async (req, res) => {
   }
 }
 
+// @desc    add recipe comment by user
+// @route   POST /api/recipes/comments/:recipeId
+// @access  Public
+const addNewRecipeComment = async (req, res) => {
+  try {
+    const { comment: content } = req.body
+    const { recipeId } = req.params
+    const { userId } = req.cookies
+
+    const commentsWithNewComment = await addRecipeCommentForUser(
+      recipeId,
+      userId,
+      content
+    )
+    res
+      .status(200)
+      .json({ msg: "תודה, תגובתך הוספה", comments: commentsWithNewComment })
+  } catch (error) {
+    res.status(400).json(error.message)
+  }
+}
+
 // @desc    update single recipe
 // @route   PUT /api/recipes/update
 // @access  Public
@@ -155,7 +197,9 @@ module.exports = {
   getPopularRecipes,
   getNewestRecipes,
   getSingleRecipeById,
-  updateSingleRecipeViewsById,
   addSingleRecipe,
+  addNewRecipeComment,
+  updateSingleRecipeViewsById,
   updateSingleRecipe,
+  getNumberOfPages,
 }

@@ -4,6 +4,7 @@ const {
   userExistQuery,
 } = require("../DAL/api")
 const bcrypt = require("bcryptjs")
+const generateToken = require("../utills/generateToken")
 
 // @desc    register new user
 // @route   POST /api/users
@@ -31,7 +32,13 @@ const register = async (req, res) => {
       throw new Error("שגיאה ביצירת משתמש,נסה שוב מאוחר יותר")
     }
 
-    res.status(201).json(createdUser)
+    const token = generateToken(
+      createdUser.id,
+      createdUser.email,
+      createdUser.firstName
+    )
+
+    res.status(201).json({ createdUser, token })
   } catch (error) {
     res.status(400).json({ error: true, message: error.message })
   }
@@ -53,8 +60,15 @@ const login = async (req, res) => {
     if (!isSamePassword) {
       throw new Error("אימייל או סיסמא לא נכונים")
     }
-    res.cookie("user", JSON.stringify(user))
-    // req.session.user = user
+    const expiryDate = new Date(Number(new Date()) + 315360000000)
+
+    res.cookie("userId", user.id, {
+      expires: expiryDate,
+      httpOnly: true,
+    })
+    req.session.userInfo = user
+
+    const token = generateToken(user.id, user.email, user.firstName)
 
     res.status(200).json(user)
   } catch (error) {
@@ -67,13 +81,13 @@ const login = async (req, res) => {
 // @access  Public
 const getUserSession = async (req, res) => {
   try {
+    console.log(req.session)
     if (req.session.user) {
-      res.status(200).send({ isLoggedIn: true, user: req.session.user })
+      res.json({ isLoggedIn: true, user: req.session.user })
     } else {
-      res.status(401).send({ isLoggedIn: false })
+      res.status(401).json({ isLoggedIn: false })
     }
   } catch (error) {
-    error
     return res.status(401).json({ error: true, message: error.message })
   }
 }

@@ -20,12 +20,12 @@ require("dotenv").config()
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
 
 app.use(logger("dev"))
-app.use(express.urlencoded({ extended: true }))
+app.use(express.urlencoded({ extended: false }))
 app.use(express.json())
 app.use(cookieParser())
 app.use(
   session({
-    key: "userId",
+    key: "user",
     secret: "subscribe", // I know it needs to be super secret just for comfort purposes
     resave: false,
     saveUninitialized: false,
