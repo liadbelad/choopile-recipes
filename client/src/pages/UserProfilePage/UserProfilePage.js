@@ -55,7 +55,7 @@ const UserProfilePage = () => {
         state: { isRedirect: true },
       })
     }
-  }, [storedUserInfo])
+  }, [storedUserInfo, history])
 
   useEffect(() => {
     userDetailsRequest()

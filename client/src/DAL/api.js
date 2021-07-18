@@ -102,7 +102,6 @@ const getUserRecipes = async ({
   activePageNumber: pageNumber,
   categoryID = "",
 }) => {
-  console.log("api client", pageNumber, categoryID)
   try {
     const { data: userRecipes } = await axios(
       `http://localhost:5000/api/recipes/users?pageNumber=${pageNumber}&category=${categoryID} `,

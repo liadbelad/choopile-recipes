@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react"
+import React, { useContext } from "react"
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import ModalContext from "./store/ModalCtx/modal-context"
 import ScrollToTop from "./componenets/ScrollToTop/ScrollToTop"
@@ -100,5 +100,3 @@ function App() {
 }
 
 export default App
-
-// Auth

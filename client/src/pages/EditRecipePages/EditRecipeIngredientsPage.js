@@ -91,7 +91,6 @@ const EditRecipeIngredientsPage = () => {
       ingredientToDelete.action = "DELETE"
 
       const { ingredient } = ingredientToDelete
-      console.log(ingredient)
 
       const filteredNewIngredients = recipeIngredientsToShow.filter(
         ({ ingredient }) => ingredient.value !== deleteValue
@@ -228,8 +227,8 @@ const EditRecipeIngredientsPage = () => {
                 <Col lg={4}>
                   <Form.Group>
                     <CustomSelect
-                      placeholder="*רכיבים"
                       options={ingredients}
+                      placeholder="*רכיבים"
                       value={formik.values.ingredient}
                       onChange={(selectedIngredient) =>
                         formik.setFieldValue("ingredient", selectedIngredient)

@@ -10,6 +10,8 @@ import Loader from "../../componenets/Loader/Loader"
 import Message from "../../componenets/Message/Message"
 import ErrorPage from "../ErrorPage"
 import CommentSection from "../../componenets/Recipes/RecipeComments/CommentSection"
+import OverviewDetails from "./OverviewDetails/OverviewDetails"
+import ShareLinks from "./ShareLinks/ShareLinks"
 
 const SingleRecipePage = () => {
   const {
@@ -23,6 +25,14 @@ const SingleRecipePage = () => {
   useEffect(() => {
     sendRequest(+id)
   }, [id, sendRequest])
+
+  if (status === "pending") {
+    return (
+      <div className="my-5 d-flex justify-content-center">
+        <Loader />
+      </div>
+    )
+  }
 
   if (!+id || !recipe?.id) {
     return <ErrorPage />
@@ -44,6 +54,11 @@ const SingleRecipePage = () => {
               variant="bottom"
               src={`http://localhost:5000/images/${recipe.mainImageUrl}`}
             />
+            <OverviewDetails
+              category={recipe.categories.label}
+              prepTimeMins={recipe.prepTimeMins}
+            />
+            <ShareLinks title={recipe.title} />
             <Row className="my-5 w-100">
               <Col md={4}>
                 {recipe.ingredientsByTitle && (

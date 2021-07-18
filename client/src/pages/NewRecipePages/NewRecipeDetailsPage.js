@@ -9,17 +9,13 @@ import { Container, Form, Row, Col, Button } from "react-bootstrap"
 import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
 import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import { getAllCategories } from "../../DAL/api"
-import {
-  HEBREW_ENGLISH_SPACE_TEXT_REGEX,
-  SUPPORTED_FILE_FORMATS,
-} from "../../utills/js/constants"
+import { SUPPORTED_FILE_FORMATS } from "../../utills/js/constants"
 import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
 
 const NewRecipeDetailsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
   const [categories, setCategories] = useState(null)
 
-  const { isLoggedIn } = useContext(AuthContext)
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const { handleAddRecipeDetails, recipeDetails } = useContext(NewRecipeContext)

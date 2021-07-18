@@ -6,13 +6,12 @@ import Container from "react-bootstrap/Container"
 const NewRecipeSuccessPage = () => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
   const location = useLocation()
-  console.log(location.state)
 
   const history = useHistory()
 
   useEffect(() => {
     if (!userInfo || !location.state) history.replace("/")
-  }, [])
+  }, [history])
 
   return (
     <Container>

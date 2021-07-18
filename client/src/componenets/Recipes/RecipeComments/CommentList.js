@@ -2,13 +2,17 @@ import React from "react"
 import Comment from "./Comment/Comment"
 
 const CommentList = ({ comments = [] }) => {
-  console.log(comments)
   return (
     <>
-      {comments.map(({ content, firstName, lastName, createdAt }) => {
+      {comments.map(({ id, content, firstName, lastName, createdAt }) => {
         const fullName = `${firstName} ${lastName}`
         return (
-          <Comment author={fullName} createdAt={createdAt} content={content} />
+          <Comment
+            key={id}
+            author={fullName}
+            createdAt={createdAt}
+            content={content}
+          />
         )
       })}
     </>

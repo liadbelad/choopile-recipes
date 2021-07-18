@@ -8,6 +8,7 @@ import Message from "../../Message/Message"
 const SearchResults = ({ md, lg, enteredKeyword }) => {
   const [searchRecipesResults, setSearchRecipesResults] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFinishedSearch, setIsFinishedSearch] = useState(false)
   const [error, setError] = useState(null)
 
   useEffect(() => {
@@ -16,10 +17,13 @@ const SearchResults = ({ md, lg, enteredKeyword }) => {
       return
     }
 
+    setIsFinishedSearch(false)
     const debounceTimer = setTimeout(async () => {
       setIsLoading(true)
       const recipes = await getRecipesBySearchTerm(enteredKeyword)
       setSearchRecipesResults(recipes)
+      setIsFinishedSearch(true)
+
       setIsLoading(false)
     }, 800)
 
@@ -27,10 +31,6 @@ const SearchResults = ({ md, lg, enteredKeyword }) => {
       clearInterval(debounceTimer)
     }
   }, [enteredKeyword])
-
-  if (!enteredKeyword || searchRecipesResults.length === 0) {
-    return null
-  }
 
   return (
     <Col
@@ -43,6 +43,9 @@ const SearchResults = ({ md, lg, enteredKeyword }) => {
     >
       {isLoading && <Loader />}
       {error && <Message> {error} </Message>}
+      {searchRecipesResults.length === 0 &&
+        enteredKeyword &&
+        isFinishedSearch && <p> אין תוצאות </p>}
       {searchRecipesResults &&
         searchRecipesResults.map((recipe) => (
           <p key={recipe.id}>

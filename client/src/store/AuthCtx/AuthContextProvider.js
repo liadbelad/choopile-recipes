@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { login, register } from "../../DAL/api"
+import { getUserDetails } from "../../DAL/userApi"
 import AuthContext from "./auth-context"
 
 const AuthContextProvider = ({ children }) => {
@@ -27,15 +28,17 @@ const AuthContextProvider = ({ children }) => {
     setUserFirstName("")
   }
 
-  const handleUserDetailsUpdate = (newFirstName) => {
-    console.log(newFirstName)
+  const handleUserDetailsUpdate = async (newFirstName) => {
     setUserFirstName(newFirstName)
+    const userDetails = await getUserDetails()
+    localStorage.setItem("userInfo", JSON.stringify(userDetails))
   }
 
   useEffect(() => {
     const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
     if (storedUserInfo) {
       setIsLoggedIn(true)
+      setUserFirstName(storedUserInfo.firstName)
     }
   }, [])
 

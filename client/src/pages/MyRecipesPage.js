@@ -12,7 +12,6 @@ import { getUserRecipes } from "../DAL/api"
 import Paginate from "../componenets/Pagination/Paginate"
 
 const MyRecipesPage = () => {
-  const [showRecipes, setShowRecipes] = useState(true)
   const [activePageNumber, setActivePageNumber] = useState(1)
   const [isCategoryActive, setIsCategoryActive] = useState(false)
 
@@ -29,6 +28,7 @@ const MyRecipesPage = () => {
 
   const handleGetUserRecipesBySelectedCategory = (categoryID) => {
     setIsCategoryActive(true)
+    setActivePageNumber(1)
     sendUserRecipesRequest({ activePageNumber, categoryID })
   }
 
@@ -66,12 +66,12 @@ const MyRecipesPage = () => {
               onCategoryChange={handleGetUserRecipesBySelectedCategory}
             />
           </Col>
-          <Col md={8}>
+          <Col md={8} style={{ minHeight: "75vh" }}>
             {userRecipesStatus === "pending" && <Loader />}
 
             {userRecipesError && <Message> {userRecipesError} </Message>}
 
-            {showRecipes && userRecipesData?.userRecipes?.length > 0 && (
+            {userRecipesData?.userRecipes?.length > 0 && (
               <RecipesList recipes={userRecipesData.userRecipes} />
             )}
 

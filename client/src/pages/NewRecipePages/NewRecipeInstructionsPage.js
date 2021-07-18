@@ -67,7 +67,7 @@ const NewRecipeInstructionsPage = () => {
     if (newRecipeInstructions.length > 0) {
       handleFinishEntering()
     }
-  }, [isLoggedIn, newRecipeInstructions])
+  }, [isLoggedIn, newRecipeInstructions, history])
 
   return (
     <Formik
