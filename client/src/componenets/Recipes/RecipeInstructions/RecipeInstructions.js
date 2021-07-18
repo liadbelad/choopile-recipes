@@ -4,7 +4,8 @@ import ListGroup from "react-bootstrap/ListGroup"
 const Instruction = ({ instruction, idx }) => {
   return (
     <ListGroup.Item style={{ border: "none" }}>
-      <strong> {idx}. </strong> {instruction}
+      <strong style={{ color: "rgb(239, 66, 41)" }}> {idx}. </strong>{" "}
+      {instruction}
     </ListGroup.Item>
   )
 }

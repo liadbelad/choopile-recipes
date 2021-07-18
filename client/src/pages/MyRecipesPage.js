@@ -1,42 +1,39 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect } from "react"
 import useHttp from "../hooks/use-http"
 import { Container, Row, Col } from "react-bootstrap"
 import { useHistory } from "react-router-dom"
-import AuthContext from "../store/AuthCtx/auth-context"
 import SearchBar from "../componenets/SearchBar/SearchBar"
 import CategoriesList from "../componenets/CategoriesList/CategoriesList"
 import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
 import Loader from "../componenets/Loader/Loader"
 import Message from "../componenets/Message/Message"
 import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
-import { getUserRecipes, getUserRecipesByCategory } from "../DAL/api"
+import { getUserRecipes } from "../DAL/api"
+import Paginate from "../componenets/Pagination/Paginate"
 
 const MyRecipesPage = () => {
   const [showRecipes, setShowRecipes] = useState(true)
+  const [activePageNumber, setActivePageNumber] = useState(1)
+  const [isCategoryActive, setIsCategoryActive] = useState(false)
 
   const {
     sendRequest: sendUserRecipesRequest,
     status: userRecipesStatus,
-    data: userRecipes,
+    data: userRecipesData,
     error: userRecipesError,
   } = useHttp(getUserRecipes)
-
-  const {
-    sendRequest: sendUserRecipesByCategoryRequest,
-    status: userRecipesByCategoryStatus,
-    data: userRecipesByCategory,
-    error: userRecipesByCategoryError,
-  } = useHttp(getUserRecipesByCategory)
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const history = useHistory()
 
-  const { isLoggedIn } = useContext(AuthContext)
-
   const handleGetUserRecipesBySelectedCategory = (categoryID) => {
-    setShowRecipes(false)
-    sendUserRecipesByCategoryRequest({ userID: userInfo.id, categoryID })
+    setIsCategoryActive(true)
+    sendUserRecipesRequest({ activePageNumber, categoryID })
+  }
+
+  const handleShowRecipesByPageNumber = (pageNumber) => {
+    setActivePageNumber(pageNumber)
   }
 
   useEffect(() => {
@@ -46,15 +43,15 @@ const MyRecipesPage = () => {
         state: { isRedirect: true },
       })
       return
-    } else {
-      const { id: userID } = userInfo
-      sendUserRecipesRequest(userID, true)
     }
-  }, [sendUserRecipesRequest])
+    if (!isCategoryActive) {
+      sendUserRecipesRequest({ activePageNumber })
+    }
+  }, [isCategoryActive, sendUserRecipesRequest, activePageNumber])
 
   if (
     userRecipesStatus === "completed" &&
-    (!userRecipes || userRecipes.length === 0)
+    (!userRecipesData || userRecipesData.length === 0)
   ) {
     return <NoRecipesFound />
   }
@@ -71,26 +68,25 @@ const MyRecipesPage = () => {
           </Col>
           <Col md={8}>
             {userRecipesStatus === "pending" && <Loader />}
-            {userRecipesByCategoryStatus === "pending" && <Loader />}
 
             {userRecipesError && <Message> {userRecipesError} </Message>}
-            {userRecipesByCategoryError && (
-              <Message> {userRecipesError} </Message>
+
+            {showRecipes && userRecipesData?.userRecipes?.length > 0 && (
+              <RecipesList recipes={userRecipesData.userRecipes} />
             )}
 
-            {!userRecipesByCategory && showRecipes && userRecipes && (
-              <RecipesList recipes={userRecipes} />
-            )}
-
-            {userRecipesByCategory && userRecipesByCategory.length === 0 && (
+            {userRecipesData && userRecipesData?.userRecipes?.length === 0 && (
               <NoRecipesFound />
-            )}
-
-            {userRecipesByCategory && (
-              <RecipesList recipes={userRecipesByCategory} />
             )}
           </Col>
         </Row>
+        {userRecipesData && userRecipesData.pagesCount && (
+          <Paginate
+            onClick={handleShowRecipesByPageNumber}
+            pagesCount={userRecipesData.pagesCount}
+            activePageNumber={activePageNumber}
+          />
+        )}
       </Container>
     </>
   )

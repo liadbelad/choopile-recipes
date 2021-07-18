@@ -2,7 +2,11 @@ import React from "react"
 import Pagination from "react-bootstrap/Pagination"
 import styles from "./Paginate.module.scss"
 
-const Paginate = ({ onClick, pagesCount, activePageNumber = 1 }) => {
+const Paginate = ({
+  onClick,
+  pagesCount: { pagesCount },
+  activePageNumber = 1,
+}) => {
   const paginationItems = []
   for (let i = 1; i <= pagesCount; i++) {
     paginationItems.push(

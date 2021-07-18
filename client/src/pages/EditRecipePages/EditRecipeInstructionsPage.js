@@ -65,7 +65,10 @@ const EditRecipeInstructionsPage = () => {
   const handleFormSubmit = () => {
     handleAddRecipeInstructions(updatedRecipeInstructions, storedUserInfo.id)
     handleUpdateRecipe(recipe.id)
-    history.push("/recipes/edit/success")
+    history.push({
+      pathname: "/recipes/edit/success",
+      state: { recipeId: recipe.id },
+    })
   }
 
   useEffect(() => {

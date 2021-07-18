@@ -45,11 +45,12 @@ const getRecipesBySearchTerm = async (
 
 const addNewRecipe = async (newRecipe) => {
   try {
-    const response = await fetch("http://localhost:5000/api/recipes/add", {
-      method: "POST",
-      body: newRecipe,
-    })
-    return await response.json()
+    const { data } = await axios.post(
+      `http://localhost:5000/api/recipes/add`,
+      newRecipe,
+      config
+    )
+    return data
   } catch (error) {
     return error.message
   }

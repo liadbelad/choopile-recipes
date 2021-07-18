@@ -28,7 +28,11 @@ const RecipeCard = ({ recipe }) => {
           <div className={styles["recipe-header"]}>
             <p> {date} </p>
             <p className="mr-3">
-              {views} <i className="fas fa-eye"></i>
+              {views}{" "}
+              <i
+                className="fas fa-eye"
+                style={{ color: "rgb(239, 66, 41)" }}
+              ></i>
             </p>
           </div>
           <div className={styles["recipe-description"]}>

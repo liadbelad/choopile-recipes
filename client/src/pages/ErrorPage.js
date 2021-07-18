@@ -5,9 +5,9 @@ import { Container } from "react-bootstrap"
 const ErrorPage = () => {
   return (
     <Container className="text-center mt-5">
-      <h2>Looks like you are lost...</h2>
-      <Link to="/" className="btn btn-primary my-3">
-        To Homepage
+      <h2 className="text-center">נראה שהלכת לאיבוד.... 🙄🙄</h2>
+      <Link to="/" className="btn btn-outline-danger btn-lg my-3">
+        לדף הבית <i className="fas fa-home"></i>
       </Link>
     </Container>
   )

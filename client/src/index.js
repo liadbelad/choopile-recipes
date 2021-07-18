@@ -11,9 +11,7 @@ ReactDOM.render(
   <ModalContextProvider>
     <AuthContextProvider>
       <NewRecipeContextProvider>
-        {/* <React.StrictMode> */}
         <App />
-        {/* </React.StrictMode> */}
       </NewRecipeContextProvider>
     </AuthContextProvider>
   </ModalContextProvider>,

@@ -11,10 +11,16 @@ import Loader from "../../Loader/Loader"
 import Message from "../../Message/Message"
 
 const AddCommentInput = ({ handleShowNewCommentList }) => {
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"))
+
   const { id: recipeID } = useParams()
   const { sendRequest, status, error, data } = useHttp(addRecipeCommentById)
   const handleFormSubmit = (content) => {
     sendRequest({ recipeID, content })
+  }
+
+  if (!userInfo) {
+    return <Message> התחבר כדי להוסיף תגובה </Message>
   }
 
   if (status === "loading") return <Loader />

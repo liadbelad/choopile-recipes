@@ -6,7 +6,7 @@ const NewIngredientItem = ({
   ingredientData,
   idx,
   handleDeleteNewIngredient,
-  handleEditIngredient,
+  handleEditNewIngredient,
 }) => {
   return (
     <ListGroup.Item key={idx} idx={idx} className={styles["listgroup-item"]}>
@@ -17,7 +17,7 @@ const NewIngredientItem = ({
           className="fas fa-trash mx-2"
         ></i>
         <i
-          onClick={handleEditIngredient}
+          onClick={handleEditNewIngredient}
           style={{ cursor: "pointer", color: "#ffb605" }}
           className="fas fa-edit mx-2"
         ></i>
@@ -33,6 +33,7 @@ const NewIngredientItem = ({
 const NewIngredientsList = ({
   newRecipeIngredients,
   handleDeleteNewIngredient,
+  handleEditNewIngredient,
 }) => {
   return (
     <ListGroup>
@@ -41,7 +42,12 @@ const NewIngredientsList = ({
           ingredientData={ingredientData}
           idx={idx}
           key={idx}
-          handleDeleteNewIngredient={() => handleDeleteNewIngredient(idx)}
+          handleDeleteNewIngredient={() =>
+            handleDeleteNewIngredient(ingredientData.ingredient.value)
+          }
+          handleEditNewIngredient={() =>
+            handleEditNewIngredient(ingredientData, idx)
+          }
         />
       ))}
     </ListGroup>

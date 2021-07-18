@@ -81,19 +81,20 @@ const EditRecipeIngredientsPage = () => {
     setIngredients(filteredIngredients)
   }
 
-  const handleDeleteNewIngredient = (deleteIdx) => {
+  const handleDeleteNewIngredient = (deleteValue) => {
     if (window.confirm(`האם אתה בטוח ?`)) {
       const ingredientToDelete = findIngredientDeletedByUser(
         updatedRecipeIngredients,
-        deleteIdx
+        deleteValue
       )
 
       ingredientToDelete.action = "DELETE"
 
       const { ingredient } = ingredientToDelete
+      console.log(ingredient)
 
       const filteredNewIngredients = recipeIngredientsToShow.filter(
-        (ingredient, idx) => idx !== deleteIdx
+        ({ ingredient }) => ingredient.value !== deleteValue
       )
       setRecipeIngredientsToShow(filteredNewIngredients)
       setIngredients((prevIngredients) => [...prevIngredients, ingredient])
@@ -162,7 +163,10 @@ const EditRecipeIngredientsPage = () => {
         note: "",
       }}
       validationSchema={Yup.object().shape({
-        qty: Yup.number("מספרים בלבד").required("*חובה").positive("מספר חיובי"),
+        qty: Yup.number("מספרים בלבד")
+          .required("*חובה")
+          .positive("מספר חיובי")
+          .typeError("you must specify a number"),
         measureUnit: Yup.object()
           .required("*חובה")
           .test(
@@ -202,7 +206,7 @@ const EditRecipeIngredientsPage = () => {
                     placeholder="*כמות"
                     name="qty"
                     id="qty"
-                    type="text"
+                    type="number"
                   />
                 </Col>
                 <Col lg={4}>

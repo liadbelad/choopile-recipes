@@ -7,8 +7,14 @@ const IngredientsByTitleList = ({ title, ingredients }) => {
       {title && <h6> {title}: </h6>}
       {ingredients.map(({ amount, measureUnit, ingredient }, idx) => (
         <ListGroup.Item key={idx} style={{ border: "none" }}>
-          <i className="fas fa-utensils"></i> {amount} {measureUnit.label + " "}
-          {ingredient.label}
+          <i
+            className="fas fa-utensils"
+            style={{ color: "rgb(239, 66, 41)" }}
+          ></i>
+          <span className="mr-2">
+            {amount} {measureUnit.label + " "}
+            {ingredient.label}
+          </span>
         </ListGroup.Item>
       ))}
     </ListGroup>

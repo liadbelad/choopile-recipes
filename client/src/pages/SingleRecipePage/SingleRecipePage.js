@@ -8,6 +8,7 @@ import { getFullRecipeDetailsByID } from "../../DAL/api"
 import useHttp from "../../hooks/use-http"
 import Loader from "../../componenets/Loader/Loader"
 import Message from "../../componenets/Message/Message"
+import ErrorPage from "../ErrorPage"
 import CommentSection from "../../componenets/Recipes/RecipeComments/CommentSection"
 
 const SingleRecipePage = () => {
@@ -23,6 +24,10 @@ const SingleRecipePage = () => {
     sendRequest(+id)
   }, [id, sendRequest])
 
+  if (!+id || !recipe?.id) {
+    return <ErrorPage />
+  }
+
   return (
     <>
       {status === "pending" && <Loader />}
@@ -31,7 +36,9 @@ const SingleRecipePage = () => {
       {recipe && (
         <Container className="my-5">
           <section className="w-100 d-flex flex-column justify-content-center align-items-center ">
-            <Card.Title as="h1"> {recipe.title} </Card.Title>
+            <Card.Title as="h1" className="mb-4">
+              {recipe.title}
+            </Card.Title>
             <Card.Img
               className={styles["img-responsive"]}
               variant="bottom"

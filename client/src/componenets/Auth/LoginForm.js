@@ -38,7 +38,6 @@ const LoginForm = () => {
 
       setLoading(loading)
     }, 1000)
-    // const userInfo = await login(loginUser)
   }
 
   return (

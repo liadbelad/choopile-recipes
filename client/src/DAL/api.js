@@ -57,7 +57,7 @@ const login = async (loginUser) => {
       message: "מתחבר...",
     }
   } catch (error) {
-    return { loading: false, error: true, message: error.message }
+    return { loading: false, error: true, message: error.response.data.message }
   }
 }
 
@@ -82,6 +82,8 @@ const register = async (newUser) => {
       message: "נרשמת בהצלחה!!",
     }
   } catch (error) {
+    console.log("register client error:", error)
+
     return { loading: false, error: true, message: error.message }
   }
 }
@@ -96,10 +98,14 @@ const getUserDetails = async (userID = 4) => {
   }
 }
 
-const getUserRecipes = async (userID) => {
+const getUserRecipes = async ({
+  activePageNumber: pageNumber,
+  categoryID = "",
+}) => {
+  console.log("api client", pageNumber, categoryID)
   try {
     const { data: userRecipes } = await axios(
-      `http://localhost:5000/api/recipes/users/${userID}`,
+      `http://localhost:5000/api/recipes/users?pageNumber=${pageNumber}&category=${categoryID} `,
       config
     )
 
@@ -157,9 +163,14 @@ const getAllIngredients = async () => {
   }
 }
 
-const getAllRecipes = async () => {
+const getAllRecipes = async ({
+  activePageNumber: pageNumber,
+  categoryID = "",
+}) => {
   try {
-    const response = await fetch(`http://localhost:5000/api/recipes`)
+    const response = await fetch(
+      `http://localhost:5000/api/recipes?pageNumber=${pageNumber}&category=${categoryID}`
+    )
     const recipes = await response.json()
     return recipes
   } catch (error) {

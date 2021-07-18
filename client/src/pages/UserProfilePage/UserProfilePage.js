@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useEffect, useState } from "react"
 import { Form, Button } from "react-bootstrap"
 import { Formik } from "formik"
+import { useHistory } from "react-router-dom"
 import * as Yup from "yup"
 import {
   EMAIL_REGEX,
@@ -8,22 +9,68 @@ import {
   HEBREW_ENGLISH_TEXT_REGEX,
 } from "../../utills/js/constants"
 import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
+import { getUserDetails, updateUserDetails } from "../../DAL/userApi"
+import useHttp from "../../hooks/use-http"
+import Loader from "../../componenets/Loader/Loader"
+import Message from "../../componenets/Message/Message"
+import { useContext } from "react"
+import AuthContext from "../../store/AuthCtx/auth-context"
 
 const UserProfilePage = () => {
+  const [error, setError] = useState(null)
+  const [success, setSuccess] = useState(null)
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
-  const handleFormSubmit = () => {
-    // { email, password, firstName, lastName }
+  const { handleUserDetailsUpdate } = useContext(AuthContext)
+
+  const {
+    sendRequest: userDetailsRequest,
+    status: getUserDetailsStatus,
+    error: getUserDetailsError,
+    data: userDetails,
+  } = useHttp(getUserDetails, true)
+
+  const history = useHistory()
+
+  const handleFormSubmit = async (newUserDetails) => {
+    const updatedUser = await updateUserDetails(newUserDetails)
+    if (updatedUser.error) {
+      setError(updatedUser.message)
+      return
+    }
+
+    setError(null)
+    handleUserDetailsUpdate(updatedUser[0].firstName)
+    setSuccess("פרטייך נשמרו במערכת,מיד תעבור לעמוד הבית")
+
+    setTimeout(() => {
+      history.replace("/")
+    }, 2000)
   }
+
+  useEffect(() => {
+    if (!storedUserInfo) {
+      history.push({
+        pathname: "/",
+        state: { isRedirect: true },
+      })
+    }
+  }, [storedUserInfo])
+
+  useEffect(() => {
+    userDetailsRequest()
+  }, [userDetailsRequest])
+
+  if (getUserDetailsStatus === "pending") return <Loader />
 
   return (
     <Formik
       initialValues={{
-        email: storedUserInfo.email,
-        firstName: storedUserInfo.firstName,
-        lastName: storedUserInfo.lastName,
-        password: storedUserInfo.password,
-        confirmPassword: "",
+        email: userDetails?.email || "",
+        firstName: userDetails?.firstName || "",
+        lastName: userDetails?.lastName || "",
+        password: "",
+        newPassword: "",
       }}
       validationSchema={Yup.object({
         email: Yup.string()
@@ -46,9 +93,12 @@ const UserProfilePage = () => {
             PASSWORD_REGEX,
             "חובה ספרה, אות קטנה ואות גדולה (באנגלית) - לפחות 8 תווים"
           ),
-        confirmPassword: Yup.string()
+        newPassword: Yup.string()
           .required("חובה*")
-          .oneOf([Yup.ref("password"), null], "סיסמאות לא תואמות"),
+          .matches(
+            PASSWORD_REGEX,
+            "חובה ספרה, אות קטנה ואות גדולה (באנגלית) - לפחות 8 תווים"
+          ),
       })}
       onSubmit={(values, { setSubmitting }) => {
         handleFormSubmit(values)
@@ -62,6 +112,10 @@ const UserProfilePage = () => {
         >
           <h2> אזור אישי - עדכון פרטים </h2>
           <hr />
+
+          {getUserDetailsError && <Message> {getUserDetailsError} </Message>}
+          {error && <Message> {error} </Message>}
+          {success && <Message variant="info"> {success} </Message>}
 
           <Form.Group className="w-75">
             <Form.Label className="font-weight-bold"> אימייל: </Form.Label>
@@ -117,18 +171,17 @@ const UserProfilePage = () => {
           </Form.Group>
 
           <Form.Group className="w-75">
-            <Form.Label className="font-weight-bold"> אימות סיסמא: </Form.Label>
+            <Form.Label className="font-weight-bold"> סיסמא חדשה: </Form.Label>
             <Form.Control
               type="password"
-              name="confirmPassword"
-              id="confirmPassword"
-              placeholder="אימות סיסמא"
-              {...formik.getFieldProps("confirmPassword")}
+              name="newPassword"
+              id="newPassword"
+              placeholder="סיסמא חדשה"
+              {...formik.getFieldProps("newPassword")}
             />
-            {formik.touched.confirmPassword &&
-              formik.errors.confirmPassword && (
-                <FormErrorMessages error={formik.errors.confirmPassword} />
-              )}
+            {formik.touched.newPassword && formik.errors.newPassword && (
+              <FormErrorMessages error={formik.errors.newPassword} />
+            )}
           </Form.Group>
 
           <Button variant="dark" type="submit" className="w-25">

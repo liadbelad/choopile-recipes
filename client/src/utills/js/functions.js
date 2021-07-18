@@ -15,9 +15,11 @@ export const filterChoosenIngredient = (ingredients, value) => {
 
 export const findIngredientDeletedByUser = (
   newRecipeIngredients,
-  deleteIdx
+  deleteValue
 ) => {
-  return newRecipeIngredients.find((ingredient, idx) => idx === deleteIdx)
+  return newRecipeIngredients.find(
+    ({ ingredient }) => ingredient.value === deleteValue
+  )
 }
 
 export const filterMultipleObjectsByValue = (arr1 = [], arr2 = []) => {
@@ -27,5 +29,6 @@ export const filterMultipleObjectsByValue = (arr1 = [], arr2 = []) => {
       return ingredient.value === oldIngredient.value
     })
   })
+  console.log(filterdArray)
   return filterdArray
 }

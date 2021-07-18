@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react"
 import { Link } from "react-router-dom"
 import { getRecipesBySearchTerm } from "../../../DAL/recipesApi"
-import Row from "react-bootstrap/Row"
 import Col from "react-bootstrap/Col"
-import ListGroup from "react-bootstrap/ListGroup"
 import Loader from "../../Loader/Loader"
 import Message from "../../Message/Message"
 
@@ -37,8 +35,6 @@ const SearchResults = ({ md, lg, enteredKeyword }) => {
   return (
     <Col
       className="mx-auto"
-      // md={md}
-      // lg={lg}
       style={{
         zIndex: "5",
         border: "1px solid #ccc",
@@ -50,7 +46,7 @@ const SearchResults = ({ md, lg, enteredKeyword }) => {
       {searchRecipesResults &&
         searchRecipesResults.map((recipe) => (
           <p key={recipe.id}>
-            <Link className="my-1" to={`/recipes/${recipe.id}`}>
+            <Link className="my-1 text-dark" to={`/recipes/${recipe.id}`}>
               {recipe.title}
             </Link>
           </p>

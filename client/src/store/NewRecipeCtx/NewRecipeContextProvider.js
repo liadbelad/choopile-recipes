@@ -72,8 +72,9 @@ const AuthContextProvider = ({ children }) => {
     )
   }
 
-  const handleAddNewRecipe = () => {
-    addNewRecipe(fullRecipeData)
+  const handleAddNewRecipe = async () => {
+    const newRecipeId = await addNewRecipe(fullRecipeData)
+    return newRecipeId
   }
 
   const handleUpdateRecipe = (recipeId) => {

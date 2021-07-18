@@ -1,6 +1,7 @@
-import React from "react"
+import React, { useContext } from "react"
 import { Nav, Navbar } from "react-bootstrap"
 import { LinkContainer } from "react-router-bootstrap"
+import AuthContext from "../../store/AuthCtx/auth-context"
 import RegisterLoginLinks from "../RegisterLoginLinks/RegisterLoginLinks"
 import SocialLinks from "../SocialLinks/SocialLinks"
 import styles from "./Sidebar.module.scss"
@@ -10,6 +11,7 @@ function Sidebar({
   handleShowSidenav,
   handleOpenModalWithContent,
 }) {
+  const { isLoggedIn } = useContext(AuthContext)
   return (
     <aside
       className={
@@ -29,17 +31,19 @@ function Sidebar({
           </Navbar.Brand>
         </LinkContainer>
         <LinkContainer to="/recipes">
-          <Nav.Link>RECIPES</Nav.Link>
+          <Nav.Link>מתכונים</Nav.Link>
         </LinkContainer>
-        <LinkContainer to="/categories">
-          <Nav.Link>CATEGORIES</Nav.Link>
+        <LinkContainer to="/about">
+          <Nav.Link>הסיפור שלנו</Nav.Link>
         </LinkContainer>
         <div className={`${styles["social-links"]} my-3`}>
           <SocialLinks />
         </div>
-        <RegisterLoginLinks
-          handleOpenModalWithContent={handleOpenModalWithContent}
-        />
+        {!isLoggedIn && (
+          <RegisterLoginLinks
+            handleOpenModalWithContent={handleOpenModalWithContent}
+          />
+        )}
       </Nav>
     </aside>
   )

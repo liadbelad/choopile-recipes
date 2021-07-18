@@ -1,5 +1,5 @@
 import React from "react"
-import { Link, useHistory } from "react-router-dom"
+import { Link, useHistory, useLocation } from "react-router-dom"
 import Card from "react-bootstrap/Card"
 import { updateRecipeViewsById } from "../../../DAL/recipesApi"
 import styles from "./RecipeItem.module.scss"
@@ -8,6 +8,8 @@ const RecipeItem = ({ recipe }) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const history = useHistory()
+
+  const { pathname } = useLocation()
 
   const handleViewsIncrement = () => {
     updateRecipeViewsById(recipe.id)
@@ -26,7 +28,7 @@ const RecipeItem = ({ recipe }) => {
       style={{ width: "100%", height: "100%", position: "relative" }}
       border="light"
     >
-      <Link to={`/recipes/${recipe.id}`}>
+      <Link to={`/recipes/${recipe?.id}`}>
         <Card.Img
           variant="top"
           className="w-100"
@@ -35,7 +37,7 @@ const RecipeItem = ({ recipe }) => {
         />
       </Link>
 
-      {recipe.userId === userInfo.id && (
+      {pathname === "/my-recipes" && recipe.userId === userInfo?.id && (
         <span className={styles[`edit-btn`]}>
           <i onClick={moveToEditRecipePage} className="fas fa-edit"></i>
         </span>

@@ -14,24 +14,17 @@ import NewRecipeDetailsPage from "./pages/NewRecipePages/NewRecipeDetailsPage"
 import UserProfilePage from "./pages/UserProfilePage/UserProfilePage"
 import NewRecipeIngredientsPage from "./pages/NewRecipePages/NewRecipeIngredientsPage"
 import NewRecipeInstructionsPage from "./pages/NewRecipePages/NewRecipeInstructionsPage"
-import ImageUploadTestPage from "./pages/ImageUploadTestPage"
 import MyRecipesPage from "./pages/MyRecipesPage"
 import EditRecipeDetailsPage from "./pages/EditRecipePages/EditRecipeDetailsPage"
 import EditRecipeIngredientsPage from "./pages/EditRecipePages/EditRecipeIngredientsPage"
 import EditRecipeInstructionsPage from "./pages/EditRecipePages/EditRecipeInstructionsPage"
-import { getSessionFromServer } from "./DAL/api"
+import EditRecipeSuccessPage from "./pages/EditRecipePages/EditRecipeSuccessPage"
+import NewRecipeSuccessPage from "./pages/NewRecipePages/NewRecipeSuccessPage"
+import AboutUsPage from "./pages/AboutUsPage"
+
 function App() {
   const { modalContent, handleCloseModal, handleModalContent } =
     useContext(ModalContext)
-
-  const getSession = async () => {
-    const userSession = await getSessionFromServer()
-    console.log(userSession)
-  }
-
-  useEffect(() => {
-    getSession()
-  }, [])
 
   return (
     <Router>
@@ -41,6 +34,7 @@ function App() {
         <Switch>
           <Route path="/recipes" exact component={RecipesPage} />
           <Route path="/profile" exact component={UserProfilePage} />
+          <Route path="/about" exact component={AboutUsPage} />
           <Route path="/my-recipes" exact component={MyRecipesPage} />
           <Route
             path="/recipes/new/details"
@@ -72,8 +66,17 @@ function App() {
             exact
             component={EditRecipeInstructionsPage}
           />
+          <Route
+            path="/recipes/edit/success"
+            exact
+            component={EditRecipeSuccessPage}
+          />
+          <Route
+            path="/recipes/new/success"
+            exact
+            component={NewRecipeSuccessPage}
+          />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
-          <Route path="/test" exact component={ImageUploadTestPage} />
           <Route path="/" exact component={HomePage} />
           <Route path="*" component={ErrorPage} />
         </Switch>

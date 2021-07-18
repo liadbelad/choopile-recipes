@@ -152,7 +152,6 @@ const EditRecipeDetailsPage = () => {
         >
           {(formik) => (
             <Container className="my-5">
-              {formik.errors.imageFiles}
               <NewRecipeSteps step1 path="edit" />
               <Prompt
                 when={isEnteringData}

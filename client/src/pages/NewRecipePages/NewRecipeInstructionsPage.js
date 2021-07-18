@@ -46,11 +46,10 @@ const NewRecipeInstructionsPage = () => {
     }
   }
 
-  const handleFormSubmit = () => {
+  const handleFormSubmit = async () => {
     handleAddRecipeInstructions(newRecipeInstructions, storedUserInfo.id)
-    handleAddNewRecipe()
-
-    history.push("/recipes/new/success")
+    const { recipeId } = await handleAddNewRecipe()
+    history.push({ pathname: "/recipes/new/success", state: { recipeId } })
   }
 
   useEffect(() => {

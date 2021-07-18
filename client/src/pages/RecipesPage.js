@@ -7,20 +7,20 @@ import RecipesList from "../componenets/Recipes/RecipesList/RecipesList"
 import Loader from "../componenets/Loader/Loader"
 import Message from "../componenets/Message/Message"
 import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
-import { getAllRecipes, getRecipesByCategory } from "../DAL/api"
+import { getAllRecipes } from "../DAL/api"
 import Paginate from "../componenets/Pagination/Paginate"
-import { getNumberOfPages } from "../DAL/recipesApi"
 
 const RecipesPage = () => {
   const [showRecipes, setShowRecipes] = useState(true)
   const [activePageNumber, setActivePageNumber] = useState(1)
+  const [isCategoryActive, setIsCategoryActive] = useState(false)
 
-  const {
-    sendRequest: getNumberOfPagesRequest,
-    status: numberOfPagesStatus,
-    data: NumberOfPages,
-    error: getNumberOfPagesError,
-  } = useHttp(getNumberOfPages, true)
+  // const {
+  //   sendRequest: getNumberOfPagesRequest,
+  //   status: numberOfPagesStatus,
+  //   data: NumberOfPages,
+  //   error: getNumberOfPagesError,
+  // } = useHttp(getNumberOfPages, true)
 
   const {
     sendRequest: sendAllRecipesRequest,
@@ -29,30 +29,20 @@ const RecipesPage = () => {
     error: allRecipesError,
   } = useHttp(getAllRecipes, true)
 
-  const {
-    sendRequest: sendRecipesByCategoryRequest,
-    status: recipesByCategoryStatus,
-    data: recipesByCategory,
-    error: recipesByCategoryError,
-  } = useHttp(getRecipesByCategory)
-
   const handleGetRecipesBySelectedCategory = (categoryID) => {
-    setShowRecipes(false)
-    sendRecipesByCategoryRequest(categoryID)
+    setIsCategoryActive(true)
+    sendAllRecipesRequest({ activePageNumber, categoryID })
   }
 
   const handleShowRecipesByPageNumber = (pageNumber) => {
-    console.log(pageNumber)
     setActivePageNumber(pageNumber)
   }
 
   useEffect(() => {
-    getNumberOfPagesRequest()
-  }, [getNumberOfPagesRequest])
-
-  useEffect(() => {
-    sendAllRecipesRequest()
-  }, [sendAllRecipesRequest])
+    if (!isCategoryActive) {
+      sendAllRecipesRequest({ activePageNumber })
+    }
+  }, [isCategoryActive, sendAllRecipesRequest, activePageNumber])
 
   if (
     allRecipesStatus === "completed" &&
@@ -72,30 +62,21 @@ const RecipesPage = () => {
         </Col>
         <Col md={8}>
           {allRecipesStatus === "pending" && <Loader />}
-          {recipesByCategoryStatus === "pending" && <Loader />}
 
           {allRecipesError && <Message> {allRecipesError} </Message>}
-          {recipesByCategoryError && (
-            <Message> {recipesByCategoryError} </Message>
-          )}
 
-          {!recipesByCategory && showRecipes && allRecipes && (
-            <RecipesList recipes={allRecipes} />
-          )}
+          {allRecipes?.recipes.length === 0 && <NoRecipesFound />}
 
-          {recipesByCategory && recipesByCategory.length === 0 && (
-            <NoRecipesFound />
+          {showRecipes && allRecipes && allRecipes?.recipes.length > 0 && (
+            <RecipesList recipes={allRecipes.recipes} />
           )}
-
-          {recipesByCategory && <RecipesList recipes={recipesByCategory} />}
         </Col>
       </Row>
-      {numberOfPagesStatus === "pending" && <Loader />}
 
-      {NumberOfPages && NumberOfPages.pagesCount && (
+      {allRecipes && allRecipes.pagesCount && (
         <Paginate
           onClick={handleShowRecipesByPageNumber}
-          pagesCount={NumberOfPages.pagesCount}
+          pagesCount={allRecipes.pagesCount}
           activePageNumber={activePageNumber}
         />
       )}

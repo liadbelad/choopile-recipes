@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useHistory, Prompt } from "react-router-dom"
-import AuthContext from "../../store/AuthCtx/auth-context"
 import AddRecipeFormInput from "../../componenets/Recipes/AddRecipeForm/AddRecipeFormInput"
 import { Formik } from "formik"
 import * as Yup from "yup"
@@ -21,6 +20,13 @@ const NewRecipeIngredientsPage = () => {
   const [ingredients, setIngredients] = useState(null)
   const [measureUnits, setMeasureUnits] = useState(null)
   const [newRecipeIngredients, setNewRecipeIngredients] = useState([])
+  const [isEditingIngredient, setIsEditingIngredient] = useState(false)
+  const [editTitle, setEditTitle] = useState("")
+  const [editQty, setEditQty] = useState("")
+  const [editIngredient, setEditIngredient] = useState(null)
+  const [editMeasureUnit, setEditMeasureUnit] = useState(null)
+  const [editNote, setEditNote] = useState("")
+  const [editIdx, setEditIdx] = useState()
 
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
@@ -48,19 +54,43 @@ const NewRecipeIngredientsPage = () => {
     setIngredients(filteredIngredients)
   }
 
-  const handleDeleteNewIngredient = (deleteIdx) => {
+  const handleDeleteNewIngredient = (deleteValue) => {
     if (window.confirm(`האם אתה בטוח ?`)) {
       const { ingredient } = findIngredientDeletedByUser(
         newRecipeIngredients,
-        deleteIdx
+        deleteValue
       )
 
       const filteredNewIngredients = newRecipeIngredients.filter(
-        (ingredient, idx) => idx !== deleteIdx
+        ({ ingredient }) => ingredient.value !== deleteValue
       )
       setNewRecipeIngredients(filteredNewIngredients)
       setIngredients((prevIngredients) => [...prevIngredients, ingredient])
     }
+  }
+
+  const handleShowEditIngredientData = (ingredientData, idx) => {
+    const { ingredient, measureUnit, qty, note, title } = ingredientData
+    setIsEditingIngredient(true)
+    setEditIngredient(ingredient)
+    setEditMeasureUnit(measureUnit)
+    setEditNote(note)
+    setEditQty(qty)
+    setEditTitle(title)
+    setEditIdx(idx)
+  }
+
+  const handleEditingIngredient = (editedIngredientData) => {
+    let stateCopy = [...newRecipeIngredients]
+    stateCopy[editIdx] = editedIngredientData
+    setNewRecipeIngredients(stateCopy)
+    setIsEditingIngredient(false)
+    setEditIngredient(null)
+    setEditMeasureUnit(null)
+    setEditNote("")
+    setEditQty("")
+    setEditTitle("")
+    setEditIdx()
   }
 
   const handleFormSubmit = () => {
@@ -99,12 +129,13 @@ const NewRecipeIngredientsPage = () => {
   return (
     <Formik
       initialValues={{
-        qty: "",
-        measureUnit: {},
-        ingredient: {},
-        title: "",
-        note: "",
+        qty: editQty || "",
+        measureUnit: editMeasureUnit || {},
+        ingredient: editIngredient || {},
+        title: editTitle || "",
+        note: editNote || "",
       }}
+      enableReinitialize
       validationSchema={Yup.object().shape({
         qty: Yup.number("מספרים בלבד").required("*חובה").positive("מספר חיובי"),
         measureUnit: Yup.object()
@@ -125,9 +156,15 @@ const NewRecipeIngredientsPage = () => {
           ),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        handleAddingNewIngredient(values)
-        setSubmitting(false)
-        resetForm()
+        if (isEditingIngredient) {
+          handleEditingIngredient(values)
+          setSubmitting(false)
+          resetForm()
+        } else {
+          handleAddingNewIngredient(values)
+          setSubmitting(false)
+          resetForm()
+        }
       }}
     >
       {(formik) => (
@@ -146,7 +183,7 @@ const NewRecipeIngredientsPage = () => {
                     placeholder="*כמות"
                     name="qty"
                     id="qty"
-                    type="text"
+                    type="number"
                   />
                 </Col>
                 <Col lg={4}>
@@ -199,10 +236,14 @@ const NewRecipeIngredientsPage = () => {
                     type="text"
                   />
                 </Col>
-                <Col lg={1}>
+              </Row>
+              <Row>
+                <Col className="d-flex justify-content-center my-2">
                   <Form.Group>
                     <Button type="submit" variant="success">
-                      +
+                      {editQty && editIngredient && editMeasureUnit
+                        ? "עדכן מרכיב"
+                        : "+ הוסף מרכיב"}
                     </Button>
                   </Form.Group>
                 </Col>
@@ -212,6 +253,7 @@ const NewRecipeIngredientsPage = () => {
             <NewIngredientsList
               newRecipeIngredients={newRecipeIngredients}
               handleDeleteNewIngredient={handleDeleteNewIngredient}
+              handleEditNewIngredient={handleShowEditIngredientData}
             />
 
             <Row>
