@@ -4,7 +4,7 @@ import { ListGroup } from "react-bootstrap"
 const IngredientsByTitleList = ({ title, ingredients }) => {
   return (
     <ListGroup className="mb-3">
-      {title && <h6> {title}: </h6>}
+      {title && <h6 className="font-weight-bold"> {title}: </h6>}
       {ingredients.map(({ amount, measureUnit, ingredient, note }, idx) => (
         <ListGroup.Item key={idx} style={{ border: "none" }}>
           <i

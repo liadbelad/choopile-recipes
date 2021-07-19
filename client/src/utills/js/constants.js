@@ -6,6 +6,26 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
 const FILE_SIZE = 3000000
 const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
 
+const CUSTOM_SELECT_STYLES = {
+  control: (styles, { isFocused }) => ({
+    ...styles,
+  }),
+  singleValue: (styles) => ({
+    ...styles,
+    color: "rgb(239, 66, 41)",
+  }),
+  option: (styles, { isFocused }) => {
+    return {
+      ...styles,
+      transition: "background-color 0.5s ease",
+      backgroundColor: isFocused ? "rgb(239, 66, 41)" : "white",
+      border: "none",
+      color: isFocused ? "#fff" : "#000",
+      cursor: "pointer",
+    }
+  },
+}
+
 // password regex Description
 // ^	The password string will start this way
 // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character
@@ -22,4 +42,5 @@ export {
   PASSWORD_REGEX,
   SUPPORTED_FILE_FORMATS,
   FILE_SIZE,
+  CUSTOM_SELECT_STYLES,
 }

@@ -7,11 +7,14 @@ const config = {
   withCredentials: true,
 }
 
-const getNewestRecipes = async () => {
+const getNewestRecipes = async (pageNumber = 1) => {
+  console.log(pageNumber)
   try {
-    const response = await fetch(`http://localhost:5000/api/recipes/newest`)
-    const recipesHomepage = await response.json()
-    return recipesHomepage
+    const response = await fetch(
+      `http://localhost:5000/api/recipes/newest?pageNumber=${pageNumber}`
+    )
+    const newestRecipes = await response.json()
+    return newestRecipes
   } catch (error) {
     return error.message
   }
@@ -52,7 +55,7 @@ const addNewRecipe = async (newRecipe) => {
     )
     return data
   } catch (error) {
-    return error.message
+    return error.response.data
   }
 }
 

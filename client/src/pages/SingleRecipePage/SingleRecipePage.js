@@ -12,6 +12,8 @@ import ErrorPage from "../ErrorPage"
 import CommentSection from "../../componenets/Recipes/RecipeComments/CommentSection"
 import OverviewDetails from "./OverviewDetails/OverviewDetails"
 import ShareLinks from "./ShareLinks/ShareLinks"
+import Aos from "aos"
+import "aos/dist/aos.css"
 
 const SingleRecipePage = () => {
   const {
@@ -25,6 +27,10 @@ const SingleRecipePage = () => {
   useEffect(() => {
     sendRequest(+id)
   }, [id, sendRequest])
+
+  useEffect(() => {
+    Aos.init({ duration: 1500 })
+  }, [])
 
   if (status === "pending") {
     return (
@@ -46,10 +52,11 @@ const SingleRecipePage = () => {
       {recipe && (
         <Container className="my-5">
           <section className="w-100 d-flex flex-column justify-content-center align-items-center ">
-            <Card.Title as="h1" className="mb-4">
+            <Card.Title as="h1" className="mb-4" data-aos="fade-in">
               {recipe.title}
             </Card.Title>
             <Card.Img
+              data-aos="fade-in"
               className={styles["img-responsive"]}
               variant="bottom"
               src={`http://localhost:5000/images/${recipe.mainImageUrl}`}
@@ -59,7 +66,7 @@ const SingleRecipePage = () => {
               prepTimeMins={recipe.prepTimeMins}
             />
             <ShareLinks title={recipe.title} />
-            <Row className="my-5 w-100">
+            <Row className="my-5 w-100" data-aos="fade-up">
               <Col md={4}>
                 {recipe.ingredientsByTitle && (
                   <RecipeIngredients

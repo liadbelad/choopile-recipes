@@ -8,7 +8,7 @@ const NewInstructionItem = ({ instructionData, idx, onClick }) => {
       <div>
         <i
           onClick={onClick}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer", color: "red" }}
           className="fas fa-trash mx-2"
         ></i>
       </div>

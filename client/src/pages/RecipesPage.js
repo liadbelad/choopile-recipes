@@ -9,10 +9,12 @@ import Message from "../componenets/Message/Message"
 import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
 import { getAllRecipes } from "../DAL/api"
 import Paginate from "../componenets/Pagination/Paginate"
+import Aos from "aos"
+import "aos/dist/aos.css"
 
 const RecipesPage = () => {
   const [activePageNumber, setActivePageNumber] = useState(1)
-  const [isCategoryActive, setIsCategoryActive] = useState(false)
+  const [activeCategory, setActiveCategory] = useState(false)
 
   const {
     sendRequest: sendAllRecipesRequest,
@@ -22,8 +24,10 @@ const RecipesPage = () => {
   } = useHttp(getAllRecipes, true)
 
   const handleGetRecipesBySelectedCategory = (categoryID) => {
-    setIsCategoryActive(true)
     setActivePageNumber(1)
+
+    setActiveCategory(categoryID)
+
     sendAllRecipesRequest({ activePageNumber, categoryID })
   }
 
@@ -32,10 +36,17 @@ const RecipesPage = () => {
   }
 
   useEffect(() => {
-    if (!isCategoryActive) {
+    if (!activeCategory) {
       sendAllRecipesRequest({ activePageNumber })
+    } else {
+      const categoryID = activeCategory
+      sendAllRecipesRequest({ activePageNumber, categoryID })
     }
-  }, [isCategoryActive, sendAllRecipesRequest, activePageNumber])
+  }, [activeCategory, sendAllRecipesRequest, activePageNumber])
+
+  useEffect(() => {
+    Aos.init({ duration: 1500 })
+  }, [])
 
   if (
     allRecipesStatus === "completed" &&
@@ -47,13 +58,13 @@ const RecipesPage = () => {
   return (
     <Container fluid className="my-5">
       <Row>
-        <Col md={4}>
+        <Col md={4} className="w-100">
           <SearchBar sm={12} />
           <CategoriesList
             onCategoryChange={handleGetRecipesBySelectedCategory}
           />
         </Col>
-        <Col md={8} style={{ minHeight: "75vh" }}>
+        <Col md={8} style={{ minHeight: "75vh" }} data-aos="fade-up">
           {allRecipesStatus === "pending" && <Loader />}
 
           {allRecipesError && <Message> {allRecipesError} </Message>}

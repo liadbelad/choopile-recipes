@@ -48,7 +48,12 @@ const NewRecipeInstructionsPage = () => {
 
   const handleFormSubmit = async () => {
     handleAddRecipeInstructions(newRecipeInstructions, storedUserInfo.id)
-    const { recipeId } = await handleAddNewRecipe()
+    const { recipeId, error } = await handleAddNewRecipe()
+    if (!recipeId && error) {
+      history.replace("/recipes/new/error")
+      return
+    }
+
     history.push({ pathname: "/recipes/new/success", state: { recipeId } })
   }
 

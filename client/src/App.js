@@ -21,6 +21,7 @@ import EditRecipeInstructionsPage from "./pages/EditRecipePages/EditRecipeInstru
 import EditRecipeSuccessPage from "./pages/EditRecipePages/EditRecipeSuccessPage"
 import NewRecipeSuccessPage from "./pages/NewRecipePages/NewRecipeSuccessPage"
 import AboutUsPage from "./pages/AboutUsPage"
+import NewRecipeErrorPage from "./pages/NewRecipePages/NewRecipeErrorPage"
 
 function App() {
   const { modalContent, handleCloseModal, handleModalContent } =
@@ -75,6 +76,11 @@ function App() {
             path="/recipes/new/success"
             exact
             component={NewRecipeSuccessPage}
+          />
+          <Route
+            path="/recipes/new/error"
+            exact
+            component={NewRecipeErrorPage}
           />
           <Route path="/recipes/:id" exact component={SingleRecipePage} />
           <Route path="/" exact component={HomePage} />

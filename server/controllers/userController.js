@@ -5,6 +5,7 @@ const {
 } = require("../DAL/api")
 const bcrypt = require("bcryptjs")
 const generateToken = require("../utills/generateToken")
+const { isUserExistQuery, updateUserDetailsQuery } = require("../DAL/userApi")
 
 // @desc    register new user
 // @route   POST /api/users
@@ -52,44 +53,87 @@ const login = async (req, res) => {
     const { email, password } = req.body
 
     const user = await loginUserQuery(email)
-    if (!user) {
+    if (!user[0]) {
       throw new Error("אימייל או סיסמא לא נכונים")
     }
-    const isSamePassword = await bcrypt.compare(password, user.password)
+    const isSamePassword = await bcrypt.compare(password, user[0].password)
 
     if (!isSamePassword) {
       throw new Error("אימייל או סיסמא לא נכונים")
     }
     const expiryDate = new Date(Number(new Date()) + 315360000000)
 
-    res.cookie("userId", user.id, {
+    res.cookie("userId", user[0].id, {
       expires: expiryDate,
       httpOnly: true,
     })
-    req.session.userInfo = user
 
     const token = generateToken(user.id, user.email, user.firstName)
 
-    res.status(200).json(user)
+    res.status(200).json(user[0])
   } catch (error) {
     return res.status(401).json({ error: true, message: error.message })
   }
 }
 
-// @desc    get user session
-// @route   GET /api/users/login
+// @desc    update user details
+// @route   PUT /api/users
 // @access  Public
-const getUserSession = async (req, res) => {
+const updateUserDetails = async (req, res) => {
   try {
-    console.log(req.session)
-    if (req.session.user) {
-      res.json({ isLoggedIn: true, user: req.session.user })
-    } else {
-      res.status(401).json({ isLoggedIn: false })
+    const {
+      email,
+      password: oldPassword,
+      newPassword,
+      firstName,
+      lastName,
+    } = req.body
+
+    const { userId } = req.cookies
+
+    const user = await isUserExistQuery(userId)
+    if (!user[0]) {
+      throw new Error("משתמש לא נמצא")
     }
+
+    const isSamePassword = await bcrypt.compare(oldPassword, user[0].password)
+
+    if (!isSamePassword) {
+      throw new Error("סיסמא לא נכונה")
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+    const updatedUser = await updateUserDetailsQuery({
+      firstName,
+      lastName,
+      hashedPassword,
+      email,
+      userId,
+    })
+
+    res.status(200).json(updatedUser)
   } catch (error) {
     return res.status(401).json({ error: true, message: error.message })
   }
 }
 
-module.exports = { login, register, getUserSession }
+// @desc    get user details
+// @route   GET /api/users
+// @access  Public
+const getUserDetails = async (req, res) => {
+  try {
+    const { userId } = req.cookies
+
+    const user = await isUserExistQuery(userId)
+    if (!user[0]) {
+      throw new Error("משתמש לא נמצא")
+    }
+
+    res.status(200).json(user[0])
+  } catch (error) {
+    return res.status(401).json({ error: true, message: error.message })
+  }
+}
+
+module.exports = { login, register, updateUserDetails, getUserDetails }

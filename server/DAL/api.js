@@ -35,14 +35,10 @@ const registerUserQuery = async (
 }
 
 const loginUserQuery = async (email) => {
-  try {
-    const loginQuery = `SELECT id,firstName ,lastName,email,password FROM users WHERE email = ?`
-    const connector = await connection
-    const [userExist] = await connector.execute(loginQuery, [email])
-    return userExist[0]
-  } catch (error) {
-    return error
-  }
+  const loginQuery = `SELECT id,firstName ,lastName,email,password FROM users WHERE email = ?`
+  const connector = await connection
+  const [userExist] = await connector.execute(loginQuery, [email])
+  return userExist
 }
 
 // RECIPES API
@@ -76,7 +72,12 @@ const getRecipesQuery = async (limit = 2, pageNumber = 0) => {
   }
 }
 
-const getRecipesOfCategoryQuery = async (categoryId) => {
+const getRecipesOfCategoryQuery = async (
+  categoryId,
+  limit = 2,
+  pageNumber = 1
+) => {
+  const offset = (pageNumber - 1) * limit
   try {
     const query = `SELECT recipes.id,recipes.title,recipes.userId,mainImageUrl
     FROM recipes
@@ -85,7 +86,10 @@ const getRecipesOfCategoryQuery = async (categoryId) => {
         SELECT recipe_categories.recipeId 
         FROM recipe_categories
         where recipe_categories.categoryId = ?
-    )`
+    )
+    LIMIT ${limit}
+    OFFSET ${offset}
+    `
     const connector = await connection
     const [recipesOfCategory] = await connector.execute(query, [categoryId])
     return recipesOfCategory
@@ -94,7 +98,14 @@ const getRecipesOfCategoryQuery = async (categoryId) => {
   }
 }
 
-const getUserRecipesOfCategoryQuery = async (userID, categoryID) => {
+const getUserRecipesOfCategoryQuery = async ({
+  userId,
+  category,
+  pageSize: limit,
+  pageNumber,
+}) => {
+  const offset = (pageNumber - 1) * limit
+
   try {
     const query = `SELECT recipes.id,recipes.title,recipes.userId,mainImageUrl
     FROM recipes
@@ -104,11 +115,14 @@ const getUserRecipesOfCategoryQuery = async (userID, categoryID) => {
         SELECT recipe_categories.recipeId 
         FROM recipe_categories
         where recipe_categories.categoryId = ?
-    )`
+    )
+    LIMIT ${limit}
+    OFFSET ${offset}
+    `
     const connector = await connection
     const [userRecipesOfCategory] = await connector.execute(query, [
-      userID,
-      categoryID,
+      userId,
+      category,
     ])
     return userRecipesOfCategory
   } catch (error) {
@@ -116,8 +130,9 @@ const getUserRecipesOfCategoryQuery = async (userID, categoryID) => {
   }
 }
 
-const getRecipesOfUserQuery = async (userId, limit = 5, pageNumber = 0) => {
-  const offset = pageNumber * limit
+const getRecipesOfUserQuery = async (userId, limit = 2, pageNumber = 1) => {
+  const offset = (pageNumber - 1) * limit
+
   try {
     const query = `SELECT recipes.id, recipes.title,recipes.userId,recipes.mainImageUrl
     FROM recipes
@@ -148,12 +163,15 @@ const getPopularRecipesQuery = async () => {
   }
 }
 
-const getNewestRecipesQuery = async (limit = 5) => {
+const getNewestRecipesQuery = async (limit = 5, pageNumber) => {
+  const offset = (pageNumber - 1) * limit
+
   try {
     const query = `SELECT id,userId,title,description,views,createdAt,mainImageUrl
     FROM recipes
     ORDER BY recipes.createdAt DESC
-    LIMIT ${limit};`
+    LIMIT ${limit}
+    OFFSET ${offset};`
     const connector = await connection
     const [rows] = await connector.execute(query)
 

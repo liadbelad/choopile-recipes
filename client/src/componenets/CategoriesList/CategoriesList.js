@@ -4,6 +4,7 @@ import useHttp from "../../hooks/use-http"
 import Select from "react-select"
 import { getAllCategories, getAllCategoriesOfUserRecipes } from "../../DAL/api"
 import AuthContext from "../../store/AuthCtx/auth-context"
+import { CUSTOM_SELECT_STYLES } from "../../utills/js/constants"
 
 const CategoriesList = ({ onCategoryChange }) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
@@ -40,6 +41,7 @@ const CategoriesList = ({ onCategoryChange }) => {
       options={loadedCategories}
       onChange={handleCategoryChange}
       className="my-3"
+      styles={CUSTOM_SELECT_STYLES}
     />
   )
 }

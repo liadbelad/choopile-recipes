@@ -7,6 +7,7 @@ const validation = (schema) => async (req, res, next) => {
     await schema.validate(body)
     next()
   } catch (error) {
+    console.log(error)
     res
       .status(401)
       .json({ error: true, name: error.path, message: error.message })

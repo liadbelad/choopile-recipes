@@ -29,7 +29,7 @@ router.get("/pages", getNumberOfPages)
 
 router.get("/categories", getRecipesOfCategory)
 
-router.get("/users/:userId", validateCookie, getUserRecipes)
+router.get("/users", validateCookie, getUserRecipes)
 
 router.get("/popular", getPopularRecipes)
 
@@ -38,6 +38,7 @@ router.get("/newest", getNewestRecipes)
 router.post(
   "/add",
   fileUpload.single("imageFiles"),
+
   validateCookie,
   validation(recipeDetailsSchema),
   addSingleRecipe

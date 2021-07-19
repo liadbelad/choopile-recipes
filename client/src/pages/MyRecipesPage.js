@@ -10,6 +10,8 @@ import Message from "../componenets/Message/Message"
 import NoRecipesFound from "../componenets/Recipes/NoRecipesFound/NoRecipesFound"
 import { getUserRecipes } from "../DAL/api"
 import Paginate from "../componenets/Pagination/Paginate"
+import Aos from "aos"
+import "aos/dist/aos.css"
 
 const MyRecipesPage = () => {
   const [activePageNumber, setActivePageNumber] = useState(1)
@@ -49,6 +51,10 @@ const MyRecipesPage = () => {
     }
   }, [isCategoryActive, sendUserRecipesRequest, activePageNumber])
 
+  useEffect(() => {
+    Aos.init({ duration: 1500 })
+  }, [])
+
   if (
     userRecipesStatus === "completed" &&
     (!userRecipesData || userRecipesData.length === 0)
@@ -66,7 +72,7 @@ const MyRecipesPage = () => {
               onCategoryChange={handleGetUserRecipesBySelectedCategory}
             />
           </Col>
-          <Col md={8} style={{ minHeight: "75vh" }}>
+          <Col md={8} style={{ minHeight: "75vh" }} data-aos="fade-up">
             {userRecipesStatus === "pending" && <Loader />}
 
             {userRecipesError && <Message> {userRecipesError} </Message>}

@@ -24,11 +24,24 @@ const getRecipes = async (req, res) => {
   try {
     const pageSize = PAGES_LIMIT
     const pageNumber = Number(req.query.pageNumber) || 1
-    const { keyword } = req.query
-    if (!keyword) {
+    const { keyword, category } = req.query
+
+    if (!keyword && !category) {
+      const pagesCount = await getNumberOfPagesQuery({ pageSize })
       const recipes = await getRecipesQuery(pageSize, pageNumber)
-      return res.json(recipes)
+      return res.json({ recipes, pagesCount })
     }
+
+    if (!keyword && category) {
+      const pagesCount = await getNumberOfPagesQuery({ pageSize, category })
+      const recipes = await getRecipesOfCategoryQuery(
+        category,
+        pageSize,
+        pageNumber
+      )
+      return res.json({ recipes, pagesCount })
+    }
+
     const recipesBySearchTerm = await getRecipeBySearchTermQuery(keyword)
     res.json(recipesBySearchTerm)
   } catch (error) {
@@ -43,6 +56,8 @@ const getNumberOfPages = async (req, res) => {
   try {
     const limit = PAGES_LIMIT
     const { user } = req.query
+    const { userId } = req.cookies
+
     if (!user) {
       const pages = await getNumberOfPagesQuery(limit)
       return res.json(pages)
@@ -80,9 +95,37 @@ const getRecipesOfCategory = async (req, res) => {
 // @access  Public
 const getUserRecipes = async (req, res) => {
   try {
-    const { userId } = req.params
-    const userRecipes = await getRecipesOfUserQuery(userId)
-    res.json(userRecipes)
+    const pageSize = PAGES_LIMIT
+    const pageNumber = Number(req.query.pageNumber) || 1
+    const { category } = req.query
+    const { userId } = req.cookies
+
+    if (!category) {
+      const pagesCount = await getNumberOfPagesQuery({
+        pageSize,
+        category,
+        userId,
+      })
+      const userRecipes = await getRecipesOfUserQuery(
+        userId,
+        pageSize,
+        pageNumber
+      )
+      return res.json({ userRecipes, pagesCount })
+    }
+    const pagesCount = await getNumberOfPagesQuery({
+      pageSize,
+      category,
+      userId,
+    })
+    const userRecipes = await getUserRecipesOfCategoryQuery({
+      userId,
+      category,
+      pageSize,
+      pageNumber,
+    })
+
+    return res.json({ userRecipes, pagesCount })
   } catch (error) {
     res.status(404).json(error.message)
   }
@@ -105,7 +148,10 @@ const getPopularRecipes = async (req, res) => {
 // @access  Public
 const getNewestRecipes = async (req, res) => {
   try {
-    const newestRecipes = await getNewestRecipesQuery()
+    const pageSize = PAGES_LIMIT
+    const pageNumber = Number(req.query.pageNumber) || 1
+
+    const newestRecipes = await getNewestRecipesQuery(pageSize, pageNumber)
     res.json(newestRecipes)
   } catch (error) {
     res.status(404).json(error.message)
@@ -133,8 +179,8 @@ const addSingleRecipe = async (req, res) => {
     const { ...newRecipe } = req.body
     newRecipe.imageURL = req.file?.filename
 
-    await addNewRecipe(newRecipe)
-    res.status(200).send("מתכון התקבל")
+    const newRecipeId = await addNewRecipe(newRecipe)
+    res.status(200).json({ recipeId: newRecipeId })
   } catch (error) {
     res.status(404).json(error.message)
   }

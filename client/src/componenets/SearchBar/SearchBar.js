@@ -18,8 +18,8 @@ const SearchBar = ({ md, lg }) => {
 
   return (
     <>
-      <Form inline as={Row} className="w-100">
-        <Col md={md} lg={lg} className="mx-auto">
+      <Form inline as={Row} className="w-100 m-0">
+        <Col md={md} lg={lg} className="mx-auto p-0">
           <InputGroup className="mx-auto">
             <FormControl
               id="search-recipe"

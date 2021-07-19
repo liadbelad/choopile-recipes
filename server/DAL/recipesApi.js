@@ -57,6 +57,8 @@ const addNewRecipe = async (newRecipe) => {
   VALUES(?,?)`
 
   await connector.execute(addImageQuery, [recipeId, imageURL])
+
+  return recipeId
 }
 
 const addNewRecipeIngredient = async (ingredient, recipeId) => {
@@ -239,10 +241,60 @@ const checkIfUserCommentedToRecipe = async (recipeId, userId) => {
   return comment
 }
 
-const getNumberOfPagesQuery = async (limit) => {
-  const countRecipesQuery = `SELECT COUNT(id) AS NumberOfRecipes FROM recipes;`
+const getNumberOfPagesQuery = async ({ pageSize: limit, category, userId }) => {
+  if (!category && !userId) {
+    const countRecipesQuery = `SELECT COUNT(id) AS NumberOfRecipes FROM recipes;`
+    const connector = await connection
+    const [recipesCount] = await connector.execute(countRecipesQuery)
+    const { NumberOfRecipes } = recipesCount[0]
+
+    const pagesCount = Math.ceil(NumberOfRecipes / limit)
+
+    return { pagesCount }
+  }
+
+  if (category && !userId) {
+    const countRecipesQuery = `SELECT COUNT(recipeId) AS NumberOfRecipes 
+    FROM recipe_categories
+    WHERE categoryId = ?;`
+    const connector = await connection
+    const [recipesCount] = await connector.execute(countRecipesQuery, [
+      category,
+    ])
+    const { NumberOfRecipes } = recipesCount[0]
+
+    const pagesCount = Math.ceil(NumberOfRecipes / limit)
+
+    return { pagesCount }
+  }
+
+  if (!category && userId) {
+    const countRecipesQuery = `SELECT COUNT(id) AS NumberOfRecipes 
+    FROM recipes
+    WHERE userId = ?;`
+    const connector = await connection
+    const [recipesCount] = await connector.execute(countRecipesQuery, [userId])
+    const { NumberOfRecipes } = recipesCount[0]
+
+    const pagesCount = Math.ceil(NumberOfRecipes / limit)
+
+    return { pagesCount }
+  }
+
+  const countRecipesQuery = `SELECT count(id) As NumberOfRecipes 
+  FROM recipes
+  WHERE userId = ? 
+  AND id 
+  IN(
+  SELECT recipe_categories.recipeId 
+      FROM recipe_categories
+      WHERE categoryId = ?
+  );`
   const connector = await connection
-  const [recipesCount] = await connector.execute(countRecipesQuery)
+  const [recipesCount] = await connector.execute(countRecipesQuery, [
+    userId,
+    category,
+  ])
   const { NumberOfRecipes } = recipesCount[0]
 
   const pagesCount = Math.ceil(NumberOfRecipes / limit)

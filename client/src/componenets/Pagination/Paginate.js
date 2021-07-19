@@ -21,7 +21,7 @@ const Paginate = ({
   }
   return (
     <section className={styles["pagination-container"]}>
-      <Pagination>{paginationItems}</Pagination>
+      <Pagination className={styles.pagination}>{paginationItems}</Pagination>
     </section>
   )
 }

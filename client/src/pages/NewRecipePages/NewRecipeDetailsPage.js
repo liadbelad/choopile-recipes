@@ -54,7 +54,7 @@ const NewRecipeDetailsPage = () => {
     }
 
     return () => (mounted = false)
-  }, [])
+  }, [history, categories])
 
   return (
     <Formik

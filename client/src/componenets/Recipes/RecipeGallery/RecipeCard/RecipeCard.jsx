@@ -1,7 +1,9 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { Link } from "react-router-dom"
 import { updateRecipeViewsById } from "../../../../DAL/recipesApi"
 import styles from "./RecipeCard.module.scss"
+import Aos from "aos"
+import "aos/dist/aos.css"
 
 const RecipeCard = ({ recipe }) => {
   const { id, title, description, views, createdAt, mainImageUrl } = recipe
@@ -12,8 +14,13 @@ const RecipeCard = ({ recipe }) => {
     updateRecipeViewsById(id)
   }
 
+  useEffect(() => {
+    Aos.init({ duration: 750 })
+  }, [])
+
   return (
     <article
+      data-aos="fade-up"
       onClick={handleViewsIncrement}
       className={`${styles["recipe-container"]}`}
     >

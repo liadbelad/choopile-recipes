@@ -8,6 +8,7 @@ import Sidebar from "../Sidebar/Sidebar"
 import RegisterLoginLinks from "../RegisterLoginLinks/RegisterLoginLinks"
 import UserInfoDropdown from "./UserInfo/UserInfoDropdown"
 import SocialLinks from "../SocialLinks/SocialLinks"
+import { animateScroll as scroll } from "react-scroll"
 
 const MainNavbar = () => {
   const [showSidebar, setShowSidebar] = useState(false)
@@ -50,7 +51,12 @@ const MainNavbar = () => {
               )}
 
               <LinkContainer to="/">
-                <Navbar.Brand className={styles.brand}>CHOOPIL'E</Navbar.Brand>
+                <Navbar.Brand
+                  onClick={() => scroll.scrollToTop()}
+                  className={styles.brand}
+                >
+                  CHOOPIL'E
+                </Navbar.Brand>
               </LinkContainer>
               <div className={styles["social-links"]}>
                 <SocialLinks />

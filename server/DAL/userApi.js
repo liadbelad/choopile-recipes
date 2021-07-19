@@ -1,16 +1,34 @@
-const User = require("../models/users")
+const connection = require("../config/db")
 
-const isUserExist = async (email) => {
-  return await User.findOne({ where: { email } })
+const isUserExistQuery = async (userId) => {
+  const isUserExistQuery = `SELECT * FROM users WHERE id = ?`
+  const connector = await connection
+  const [userExist] = await connector.execute(isUserExistQuery, [userId])
+  return userExist
 }
 
-const registerNewUser = async (firstName, lastName, email, password) => {
-  return User.create({
-    first_name: firstName,
-    last_name: lastName,
+const updateUserDetailsQuery = async ({
+  userId,
+  firstName,
+  lastName,
+  email,
+  hashedPassword: password,
+}) => {
+  const updateUserQuery = `UPDATE users
+  SET email = ?,password = ?,firstName = ?,lastName = ?
+  Where id = ?`
+
+  const connector = await connection
+
+  await connector.execute(updateUserQuery, [
     email,
     password,
-  })
+    firstName,
+    lastName,
+    userId,
+  ])
+
+  return isUserExistQuery(userId)
 }
 
-module.exports = { isUserExist, registerNewUser }
+module.exports = { isUserExistQuery, updateUserDetailsQuery }
