@@ -11,6 +11,7 @@ import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import { getAllCategories } from "../../DAL/api"
 import { SUPPORTED_FILE_FORMATS } from "../../utills/js/constants"
 import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
+import CustomBtn from "../../componenets/UI/CustomBtn"
 
 const NewRecipeDetailsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -139,7 +140,7 @@ const NewRecipeDetailsPage = () => {
                   title="תיאור המתכון*"
                 />
                 <Form.Group>
-                  <Form.Label> קטגוריה* </Form.Label>
+                  <Form.Label className="font-weight-bold">קטגוריה*</Form.Label>
                   <CustomSelect
                     options={categories}
                     value={formik.values.categories}
@@ -187,10 +188,8 @@ const NewRecipeDetailsPage = () => {
               </Col>
             </Row>
             <Row>
-              <Col>
-                <Button type="submit" variant="dark">
-                  שלב הבא
-                </Button>
+              <Col className="text-center">
+                <CustomBtn type="submit" className="w-25" text="לשלב הבא" />
               </Col>
             </Row>
           </Form>

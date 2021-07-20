@@ -13,6 +13,7 @@ import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSt
 import useHttp from "../../hooks/use-http"
 import Loader from "../../componenets/Loader/Loader"
 import Message from "../../componenets/Message/Message"
+import CustomBtn from "../../componenets/UI/CustomBtn"
 
 const EditRecipeDetailsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -179,7 +180,9 @@ const EditRecipeDetailsPage = () => {
                       title="תיאור המתכון*"
                     />
                     <Form.Group>
-                      <Form.Label> קטגוריה* </Form.Label>
+                      <Form.Label className="font-weight-bold">
+                        קטגוריה*
+                      </Form.Label>
                       <CustomSelect
                         options={categories}
                         value={formik.values.categories}
@@ -232,10 +235,8 @@ const EditRecipeDetailsPage = () => {
                   </Col>
                 </Row>
                 <Row>
-                  <Col>
-                    <Button type="submit" variant="dark">
-                      שלב הבא
-                    </Button>
+                  <Col className="text-center">
+                    <CustomBtn className="w-25" type="submit" text="לשלב הבא" />
                   </Col>
                 </Row>
               </Form>

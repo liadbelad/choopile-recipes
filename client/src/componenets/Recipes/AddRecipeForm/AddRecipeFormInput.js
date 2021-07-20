@@ -11,11 +11,12 @@ const AddRecipeFormInput = ({
   as,
   placeholder,
   width,
+  rows = 3,
 }) => {
   const inputValue = formik.values[name]
   return (
     <Form.Group className={width && width}>
-      {title && <Form.Label> {title} </Form.Label>}
+      {title && <Form.Label className="font-weight-bold"> {title} </Form.Label>}
 
       <Form.Control
         as={as}
@@ -26,6 +27,7 @@ const AddRecipeFormInput = ({
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
         value={inputValue}
+        rows={rows}
       />
       {formik.touched[`${name}`] && formik.errors[`${name}`] && (
         <FormErrorMessages error={formik.errors[`${name}`]} />

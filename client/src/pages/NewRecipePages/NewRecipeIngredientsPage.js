@@ -14,6 +14,7 @@ import {
   filterChoosenIngredient,
   findIngredientDeletedByUser,
 } from "../../utills/js/functions"
+import CustomBtn from "../../componenets/UI/CustomBtn"
 
 const NewRecipeIngredientsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -239,13 +240,14 @@ const NewRecipeIngredientsPage = () => {
               </Row>
               <Row>
                 <Col className="d-flex justify-content-center my-2">
-                  <Form.Group>
-                    <Button type="submit" variant="success">
-                      {editQty && editIngredient && editMeasureUnit
+                  <CustomBtn
+                    type="submit"
+                    text={
+                      editQty && editIngredient && editMeasureUnit
                         ? "עדכן מרכיב"
-                        : "+ הוסף מרכיב"}
-                    </Button>
-                  </Form.Group>
+                        : "הוסף מרכיב +"
+                    }
+                  />
                 </Col>
               </Row>
             </Form>
@@ -258,14 +260,12 @@ const NewRecipeIngredientsPage = () => {
 
             <Row>
               <Col className="text-center my-3">
-                <Button
-                  disabled={newRecipeIngredients.length === 0}
+                <CustomBtn
+                  disabled={newRecipeIngredients.length < 2}
                   className="w-25"
-                  variant="dark"
+                  text="להוראות ההכנה"
                   onClick={handleFormSubmit}
-                >
-                  להוראות ההכנה
-                </Button>
+                />
               </Col>
             </Row>
           </Container>

@@ -13,6 +13,8 @@ import { getNewestRecipes } from "../DAL/recipesApi"
 const HomePage = () => {
   const [newestRecipes, setNewestRecipes] = useState([])
   const [activePageNumber, setActivePageNumber] = useState(1)
+  const [isLoadingMoreRecipes, setIsLoadingMoreRecipes] = useState(false)
+
   const location = useLocation()
   const { handleOpenModal } = useContext(ModalContext)
 
@@ -34,8 +36,12 @@ const HomePage = () => {
   }
 
   const getNextNewestRecipes = async () => {
+    setIsLoadingMoreRecipes(true)
     const nextPageRecipes = await getNewestRecipes(activePageNumber)
-    setNewestRecipes((prevRecipes) => [...prevRecipes, ...nextPageRecipes])
+    setTimeout(() => {
+      setNewestRecipes((prevRecipes) => [...prevRecipes, ...nextPageRecipes])
+      setIsLoadingMoreRecipes(false)
+    }, 500)
   }
 
   useEffect(() => {
@@ -84,6 +90,11 @@ const HomePage = () => {
         <span id="newestRecipesGallery">
           <RecipesList className="flex-container" recipes={newestRecipes} />
         </span>
+      )}
+      {isLoadingMoreRecipes && (
+        <div className="d-flex justify-content-center">
+          <Loader />
+        </div>
       )}
     </>
   )

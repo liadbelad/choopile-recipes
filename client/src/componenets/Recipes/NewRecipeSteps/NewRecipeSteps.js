@@ -9,7 +9,7 @@ const NewRecipeSteps = ({ step1, step2, step3, path = "new" }) => {
       <Nav.Item>
         {step1 ? (
           <LinkContainer to={`/recipes/${path}/details`}>
-            <Nav.Link>פרטי מתכון</Nav.Link>
+            <Nav.Link className="font-weight-bold">פרטי מתכון</Nav.Link>
           </LinkContainer>
         ) : (
           <Nav.Link disabled>פרטי מתכון</Nav.Link>
@@ -19,7 +19,7 @@ const NewRecipeSteps = ({ step1, step2, step3, path = "new" }) => {
       <Nav.Item>
         {step2 ? (
           <LinkContainer to={`/recipes/${path}/ingredients`}>
-            <Nav.Link>מרכיבים</Nav.Link>
+            <Nav.Link className="font-weight-bold">מרכיבים</Nav.Link>
           </LinkContainer>
         ) : (
           <Nav.Link disabled>מרכיבים</Nav.Link>
@@ -29,7 +29,7 @@ const NewRecipeSteps = ({ step1, step2, step3, path = "new" }) => {
       <Nav.Item>
         {step3 ? (
           <LinkContainer to={`/recipes/${path}/instructions`}>
-            <Nav.Link>הוראות הכנה</Nav.Link>
+            <Nav.Link className="font-weight-bold">הוראות הכנה</Nav.Link>
           </LinkContainer>
         ) : (
           <Nav.Link disabled>הוראות הכנה</Nav.Link>

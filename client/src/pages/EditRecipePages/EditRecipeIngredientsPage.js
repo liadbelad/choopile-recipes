@@ -15,6 +15,7 @@ import {
   filterMultipleObjectsByValue,
   findIngredientDeletedByUser,
 } from "../../utills/js/functions"
+import CustomBtn from "../../componenets/UI/CustomBtn"
 
 const EditRecipeIngredientsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -258,12 +259,13 @@ const EditRecipeIngredientsPage = () => {
                     type="text"
                   />
                 </Col>
-                <Col lg={1}>
-                  <Form.Group>
-                    <Button type="submit" variant="success">
-                      +
-                    </Button>
-                  </Form.Group>
+                <Col className="text-center my-2">
+                  <CustomBtn
+                    type="submit"
+                    text="
+                     הוסף רכיב +
+                    "
+                  />
                 </Col>
               </Row>
             </Form>
@@ -275,14 +277,12 @@ const EditRecipeIngredientsPage = () => {
 
             <Row>
               <Col className="text-center my-3">
-                <Button
-                  disabled={updatedRecipeIngredients.length === 0}
+                <CustomBtn
+                  disabled={recipeIngredientsToShow.length < 2}
                   className="w-25"
-                  variant="dark"
+                  text="להוראות ההכנה"
                   onClick={handleFormSubmit}
-                >
-                  להוראות ההכנה
-                </Button>
+                />
               </Col>
             </Row>
           </Container>

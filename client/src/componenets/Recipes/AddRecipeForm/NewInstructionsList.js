@@ -12,7 +12,7 @@ const NewInstructionItem = ({ instructionData, idx, onClick }) => {
           className="fas fa-trash mx-2"
         ></i>
       </div>
-      <p> {instructionData.instruction} </p>
+      <p className="w-75"> {instructionData.instruction} </p>
     </ListGroup.Item>
   )
 }

@@ -9,6 +9,7 @@ import styles from "./AddCommentInput.module.scss"
 import { addRecipeCommentById } from "../../../DAL/recipesApi"
 import Loader from "../../Loader/Loader"
 import Message from "../../Message/Message"
+import CustomBtn from "../../UI/CustomBtn"
 
 const AddCommentInput = ({ handleShowNewCommentList }) => {
   const userInfo = JSON.parse(localStorage.getItem("userInfo"))
@@ -56,15 +57,10 @@ const AddCommentInput = ({ handleShowNewCommentList }) => {
             name="comment"
             id="comment"
             type="text"
+            rows={2}
             width="w-100"
           />
-          <Button
-            className={styles["add-btn"]}
-            variant="outline-success"
-            type="submit"
-          >
-            שלח
-          </Button>
+          <CustomBtn className={styles["add-btn"]} text="שלח" type="submit" />
         </Form>
       )}
     </Formik>

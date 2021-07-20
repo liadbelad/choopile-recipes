@@ -8,6 +8,7 @@ import AddRecipeFormInput from "../../componenets/Recipes/AddRecipeForm/AddRecip
 import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
 import NewInstructionsList from "../../componenets/Recipes/AddRecipeForm/NewInstructionsList"
+import CustomBtn from "../../componenets/UI/CustomBtn"
 
 const EditRecipeInstructionsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
@@ -124,6 +125,8 @@ const EditRecipeInstructionsPage = () => {
             <Row className="d-flex justify-content-center text-center">
               <AddRecipeFormInput
                 formik={formik}
+                as={"textarea"}
+                rows={2}
                 placeholder="*מה יבוצע בשלב הזה?"
                 name="instruction"
                 id="instruction"
@@ -131,10 +134,8 @@ const EditRecipeInstructionsPage = () => {
                 width="w-50"
               />
 
-              <Form.Group>
-                <Button type="submit" variant="success">
-                  +
-                </Button>
+              <Form.Group className="mt-2 mr-2">
+                <CustomBtn type="submit" text="הוסף +" />
               </Form.Group>
             </Row>
           </Form>
@@ -146,14 +147,13 @@ const EditRecipeInstructionsPage = () => {
 
           <Row>
             <Col className="text-center my-3">
-              <Button
-                disabled={recipeInstructionsToShow.length === 0}
+              <CustomBtn
+                disabled={recipeInstructionsToShow.length < 2}
                 className="w-25"
-                variant="dark"
+                text="                עדכון מתכון
+                "
                 onClick={handleFormSubmit}
-              >
-                עדכון מתכון
-              </Button>
+              />
             </Col>
           </Row>
         </Container>

@@ -8,10 +8,12 @@ import AddRecipeFormInput from "../../componenets/Recipes/AddRecipeForm/AddRecip
 import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
 import NewInstructionsList from "../../componenets/Recipes/AddRecipeForm/NewInstructionsList"
+import CustomBtn from "../../componenets/UI/CustomBtn"
 
 const NewRecipeInstructionsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
   const [newRecipeInstructions, setNewRecipeInstructions] = useState([])
+  const [isEditingInstruction, setIsEditingInstruction] = useState(false)
 
   const { isLoggedIn } = useContext(AuthContext)
 
@@ -98,6 +100,8 @@ const NewRecipeInstructionsPage = () => {
           <Form onFocus={handleFormFocus} onSubmit={formik.handleSubmit}>
             <Row className="d-flex justify-content-center text-center">
               <AddRecipeFormInput
+                as="textarea"
+                rows={2}
                 formik={formik}
                 placeholder="*מה יבוצע בשלב הזה?"
                 name="instruction"
@@ -106,10 +110,13 @@ const NewRecipeInstructionsPage = () => {
                 width="w-50"
               />
 
-              <Form.Group>
-                <Button type="submit" variant="success">
-                  +
-                </Button>
+              <Form.Group className="mt-2 mr-2">
+                <CustomBtn
+                  type="submit"
+                  text="
+                  + הוסף
+                  "
+                />
               </Form.Group>
             </Row>
           </Form>
