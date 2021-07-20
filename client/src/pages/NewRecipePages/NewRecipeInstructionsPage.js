@@ -14,6 +14,10 @@ const NewRecipeInstructionsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
   const [newRecipeInstructions, setNewRecipeInstructions] = useState([])
   const [isEditingInstruction, setIsEditingInstruction] = useState(false)
+  const [editInstruction, setEditInstruction] = useState("")
+  const [editIdx, setEditIdx] = useState()
+
+  console.log(isEditingInstruction)
 
   const { isLoggedIn } = useContext(AuthContext)
 
@@ -48,6 +52,22 @@ const NewRecipeInstructionsPage = () => {
     }
   }
 
+  const handleShowEditInstruction = (instructionData, idx) => {
+    const { instruction } = instructionData
+    setIsEditingInstruction(true)
+    setEditInstruction(instruction)
+    setEditIdx(idx)
+  }
+
+  const handleEditingInstruction = (editedInstructionData) => {
+    let stateCopy = [...newRecipeInstructions]
+    stateCopy[editIdx] = editedInstructionData
+    setNewRecipeInstructions(stateCopy)
+    setIsEditingInstruction(false)
+    setEditInstruction("")
+    setEditIdx()
+  }
+
   const handleFormSubmit = async () => {
     handleAddRecipeInstructions(newRecipeInstructions, storedUserInfo.id)
     const { recipeId, error } = await handleAddNewRecipe()
@@ -74,20 +94,27 @@ const NewRecipeInstructionsPage = () => {
     if (newRecipeInstructions.length > 0) {
       handleFinishEntering()
     }
-  }, [isLoggedIn, newRecipeInstructions, history])
+  }, [history])
 
   return (
     <Formik
       initialValues={{
-        instruction: "",
+        instruction: editInstruction || "",
       }}
+      enableReinitialize
       validationSchema={Yup.object().shape({
         instruction: Yup.string().required("*חובה"),
       })}
       onSubmit={(values, { setSubmitting, resetForm }) => {
-        handleAddingNewInstruction(values)
-        setSubmitting(false)
-        resetForm()
+        if (isEditingInstruction) {
+          handleEditingInstruction(values)
+          setSubmitting(false)
+          resetForm()
+        } else {
+          handleAddingNewInstruction(values)
+          setSubmitting(false)
+          resetForm()
+        }
       }}
     >
       {(formik) => (
@@ -113,9 +140,9 @@ const NewRecipeInstructionsPage = () => {
               <Form.Group className="mt-2 mr-2">
                 <CustomBtn
                   type="submit"
-                  text="
-                  + הוסף
-                  "
+                  text={
+                    isEditingInstruction && editInstruction ? "עדכן" : "הוסף +"
+                  }
                 />
               </Form.Group>
             </Row>
@@ -124,18 +151,17 @@ const NewRecipeInstructionsPage = () => {
           <NewInstructionsList
             newRecipeInstructions={newRecipeInstructions}
             handleDeleteNewInstruction={handleDeleteNewInstruction}
+            handleEditNewInstruction={handleShowEditInstruction}
           />
 
           <Row>
             <Col className="text-center my-3">
-              <Button
-                disabled={newRecipeInstructions.length === 0}
+              <CustomBtn
+                disabled={newRecipeInstructions.length < 2}
                 className="w-25"
-                variant="dark"
+                text="הוסף מתכון"
                 onClick={handleFormSubmit}
-              >
-                הוסף מתכון
-              </Button>
+              />
             </Col>
           </Row>
         </Container>

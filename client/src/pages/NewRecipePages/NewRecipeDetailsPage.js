@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react"
 import { useHistory, Prompt } from "react-router-dom"
-import AuthContext from "../../store/AuthCtx/auth-context"
 import AddRecipeFormInput from "../../componenets/Recipes/AddRecipeForm/AddRecipeFormInput"
 import { Formik } from "formik"
 import * as Yup from "yup"
@@ -12,16 +11,25 @@ import { getAllCategories } from "../../DAL/api"
 import { SUPPORTED_FILE_FORMATS } from "../../utills/js/constants"
 import NewRecipeSteps from "../../componenets/Recipes/NewRecipeSteps/NewRecipeSteps"
 import CustomBtn from "../../componenets/UI/CustomBtn"
+import styles from "./NewRecipeDetailsPage.module.scss"
 
 const NewRecipeDetailsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
   const [categories, setCategories] = useState(null)
+  const [previewImage, setPreviewImage] = useState("")
 
   const storedUserInfo = JSON.parse(localStorage.getItem("userInfo"))
 
   const { handleAddRecipeDetails, recipeDetails } = useContext(NewRecipeContext)
 
   const history = useHistory()
+
+  const handleImageChange = (event, formik) => {
+    formik.setFieldValue("imageFiles", event.target.files[0])
+    if (event.target.files[0]) {
+      setPreviewImage(URL.createObjectURL(event.target.files[0]))
+    }
+  }
 
   const handleFormFocus = () => {
     setIsEnteringData(true)
@@ -60,11 +68,11 @@ const NewRecipeDetailsPage = () => {
   return (
     <Formik
       initialValues={{
-        title: recipeDetails.title || "",
-        description: recipeDetails.description || "",
-        servings: +recipeDetails.servings || "",
-        prepTimeMins: +recipeDetails.prepTimeMins || "",
-        imageFiles: recipeDetails.imageFiles || "",
+        title: "",
+        description: "",
+        servings: "",
+        prepTimeMins: "",
+        imageFiles: "",
         categories: { value: null, label: null },
       }}
       validationSchema={Yup.object().shape({
@@ -156,16 +164,26 @@ const NewRecipeDetailsPage = () => {
               </Col>
               <Col md={4}>
                 <Form.Group>
-                  <input
-                    type="file"
-                    name="imageFiles"
-                    id="imageFiles"
-                    accept="image/x-png,image/gif,image/jpeg"
-                    onChange={(event) =>
-                      formik.setFieldValue("imageFiles", event.target.files[0])
-                    }
-                  />
-                  {formik.touched.imageFiles && formik.errors.imageFiles && (
+                  <label className={styles["custom-file-upload"]}>
+                    <input
+                      type="file"
+                      name="imageFiles"
+                      id="imageFiles"
+                      accept="image/x-png,image/gif,image/jpeg"
+                      onChange={(event) => handleImageChange(event, formik)}
+                    />
+                    <i className="fa fa-cloud-upload" /> בחר תמונה
+                  </label>
+
+                  {previewImage && !formik.errors.imageFiles && (
+                    <img
+                      className="mr-2"
+                      src={previewImage}
+                      width="200px"
+                      height="130px"
+                    />
+                  )}
+                  {previewImage && formik.errors.imageFiles && (
                     <FormErrorMessages error={formik.errors.imageFiles} />
                   )}
                 </Form.Group>

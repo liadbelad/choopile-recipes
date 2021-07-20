@@ -1,5 +1,6 @@
 import React, { useCallback } from "react"
 import Select from "react-select"
+import { CUSTOM_SELECT_STYLES } from "../../utills/js/constants"
 
 const CustomSelect = ({
   onChange,
@@ -27,6 +28,7 @@ const CustomSelect = ({
       options={options}
       onChange={(selectedOption) => onChange(selectedOption)}
       placeholder={placeholder}
+      styles={CUSTOM_SELECT_STYLES}
     />
   )
 }

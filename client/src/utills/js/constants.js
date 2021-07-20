@@ -9,11 +9,21 @@ const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
 const CUSTOM_SELECT_STYLES = {
   control: (styles, { isFocused }) => ({
     ...styles,
+    border: isFocused && "none",
+    border: 0,
+    boxShadow: isFocused && "2px 2px 2px 1px rgba(0, 0, 0, 0.2)",
   }),
   singleValue: (styles) => ({
     ...styles,
     color: "rgb(239, 66, 41)",
+    fontWeight: "bold",
   }),
+  input: (styles, { isFocused }) => ({
+    ...styles,
+    border: isFocused && "none",
+    fontWeight: "bold",
+  }),
+
   option: (styles, { isFocused }) => {
     return {
       ...styles,

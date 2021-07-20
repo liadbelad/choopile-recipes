@@ -5,7 +5,7 @@ const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
 const FILE_SIZE = 3000000
 const SUPPORTED_FILE_FORMATS = ["image/jpg", "image/jpeg", "image/png"]
 const COOKIE_TIME_24_HOURS = 8.64e7
-const PAGES_LIMIT = 4
+const PAGES_LIMIT = 6
 // password regex Description
 // ^	The password string will start this way
 // (?=.*[a-z])	The string must contain at least 1 lowercase alphabetical character

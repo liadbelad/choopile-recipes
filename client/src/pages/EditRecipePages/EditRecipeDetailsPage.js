@@ -4,7 +4,7 @@ import AddRecipeFormInput from "../../componenets/Recipes/AddRecipeForm/AddRecip
 import { Formik } from "formik"
 import * as Yup from "yup"
 import CustomSelect from "../../componenets/CustomSelect/CustomSelect"
-import { Container, Form, Row, Col, Button } from "react-bootstrap"
+import { Container, Form, Row, Col } from "react-bootstrap"
 import FormErrorMessages from "../../componenets/Auth/FormErrorMessages"
 import NewRecipeContext from "../../store/NewRecipeCtx/new-recipe-context"
 import { getAllCategories, getFullRecipeDetailsByID } from "../../DAL/api"
@@ -14,10 +14,12 @@ import useHttp from "../../hooks/use-http"
 import Loader from "../../componenets/Loader/Loader"
 import Message from "../../componenets/Message/Message"
 import CustomBtn from "../../componenets/UI/CustomBtn"
+import styles from "./EditRecipeDetailsPage.module.scss"
 
 const EditRecipeDetailsPage = () => {
   const [isEnteringData, setIsEnteringData] = useState(false)
   const [categories, setCategories] = useState(null)
+  const [previewImage, setPreviewImage] = useState("")
 
   const {
     sendRequest,
@@ -34,6 +36,13 @@ const EditRecipeDetailsPage = () => {
 
   const location = useLocation()
   const recipeId = location?.state?.recipeId
+
+  const handleImageChange = (event, formik) => {
+    formik.setFieldValue("imageFiles", event.target.files[0])
+    if (event.target.files[0]) {
+      setPreviewImage(URL.createObjectURL(event.target.files[0]))
+    }
+  }
 
   const handleFormFocus = () => {
     setIsEnteringData(true)
@@ -199,22 +208,27 @@ const EditRecipeDetailsPage = () => {
                   </Col>
                   <Col md={4}>
                     <Form.Group>
-                      <input
-                        type="file"
-                        name="imageFiles"
-                        id="imageFiles"
-                        accept="image/x-png,image/gif,image/jpeg"
-                        onChange={(event) =>
-                          formik.setFieldValue(
-                            "imageFiles",
-                            event.target.files[0]
-                          )
-                        }
-                      />
-                      {formik.touched.imageFiles &&
-                        formik.errors.imageFiles && (
-                          <FormErrorMessages error={formik.errors.imageFiles} />
-                        )}
+                      <label className={styles["custom-file-upload"]}>
+                        <input
+                          type="file"
+                          name="imageFiles"
+                          id="imageFiles"
+                          accept="image/x-png,image/gif,image/jpeg"
+                          onChange={(event) => handleImageChange(event, formik)}
+                        />
+                        <i className="fa fa-cloud-upload" /> בחר תמונה
+                      </label>
+                      {previewImage && !formik.errors.imageFiles && (
+                        <img
+                          className="mr-2"
+                          src={previewImage}
+                          width="200px"
+                          height="130px"
+                        />
+                      )}
+                      {previewImage && formik.errors.imageFiles && (
+                        <FormErrorMessages error={formik.errors.imageFiles} />
+                      )}
                     </Form.Group>
 
                     <AddRecipeFormInput
