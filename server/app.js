@@ -15,6 +15,8 @@ const fileUpload = require("./middlewares/fileUploadMiddleware")
 const { COOKIE_TIME_24_HOURS } = require("./utills/constants")
 const app = express()
 require("dotenv").config()
+const sendMail = require("./config/sendGrid")
+// sendMail()
 
 // make connection for cookies
 app.use(cors({ origin: "http://localhost:3000", credentials: true }))
@@ -47,7 +49,5 @@ app.post("/upload_files", fileUpload.array("image"), uploadFiles)
 function uploadFiles(req, res) {
   res.json({ message: "Successfully uploaded files" })
 }
-
-// sequelize.sync()
 
 module.exports = app

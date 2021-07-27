@@ -29,7 +29,7 @@ const MainNavbar = () => {
   return (
     <>
       <Navbar
-        className="fixed-top"
+        className={`${styles["navbar-container"]} fixed-top`}
         style={{ background: "#fff" }}
         variant="light"
         collapseOnSelect

@@ -35,7 +35,7 @@ const registerUserQuery = async (
 }
 
 const loginUserQuery = async (email) => {
-  const loginQuery = `SELECT id,firstName ,lastName,email,password FROM users WHERE email = ?`
+  const loginQuery = `SELECT * FROM users WHERE email = ?`
   const connector = await connection
   const [userExist] = await connector.execute(loginQuery, [email])
   return userExist

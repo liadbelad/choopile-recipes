@@ -8,10 +8,9 @@ const config = {
 }
 
 const getNewestRecipes = async (pageNumber = 1) => {
-  console.log(pageNumber)
   try {
     const response = await fetch(
-      `http://localhost:5000/api/recipes/newest?pageNumber=${pageNumber}`
+      `http://localhost:8000/api/recipes/newest?pageNumber=${pageNumber}`
     )
     const newestRecipes = await response.json()
     return newestRecipes
@@ -95,7 +94,6 @@ const addRecipeCommentById = async ({ recipeID, content }) => {
 
     return data
   } catch (error) {
-    console.log(error)
     return error.message
   }
 }

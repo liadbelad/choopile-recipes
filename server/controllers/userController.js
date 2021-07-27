@@ -33,11 +33,8 @@ const register = async (req, res) => {
       throw new Error("שגיאה ביצירת משתמש,נסה שוב מאוחר יותר")
     }
 
-    const token = generateToken(
-      createdUser.id,
-      createdUser.email,
-      createdUser.firstName
-    )
+    const token = generateToken(createdUser.id)
+    console.log(token)
 
     res.status(201).json({ createdUser, token })
   } catch (error) {
@@ -56,6 +53,9 @@ const login = async (req, res) => {
     if (!user[0]) {
       throw new Error("אימייל או סיסמא לא נכונים")
     }
+    if (!user[0].isVerified) {
+      throw new Error("משתמש לא מאושר,אישור מחכה באימייל")
+    }
     const isSamePassword = await bcrypt.compare(password, user[0].password)
 
     if (!isSamePassword) {
@@ -68,7 +68,7 @@ const login = async (req, res) => {
       httpOnly: true,
     })
 
-    const token = generateToken(user.id, user.email, user.firstName)
+    const token = generateToken(user.id)
 
     res.status(200).json(user[0])
   } catch (error) {

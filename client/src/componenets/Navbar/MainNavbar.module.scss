@@ -1,4 +1,8 @@
 @import "../../scss/styles.scss";
+.navbar-container {
+  -webkit-box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+}
 .brand {
   font-weight: bold;
   font-size: 1.4rem;

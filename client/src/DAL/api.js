@@ -171,6 +171,7 @@ const getAllRecipes = async ({
       `http://localhost:5000/api/recipes?pageNumber=${pageNumber}&category=${categoryID}`
     )
     const recipes = await response.json()
+
     return recipes
   } catch (error) {
     return error.message

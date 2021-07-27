@@ -1,17 +1,3 @@
-// userID: 2,
-// title: "bla blas",
-// description: "asdasf asfasf asfasfika asjfbasjf",
-// servings:2,
-// prepTimeMins:20,
-// image: "url.jpg",
-// categoryID: 5,
-// isPrivate:false,
-// ingredients: [
-//   { amount: 1, measureUnitId: 1, ingredientID: 1, note: "קצוץ לקוביות" },
-//   { amount: 0.5, measureUnitId: 2, ingredientID: 3 },
-//   { amount: 0.2, measureUnitId: 4, ingredientID: 2 },
-// ],
-// instructions: ["ערבב סוכר", "הוסף מלח", "חרטט משהו להוראה"],
 const connection = require("../config/db")
 
 const addNewRecipe = async (newRecipe) => {

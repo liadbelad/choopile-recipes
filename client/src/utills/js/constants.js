@@ -1,5 +1,4 @@
 const HEBREW_ENGLISH_SPACE_TEXT_REGEX = /^[ A-Za-z0-9_@./#&+-]*$/i
-
 const HEBREW_ENGLISH_TEXT_REGEX = /^[a-zA-Z\u0590-\u05fe]+$/i
 const EMAIL_REGEX = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/
 const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})/
@@ -10,7 +9,6 @@ const CUSTOM_SELECT_STYLES = {
   control: (styles, { isFocused }) => ({
     ...styles,
     border: isFocused && "none",
-    border: 0,
     boxShadow: isFocused && "2px 2px 2px 1px rgba(0, 0, 0, 0.2)",
   }),
   singleValue: (styles) => ({
